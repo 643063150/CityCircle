@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ededed"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonbule">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:src="@mipmap/news_info_back_arrow01"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="我的"
+            android:textColor="@color/blackcolor"
+            android:textSize="17sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/linecolor"></LinearLayout>
+    <RelativeLayout
+        android:id="@+id/userino"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/my_face_icon" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/head"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/vip"
+                android:textColor="@color/blackcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wwww"
+                android:textColor="@color/linecolor"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <ImageView
+            android:src="@mipmap/go_arrow_icon"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <citycircle.com.MyViews.MyListView
+        android:id="@+id/popset"
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+    </citycircle.com.MyViews.MyListView>
+    <!--<LinearLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:background="@color/linecolor"-->
+        <!--android:layout_height="1dp"></LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:id="@+id/phone"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:background="@color/white"-->
+        <!--android:padding="11dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:drawableLeft="@mipmap/mysetup"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="绑定手机号码"-->
+            <!--android:textSize="18sp"-->
+            <!--android:drawablePadding="@dimen/ui_10_dip"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:src="@mipmap/go_arrow_icon"-->
+            <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
+    <LinearLayout
+        android:id="@+id/set"
+        android:layout_width="fill_parent"
+        android:background="@color/white"
+        android:padding="11dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:drawableLeft="@mipmap/mysetup"
+            android:layout_weight="1"
+            android:text="设置"
+            android:textSize="18sp"
+            android:drawablePadding="@dimen/ui_10_dip"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/go_arrow_icon"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
