@@ -18,6 +18,7 @@ public class FileInfo implements Serializable
 	private String fileName;
 	private int length;
 	private int finished;
+	private String docuid;
 
 	/**
 	 *@param id
@@ -27,13 +28,14 @@ public class FileInfo implements Serializable
 	 *@param finished
 	 */
 	public FileInfo(int id, String url, String fileName, int length,
-					int finished)
+					int finished,String docuid)
 	{
 		this.id = id;
 		this.url = url;
 		this.fileName = fileName;
 		this.length = length;
 		this.finished = finished;
+		this.docuid=docuid;
 	}
 	public int getId()
 	{
@@ -75,6 +77,15 @@ public class FileInfo implements Serializable
 	{
 		this.finished = finished;
 	}
+
+	public String getDocuid() {
+		return docuid;
+	}
+
+	public void setDocuid(String docuid) {
+		this.docuid = docuid;
+	}
+
 	@Override
 	public String toString()
 	{

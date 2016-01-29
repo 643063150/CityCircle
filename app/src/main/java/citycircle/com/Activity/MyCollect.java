@@ -72,7 +72,7 @@ public class MyCollect extends Activity implements View.OnClickListener {
                 array.clear();
                 page = 1;
 //                newsurl = "http://appapi.rexian.cn:8080/HKCityApi/news/newsFocusList?areaID=1&pageSize=10&pageIndex=" + page;
-                url = GlobalVariables.urlstr + "Discount.getCollectList&uid=" + uid + "&page=" + page;
+                url = GlobalVariables.urlstr + "News.getCollectList&uid=" + uid + "&page=" + page;
                 getcollect(0);
             }
         });
@@ -112,7 +112,7 @@ public class MyCollect extends Activity implements View.OnClickListener {
 
                             } else {
                                 page++;
-                                url = GlobalVariables.urlstr + "Discount.getCollectList&uid=" + uid + "&page=" + page;
+                                url = GlobalVariables.urlstr + "News.getCollectList&uid=" + uid + "&page=" + page;
                                 getcollect(0);
                             }
                         }
@@ -256,7 +256,7 @@ public class MyCollect extends Activity implements View.OnClickListener {
                             }
                         }
                         did = cid;
-                        deurl = GlobalVariables.urlstr + "Discount.collectDel&id=" + did + "&username=" + username;
+                        deurl = GlobalVariables.urlstr + "News.collectDel&id=" + did + "&username=" + username;
                         getcollect(1);
 //                        System.out.println(cid);
                     }

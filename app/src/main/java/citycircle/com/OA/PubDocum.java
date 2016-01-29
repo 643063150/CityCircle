@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -34,20 +36,22 @@ import citycircle.com.Utils.PreferencesUtils;
  * Created by admins on 2016/1/26.
  */
 public class PubDocum extends Fragment {
-    View view;
+    View view, footview;
     ListView doculist;
     String url, urlstr;
     String username,uid;
     DocumentAdapter adapter;
     FileInfo fileInfo ;
+    TextView foottxt;
     private ArrayList<FileInfo> mFileInfoList = new ArrayList<>();
+    int page = 1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.document_lay, container, false);
         username= PreferencesUtils.getString(getActivity(), "oausername");
         uid = PreferencesUtils.getString(getActivity(), "oauid");
-        url= GlobalVariables.oaurlstr+"Files.getList&username="+username+"&uid="+uid;
+        url= GlobalVariables.oaurlstr+"Files.getList&username="+username+"&uid="+uid+"&page="+page;
         intview();
         setDoculist();
         getdoulist();
@@ -55,11 +59,34 @@ public class PubDocum extends Fragment {
     }
 
     private void intview() {
+        footview = LayoutInflater.from(getActivity()).inflate(
+                R.layout.list_footview, null);
+        foottxt = (TextView) footview.findViewById(R.id.foottxt);
         IntentFilter filter = new IntentFilter();
         filter.addAction(DownloadService.ACTION_UPDATE);
         filter.addAction(DownloadService.ACTION_FINISHED);
         getActivity().registerReceiver(mReceiver, filter);
         doculist = (ListView) view.findViewById(R.id.doculist);
+        doculist.addFooterView(footview,null,false);
+        doculist.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
+                            page++;
+                            url= GlobalVariables.oaurlstr+"Files.getList&username="+username+"&uid="+uid+"&page="+page;
+                            getdoulist();
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
     }
 
     private void getdoulist() {
@@ -91,7 +118,7 @@ public class PubDocum extends Fragment {
                     Toast.makeText(getActivity(),"网络似乎有问题了",Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
-                    Toast.makeText(getActivity(),"暂时没有内容",Toast.LENGTH_SHORT).show();
+                    foottxt.setText("已加载全部");
                     break;
 
             }
@@ -109,7 +136,9 @@ public class PubDocum extends Fragment {
                         : jsonObject2.getString("url");
                 String name=jsonObject2.getString("name")== null ? ""
                         : jsonObject2.getString("name");
-                fileInfo = new FileInfo(i,url, name, 0, 0);
+                String docuid=jsonObject2.getString("id")== null ? ""
+                        : jsonObject2.getString("id");
+                fileInfo = new FileInfo(i,url, name, 0, 0,docuid);
 //                hashmap=new HashMap<>();
 //                hashmap.put("id",jsonObject2.getString("id")== null ? ""
 //                        : jsonObject2.getString("id"));
@@ -121,12 +150,20 @@ public class PubDocum extends Fragment {
                 mFileInfoList.add(fileInfo);
             }
         }else {
+            if (page==1){
 
+            }else {
+                page--;
+            }
+            handler.sendEmptyMessage(3);
         }
     }
 
     public void setDoculist() {
-        adapter=new DocumentAdapter(getActivity(),mFileInfoList);
+        if (mFileInfoList.size() < 10) {
+            foottxt.setText("已加载全部");
+        }
+        adapter=new DocumentAdapter(getActivity(),mFileInfoList,0,handler);
         doculist.setAdapter(adapter);
     }
 
