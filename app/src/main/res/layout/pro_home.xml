@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="OA办公"
+            android:text="物业"
             android:textColor="@color/blackcolor"
             android:textSize="17sp" />
 
@@ -61,20 +61,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/index_icon05"
+                android:drawableTop="@mipmap/index_icon07"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="消息" />
-
-            <TextView
-                android:id="@+id/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:drawableTop="@mipmap/index_icon11"
-                android:gravity="center"
-                android:paddingTop="20dp"
-                android:text="文档" />
+                android:text="小区公告" />
         </LinearLayout>
 
         <LinearLayout
@@ -99,10 +89,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/index_icon06"
+                android:drawableTop="@mipmap/index_icon08"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="通讯录" />
+                android:text="生活缴费" />
         </LinearLayout>
 
         <LinearLayout
@@ -117,10 +107,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/index_icon03"
+                android:drawableTop="@mipmap/index_icon09"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="公文收文" />
+                android:text="随手拍" />
         </LinearLayout>
 
         <LinearLayout
@@ -135,10 +125,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/index_icon0400"
+                android:drawableTop="@mipmap/index_icon10"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="个人中心" />
+                android:text="我的房屋" />
         </LinearLayout>
     </LinearLayout>
 

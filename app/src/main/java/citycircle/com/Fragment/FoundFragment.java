@@ -13,6 +13,7 @@ import citycircle.com.Activity.SaleActivity;
 import citycircle.com.Activity.TelYelloePage;
 import citycircle.com.OA.HomePageActivity;
 import citycircle.com.OA.LandActivity;
+import citycircle.com.Property.PropertyHome;
 import citycircle.com.R;
 import citycircle.com.Utils.PreferencesUtils;
 
@@ -21,7 +22,7 @@ import citycircle.com.Utils.PreferencesUtils;
  */
 public class FoundFragment extends Fragment implements View.OnClickListener{
     View view;
-    LinearLayout tYellowPages,sale,sales;
+    LinearLayout tYellowPages,sale,sales,Property;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,11 +37,14 @@ public class FoundFragment extends Fragment implements View.OnClickListener{
         sale.setOnClickListener(this);
         sales=(LinearLayout)view.findViewById(R.id.sales);
         sales.setOnClickListener(this);
+        Property=(LinearLayout)view.findViewById(R.id.Property);
+        Property.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         Intent intent=new Intent();
+        int oaland= PreferencesUtils.getInt(getActivity(),"oaland");
         switch (v.getId()){
             case R.id.YellowPages:
                 intent.setClass(getActivity(), TelYelloePage.class);
@@ -58,9 +62,19 @@ public class FoundFragment extends Fragment implements View.OnClickListener{
 //                }catch (Exception e){
 //                    Toast.makeText(getActivity(),"应用位下载",Toast.LENGTH_SHORT).show();
 //                }
-                int oaland= PreferencesUtils.getInt(getActivity(),"oaland");
+
                 if (oaland==1){
                     intent.setClass(getActivity(), HomePageActivity.class);
+                    getActivity().startActivity(intent);
+                }else {
+                    intent.putExtra("type",1);
+                    intent.setClass(getActivity(), LandActivity.class);
+                    getActivity().startActivity(intent);
+                }
+                break;
+            case R.id.Property:
+                if (oaland==1){
+                    intent.setClass(getActivity(), PropertyHome.class);
                     getActivity().startActivity(intent);
                 }else {
                     intent.putExtra("type",1);

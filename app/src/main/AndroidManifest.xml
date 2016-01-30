@@ -310,6 +310,15 @@
         <activity
             android:name=".OA.Documents"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.Information"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.PropertyHome"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.Info_info"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
