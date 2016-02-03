@@ -41,7 +41,11 @@ public class UpLoad extends Fragment {
         path = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/citycircle/OADowns";
         intview();
-        getDocument(path);
+        try {
+            getDocument(path);
+        }catch (Exception e){
+
+        }
         return view;
     }
 

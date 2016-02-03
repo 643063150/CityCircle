@@ -319,6 +319,12 @@
         <activity
             android:name=".Property.Info_info"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.AddHome"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.SelectMessage"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

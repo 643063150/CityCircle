@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import citycircle.com.OA.ContactsActivity;
-import citycircle.com.OA.DocunmentActivity;
 import citycircle.com.OA.OaUserinfo;
 import citycircle.com.R;
 
@@ -57,7 +56,7 @@ public class PropertyHome extends Activity implements View.OnClickListener{
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.DOC:
-                intent.setClass(PropertyHome.this, DocunmentActivity.class);
+                intent.setClass(PropertyHome.this, AddHome.class);
                 PropertyHome.this.startActivity(intent);
                 break;
         }

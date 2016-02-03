@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_10_dip"
+            android:text="您的小区:" />
+
+        <Button
+            android:id="@+id/Property"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:textColor="@color/graly"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ed_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="点击选择小区" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_10_dip"
+            android:text="门牌号码:" />
+
+        <Button
+            android:id="@+id/door"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:textColor="@color/graly"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ed_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="点击选择门牌" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_10_dip"
+            android:text="楼层室号:" />
+
+        <Button
+            android:id="@+id/homenu"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:textColor="@color/graly"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ed_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="点击选择室号" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:layout_marginLeft="@dimen/ui_10_dip"
+        android:layout_marginRight="@dimen/ui_10_dip"
+        android:layout_marginBottom="@dimen/ui_10_dip"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:background="@color/butbg"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/ui_10_dip"
+            android:text="找不到小区" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/butbg"
+            android:text="新增房屋" />
+    </LinearLayout>
+</LinearLayout>
