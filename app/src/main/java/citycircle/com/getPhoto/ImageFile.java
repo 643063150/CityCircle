@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import adapter.FolderAdapter;
 import citycircle.com.Activity.ReplyPhoto;
+import citycircle.com.Property.ReplyFee;
+import citycircle.com.Utils.GlobalVariables;
 import util.Bimp;
 import util.PublicWay;
 import util.Res;
@@ -59,7 +61,12 @@ public class ImageFile extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Intent intent = new Intent();
-			intent.setClass(mContext, ReplyPhoto.class);
+			if (GlobalVariables.Typr==0){
+				intent.setClass(mContext, ReplyPhoto.class);
+			}else {
+				intent.setClass(mContext, ReplyFee.class);
+			}
+
 			startActivity(intent);
 		}
 		

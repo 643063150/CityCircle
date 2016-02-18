@@ -92,6 +92,7 @@ public class ReplyPhoto extends Activity {
     //    private ArrayList<ImageItem> dataList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GlobalVariables.Typr=0;
         Res.init(this);
         getPhotos = new GetPhotos();
         File sd = Environment.getExternalStorageDirectory();

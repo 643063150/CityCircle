@@ -325,6 +325,15 @@
         <activity
             android:name=".Property.SelectMessage"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.FeeBack"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.ComentInfo"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.ReplyFee"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

@@ -25,4 +25,5 @@ public class GlobalVariables {
     public  static List<CityNameMod> SourceDateList;
     public  static String[] tags;
     public  static  ArrayList<HashMap<String, String>> arraylist;
+    public static int Typr=0;
 }
