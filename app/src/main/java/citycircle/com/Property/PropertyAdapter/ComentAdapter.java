@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import citycircle.com.R;
 import citycircle.com.Utils.ImageUtils;
+import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by admins on 2016/2/17.
@@ -63,14 +64,16 @@ public class ComentAdapter extends BaseAdapter {
         getItemView.ricontent=(TextView)convertView.findViewById(R.id.ricontent);
         getItemView.right=(RelativeLayout)convertView.findViewById(R.id.right);
         getItemView.left=(RelativeLayout)convertView.findViewById(R.id.left);
-        String url=abscure_list.get(position).get("url");
+
         options=ImageUtils.setCirclelmageOptions();
         if (abscure_list.get(position).get("uid").equals("5")){
+            String url= PreferencesUtils.getString(context,"headimage");
             getItemView.left.setVisibility(View.GONE);
             getItemView.ricontent.setText(abscure_list.get(position).get("content"));
             ImageLoader.displayImage(url, getItemView.rihead, options,
                     animateFirstListener);
         }else {
+            String url="";
             getItemView.right.setVisibility(View.GONE);
             getItemView.lecontent.setText(abscure_list.get(position).get("content"));
             ImageLoader.displayImage(url, getItemView.lehead, options,
