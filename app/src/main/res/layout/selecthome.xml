@@ -94,15 +94,17 @@
             android:background="@color/butbg"
             android:textColor="@color/white"
             android:layout_weight="1"
+            android:visibility="gone"
             android:layout_marginRight="@dimen/ui_10_dip"
             android:text="找不到小区" />
 
         <Button
+            android:id="@+id/addhouse"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:background="@color/butbg"
+            android:background="@color/graly"
             android:text="新增房屋" />
     </LinearLayout>
 </LinearLayout>

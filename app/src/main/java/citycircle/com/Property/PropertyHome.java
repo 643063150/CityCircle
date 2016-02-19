@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import citycircle.com.OA.ContactsActivity;
 import citycircle.com.R;
 
 /**
@@ -47,11 +46,11 @@ public class PropertyHome extends Activity implements View.OnClickListener{
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.phonenumber:
-                intent.setClass(PropertyHome.this, ContactsActivity.class);
+                intent.setClass(PropertyHome.this, AddHome.class);
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.meeting:
-                intent.setClass(PropertyHome.this, AddHome.class);
+                intent.setClass(PropertyHome.this, MyHouse.class);
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.DOC:

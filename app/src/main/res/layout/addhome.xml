@@ -29,6 +29,7 @@
         android:background="@color/linecolor"></LinearLayout>
     <include
         layout="@layout/protitle"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></include>
     <android.support.v4.view.ViewPager

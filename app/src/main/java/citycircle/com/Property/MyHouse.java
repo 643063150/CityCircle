@@ -1,6 +1,7 @@
 package citycircle.com.Property;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,10 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ScrollDirectionListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,26 +31,59 @@ public class MyHouse extends Activity {
     SwipeRefreshLayout Refresh;
     ListView houselist;
     ImageView back;
-    String url, urlstr;
+    String url, urlstr, updatrurl, updatestr;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
+    HouseAdapter adapter;
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myhouse);
         url = GlobalVariables.urlstr + "user.getHouseList&uid=5&username=cheng";
         intview();
+        setHouselist();
         gethouselist(0);
     }
 
     private void intview() {
-        back=(ImageView)findViewById(R.id.back);
+        back = (ImageView) findViewById(R.id.back);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
         houselist = (ListView) findViewById(R.id.houselist);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        fab.attachToListView(houselist, new ScrollDirectionListener() {
+            @Override
+            public void onScrollDown() {
+
+                fab.show();
+            }
+
+            @Override
+            public void onScrollUp() {
+
+                fab.hide();
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MyHouse.this, AddHome.class);
+                MyHouse.this.startActivity(intent);
+            }
+        });
+        Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                url = GlobalVariables.urlstr + "user.getHouseList&uid=5&username=cheng";
+                gethouselist(1);
             }
         });
     }
@@ -57,47 +94,92 @@ public class MyHouse extends Activity {
             public void run() {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
-                if (urlstr.equals("网络超时")) {
-                    handler.sendEmptyMessage(2);
-                } else {
-                    handler.sendEmptyMessage(3);
+                urlstr = httpRequest.doGet(url);
+                if (type == 0 || type == 1) {
+                    if (urlstr.equals("网络超时")) {
+                        handler.sendEmptyMessage(2);
+                    } else {
+                        if (type == 1) {
+                            handler.sendEmptyMessage(4);
+                        } else {
+                            handler.sendEmptyMessage(1);
+                        }
+                    }
+                } else if (type == 2) {
+                    updatestr = httpRequest.doGet(updatrurl);
+                    if (updatestr.equals("网络超时")) {
+                        handler.sendEmptyMessage(2);
+                    } else {
+                        handler.sendEmptyMessage(6);
+                    }
                 }
             }
         }.start();
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    Refresh.setRefreshing(false);
                     setArray(urlstr);
+                    adapter.notifyDataSetChanged();
                     break;
                 case 2:
+                    Refresh.setRefreshing(false);
+                    Toast.makeText(MyHouse.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
+                    Refresh.setRefreshing(false);
+                    Toast.makeText(MyHouse.this, R.string.nomore, Toast.LENGTH_SHORT).show();
+                    break;
+                case 4:
+                    Refresh.setRefreshing(false);
+                    array.clear();
+                    setArray(urlstr);
+                    adapter.notifyDataSetChanged();
+                    break;
+                case 5:
+                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid=5&username=cheng&houseid=80";
+                    gethouselist(2);
+                    break;
+                case 6:
+                    JSONObject jsonObject=JSON.parseObject(updatestr);
+                    JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                    int a=jsonObject1.getIntValue("code");
+                    if (a!=0){
+                        Toast.makeText(MyHouse.this, jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }
     };
-private void setArray(String str){
-    JSONObject jsonObject= JSON.parseObject(str);
-    JSONObject jsonObject1=jsonObject.getJSONObject("data");
-    int a=jsonObject1.getIntValue("code");
-    if (a==0){
-        JSONArray jsonArray=jsonObject1.getJSONArray("info");
-        for (int i=0;i<jsonArray.size();i++){
-            JSONObject jsonObject2=jsonArray.getJSONObject(i);
-            hashMap=new HashMap<>();
-            hashMap.put("houseid",jsonObject2.getString("id") == null ? "" : jsonObject2.getString("houseid"));
-            hashMap.put("xiaoqu",jsonObject2.getString("xiaoqu") == null ? "" : jsonObject2.getString("xiaoqu"));
-            hashMap.put("louhao",jsonObject2.getString("louhao") == null ? "" : jsonObject2.getString("louhao"));
-            hashMap.put("fanghao",jsonObject2.getString("fanghao") == null ? "" : jsonObject2.getString("fanghao"));
-            array.add(hashMap);
+
+    private void setArray(String str) {
+        JSONObject jsonObject = JSON.parseObject(str);
+        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+        int a = jsonObject1.getIntValue("code");
+        if (a == 0) {
+            JSONArray jsonArray = jsonObject1.getJSONArray("info");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                hashMap = new HashMap<>();
+                hashMap.put("houseid", jsonObject2.getString("houseid") == null ? "" : jsonObject2.getString("houseid"));
+                hashMap.put("xiaoqu", jsonObject2.getString("xiaoqu") == null ? "" : jsonObject2.getString("xiaoqu"));
+                hashMap.put("louhao", jsonObject2.getString("louhao") == null ? "" : jsonObject2.getString("louhao"));
+                hashMap.put("fanghao", jsonObject2.getString("fanghao") == null ? "" : jsonObject2.getString("fanghao"));
+                array.add(hashMap);
+            }
+        } else {
+            handler.sendEmptyMessage(3);
         }
-    }else {
 
     }
 
-}
+    private void setHouselist() {
+        adapter = new HouseAdapter(array, MyHouse.this, handler);
+        houselist.setAdapter(adapter);
+    }
 }
