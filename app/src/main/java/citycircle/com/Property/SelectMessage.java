@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -35,9 +37,10 @@ public class SelectMessage extends Activity {
     ImageView back;
     String url, urlstr;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> findarray = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     InfoAdapter adapter;
-
+    int types=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,18 +76,65 @@ public class SelectMessage extends Activity {
         content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (type == 2) {
-                    GlobalVariables.door = array.get(position).get("title");
-                    GlobalVariables.doorid = array.get(position).get("id");
-                    finish();
-                } else if (type == 3) {
-                    GlobalVariables.homenu = array.get(position).get("title");
-                    GlobalVariables.homenuid = array.get(position).get("id");
-                    finish();
-                } else {
-                    GlobalVariables.Property = array.get(position).get("title");
-                    GlobalVariables.Propertyid = array.get(position).get("id");
-                    finish();
+                if (types==0){
+                    if (type == 2) {
+                        GlobalVariables.door = array.get(position).get("title");
+                        GlobalVariables.doorid = array.get(position).get("id");
+                        finish();
+                    } else if (type == 3) {
+                        GlobalVariables.homenu = array.get(position).get("title");
+                        GlobalVariables.homenuid = array.get(position).get("id");
+                        finish();
+                    } else {
+                        GlobalVariables.Property = array.get(position).get("title");
+                        GlobalVariables.Propertyid = array.get(position).get("id");
+                        finish();
+                    }
+                }else {
+                    if (type == 2) {
+                        GlobalVariables.door = findarray.get(position).get("title");
+                        GlobalVariables.doorid = findarray.get(position).get("id");
+                        finish();
+                    } else if (type == 3) {
+                        GlobalVariables.homenu = findarray.get(position).get("title");
+                        GlobalVariables.homenuid = findarray.get(position).get("id");
+                        finish();
+                    } else {
+                        GlobalVariables.Property = findarray.get(position).get("title");
+                        GlobalVariables.Propertyid = findarray.get(position).get("id");
+                        finish();
+                    }
+                }
+
+            }
+        });
+        keyed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s==null){
+                    adapter=new InfoAdapter(array,SelectMessage.this);
+                    content.setAdapter(adapter);
+                    types=0;
+                }else {
+                    findarray=new ArrayList<HashMap<String, String>>();
+                    for (int i=0;i<array.size();i++){
+                        if (array.get(i).get("title").contains(s)){
+                            findarray.add(array.get(i));
+                        }
+                    }
+                    adapter=new InfoAdapter(findarray,SelectMessage.this);
+                    content.setAdapter(adapter);
+                    types=1;
                 }
             }
         });

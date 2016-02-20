@@ -144,6 +144,7 @@ Object openRegisterstr;
                             PreferencesUtils.putString(Logn.this, "headimage", jsonObject2.getString("headimage"));
                             PreferencesUtils.putString(Logn.this, "mobile", jsonObject2.getString("mobile"));
                             PreferencesUtils.putInt(Logn.this, "sex", jsonObject2.getIntValue("sex"));
+                            PreferencesUtils.putString(Logn.this, "houseid", jsonObject2.getString("houseid"));
                         }
                         PreferencesUtils.putInt(Logn.this, "land", 1);
                         Intent intent = new Intent();
@@ -197,6 +198,7 @@ Object openRegisterstr;
                             PreferencesUtils.putString(Logn.this, "headimage", jsonObject6.getString("headimage"));
                             PreferencesUtils.putString(Logn.this, "mobile", jsonObject6.getString("mobile"));
                             PreferencesUtils.putInt(Logn.this, "sex", jsonObject6.getIntValue("sex"));
+                            PreferencesUtils.putInt(Logn.this, "houseid", jsonObject6.getIntValue("houseid"));
                         }
                         PreferencesUtils.putInt(Logn.this, "land", 1);
                         Intent intent = new Intent();

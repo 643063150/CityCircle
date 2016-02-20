@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import citycircle.com.R;
+import citycircle.com.Utils.DateUtils;
 import citycircle.com.Utils.ImageUtils;
 
 /**
@@ -31,6 +32,7 @@ public class FeeAdapter extends BaseAdapter {
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
+    DateUtils dateUtils;
     public FeeAdapter(ArrayList<HashMap<String, String>> abscure_list,
                        Context context) {
         this.abscure_list = abscure_list;
@@ -39,6 +41,7 @@ public class FeeAdapter extends BaseAdapter {
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(context));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
+        dateUtils=new DateUtils();
     }
     @Override
     public int getCount() {
@@ -74,6 +77,16 @@ public class FeeAdapter extends BaseAdapter {
         ImageLoader.displayImage(url, getItemView.img, options,
                 animateFirstListener);
         getItemView.content.setText(abscure_list.get(position).get("content"));
+        String time=dateUtils.getDateToStrings(Long.parseLong(abscure_list.get(position).get("create_time")));
+        getItemView.time.setText(time);
+        String tyoe=abscure_list.get(position).get("TYPE");
+        if(tyoe.equals("0")){
+            getItemView.type.setText("问题");
+        }else if (tyoe.equals("1")){
+            getItemView.type.setText("建议");
+        }else {
+            getItemView.type.setText("表扬");
+        }
         return convertView;
     }
     private class getItemView {

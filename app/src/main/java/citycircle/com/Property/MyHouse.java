@@ -23,6 +23,7 @@ import java.util.HashMap;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
+import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by 飞侠 on 2016/2/18.
@@ -31,7 +32,7 @@ public class MyHouse extends Activity {
     SwipeRefreshLayout Refresh;
     ListView houselist;
     ImageView back;
-    String url, urlstr, updatrurl, updatestr;
+    String url, urlstr, updatrurl, updatestr,uid,username;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     HouseAdapter adapter;
@@ -41,7 +42,9 @@ public class MyHouse extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myhouse);
-        url = GlobalVariables.urlstr + "user.getHouseList&uid=5&username=cheng";
+        uid= PreferencesUtils.getString(MyHouse.this,"userid");
+        username=PreferencesUtils.getString(MyHouse.this,"username");
+        url = GlobalVariables.urlstr + "user.getHouseList&uid="+uid+"&username="+username;
         intview();
         setHouselist();
         gethouselist(0);
@@ -82,7 +85,7 @@ public class MyHouse extends Activity {
         Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                url = GlobalVariables.urlstr + "user.getHouseList&uid=5&username=cheng";
+                url = GlobalVariables.urlstr + "user.getHouseList&uid="+uid+"&username="+username;
                 gethouselist(1);
             }
         });
@@ -105,11 +108,16 @@ public class MyHouse extends Activity {
                             handler.sendEmptyMessage(1);
                         }
                     }
-                } else if (type == 2) {
+                } else if (type == 2||type==3) {
                     updatestr = httpRequest.doGet(updatrurl);
                     if (updatestr.equals("网络超时")) {
                         handler.sendEmptyMessage(2);
                     } else {
+                        if (type==3){
+                            array.remove(GlobalVariables.position);
+                        }else {
+                            PreferencesUtils.putString(MyHouse.this,"houseid",array.get(GlobalVariables.position).get("houseid"));
+                        }
                         handler.sendEmptyMessage(6);
                     }
                 }
@@ -142,7 +150,7 @@ public class MyHouse extends Activity {
                     adapter.notifyDataSetChanged();
                     break;
                 case 5:
-                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid=5&username=cheng&houseid=80";
+                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid="+uid+"&username="+username+"&houseid="+array.get(GlobalVariables.position).get("houseid");
                     gethouselist(2);
                     break;
                 case 6:
@@ -152,6 +160,11 @@ public class MyHouse extends Activity {
                     if (a!=0){
                         Toast.makeText(MyHouse.this, jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
+                    adapter.notifyDataSetChanged();
+                    break;
+                case 7:
+                    updatrurl = GlobalVariables.urlstr + "User.delHouse&uid="+uid+"&username="+username+"&id="+array.get(GlobalVariables.position).get("id");
+                    gethouselist(3);
                     break;
             }
         }
@@ -166,6 +179,7 @@ public class MyHouse extends Activity {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                 hashMap = new HashMap<>();
+                hashMap.put("id", jsonObject2.getString("id") == null ? "" : jsonObject2.getString("id"));
                 hashMap.put("houseid", jsonObject2.getString("houseid") == null ? "" : jsonObject2.getString("houseid"));
                 hashMap.put("xiaoqu", jsonObject2.getString("xiaoqu") == null ? "" : jsonObject2.getString("xiaoqu"));
                 hashMap.put("louhao", jsonObject2.getString("louhao") == null ? "" : jsonObject2.getString("louhao"));
@@ -181,5 +195,30 @@ public class MyHouse extends Activity {
     private void setHouselist() {
         adapter = new HouseAdapter(array, MyHouse.this, handler);
         houselist.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Refresh.post(new Runnable() {
+            @Override
+            public void run() {
+                Refresh.setRefreshing(true);
+            }
+        });
+        onRefresh();
+    }
+    public void onRefresh() {
+        Refresh.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // 更新数据
+                array.clear();
+                url = GlobalVariables.urlstr + "user.getHouseList&uid="+uid+"&username="+username;
+                gethouselist(1);
+            }
+        }, 2000);
+
     }
 }

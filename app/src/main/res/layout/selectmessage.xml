@@ -38,6 +38,8 @@
         android:layout_margin="@dimen/ui_10_dip"
         android:background="@drawable/ed_bg"
         android:hint="根据小区名称或者小区地址查询"
+        android:lines="1"
+        android:maxLines="1"
         android:padding="10dp" />
 
     <ListView

@@ -41,7 +41,7 @@ public class FeeBack extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pro_feeback);
-        url = GlobalVariables.urlstr + "wuye.getFeedList&uid=5&username=cheng&page="+page;
+        url = GlobalVariables.urlstr + "wuye.getFeedList&uid=5&username=cheng&page="+page+"&houseid=84";
         intview();
         setComentlist();
         getList(0);
@@ -63,6 +63,7 @@ public class FeeBack extends Activity implements View.OnClickListener {
                 intent.putExtra("content",array.get(position).get("content"));
                 intent.putExtra("TYPE",array.get(position).get("TYPE"));
                 intent.putExtra("picList",array.get(position).get("picList"));
+                intent.putExtra("time",array.get(position).get("create_time"));
                 FeeBack.this.startActivity(intent);
             }
         });
@@ -151,6 +152,7 @@ public class FeeBack extends Activity implements View.OnClickListener {
                 hashMap.put("content", jsonObject2.getString("content") == null ? "" : jsonObject2.getString("content"));
                 hashMap.put("TYPE", jsonObject2.getString("TYPE") == null ? "" : jsonObject2.getString("TYPE"));
                 hashMap.put("picList", jsonObject2.getString("picList") == null ? "" : jsonObject2.getString("picList"));
+                hashMap.put("create_time", jsonObject2.getString("create_time") == null ? "" : jsonObject2.getString("create_time"));
                 array.add(hashMap);
             }
         }else {

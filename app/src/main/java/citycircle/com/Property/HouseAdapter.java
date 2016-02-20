@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import citycircle.com.R;
+import citycircle.com.Utils.GlobalVariables;
+import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by admins on 2016/2/19.
@@ -64,7 +66,8 @@ public class HouseAdapter extends BaseAdapter {
         getItemView.defaults=(TextView)convertView.findViewById(R.id.defaults);
         getItemView.adress.setText(array.get(position).get("xiaoqu")+array.get(position).get("louhao")+array.get(position).get("fanghao"));
         getItemView.title.setText(array.get(position).get("xiaoqu"));
-        if (array.get(position).get("houseid").equals("80")){
+        final String houseid= PreferencesUtils.getString(context,"houseid");
+        if (array.get(position).get("houseid").equals(houseid)){
             Drawable drawable=context.getDrawable(R.mipmap.checkbox_blue_selected);
             drawable.setBounds(0, 0,drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             getItemView.defaults.setCompoundDrawables(drawable,null,null,null);
@@ -72,13 +75,19 @@ public class HouseAdapter extends BaseAdapter {
         getItemView.defaults.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GlobalVariables.position=position;
                 handler.sendEmptyMessage(5);
             }
         });
         getItemView.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.sendEmptyMessage(5);
+                if (array.get(position).get("houseid").equals(houseid)){
+
+                }else {
+                    GlobalVariables.position=position;
+                    handler.sendEmptyMessage(7);
+                }
             }
         });
         return convertView;
