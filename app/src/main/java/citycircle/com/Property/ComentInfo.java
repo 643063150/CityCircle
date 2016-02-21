@@ -166,7 +166,8 @@ public class ComentInfo extends Activity {
                             inputmanger.hideSoftInputFromWindow(
                                     view.getWindowToken(), 0);
                         }
-                        comentlist.setSelection(array.size());
+                        collected.setText("");
+                        comentlist.setSelection(ListView.FOCUS_DOWN);//刷新到底部
                     }else {
                         Toast.makeText(ComentInfo.this, jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
