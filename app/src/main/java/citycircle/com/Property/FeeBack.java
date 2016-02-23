@@ -1,7 +1,10 @@
 package citycircle.com.Property;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,10 +23,12 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citycircle.com.MyAppService.CityServices;
 import citycircle.com.Property.PropertyAdapter.FeeAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
+import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by admins on 2016/2/15.
@@ -36,12 +41,21 @@ public class FeeBack extends Activity implements View.OnClickListener {
     String url, urlstr;
     FeeAdapter adapter;
     SwipeRefreshLayout Refresh;
-    int page=1;
+    String uid, username, houseid;
+    int page = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pro_feeback);
-        url = GlobalVariables.urlstr + "wuye.getFeedList&uid=5&username=cheng&page="+page+"&houseid=84";
+        Intent intent = new Intent(FeeBack.this, CityServices.class);
+        FeeBack.this.startService(intent);
+        IntentFilter filter = new IntentFilter(CityServices.action);
+        registerReceiver(broadcastReceiver, filter);
+        username = PreferencesUtils.getString(FeeBack.this, "username");
+        uid = PreferencesUtils.getString(FeeBack.this, "userid");
+        houseid = PreferencesUtils.getString(FeeBack.this, "houseids");
+        url = GlobalVariables.urlstr + "wuye.getFeedList&uid=" + uid + "&username=" + username + "&page=" + page + "&houseid=" + houseid;
         intview();
         setComentlist();
         getList(0);
@@ -53,17 +67,17 @@ public class FeeBack extends Activity implements View.OnClickListener {
         newsphoto = (ImageView) findViewById(R.id.newsphoto);
         newsphoto.setOnClickListener(this);
         comentlist = (ListView) findViewById(R.id.comentlist);
-        Refresh=(SwipeRefreshLayout)findViewById(R.id.Refresh);
+        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
         comentlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent();
-                intent.setClass(FeeBack.this,ComentInfo.class);
+                Intent intent = new Intent();
+                intent.setClass(FeeBack.this, ComentInfo.class);
                 intent.putExtra("id", array.get(position).get("id"));
-                intent.putExtra("content",array.get(position).get("content"));
-                intent.putExtra("TYPE",array.get(position).get("TYPE"));
-                intent.putExtra("picList",array.get(position).get("picList"));
-                intent.putExtra("time",array.get(position).get("create_time"));
+                intent.putExtra("content", array.get(position).get("content"));
+                intent.putExtra("type", array.get(position).get("type"));
+                intent.putExtra("picList", array.get(position).get("picList"));
+                intent.putExtra("time", array.get(position).get("create_time"));
                 FeeBack.this.startActivity(intent);
             }
         });
@@ -74,7 +88,7 @@ public class FeeBack extends Activity implements View.OnClickListener {
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
                         if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
                             page++;
-                            url = GlobalVariables.urlstr + "wuye.getFeedList&uid=5&username=cheng&page=" + page;
+                            url = GlobalVariables.urlstr + "wuye.getFeedList&uid=" + uid + "&username=" + username + "&page=" + page + "&houseid=" + houseid;
                             getList(0);
                         }
                         break;
@@ -90,7 +104,7 @@ public class FeeBack extends Activity implements View.OnClickListener {
             @Override
             public void onRefresh() {
                 page = 1;
-                url = GlobalVariables.urlstr + "wuye.getFeedList&uid=5&username=cheng&page=" + page;
+                url = GlobalVariables.urlstr + "wuye.getFeedList&uid=" + uid + "&username=" + username + "&page=" + page + "&houseid=" + houseid;
                 getList(1);
             }
         });
@@ -106,9 +120,9 @@ public class FeeBack extends Activity implements View.OnClickListener {
                 if (urlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
                 } else {
-                    if (type==0){
+                    if (type == 0) {
                         handler.sendEmptyMessage(1);
-                    }else {
+                    } else {
                         handler.sendEmptyMessage(3);
                     }
 
@@ -127,7 +141,7 @@ public class FeeBack extends Activity implements View.OnClickListener {
                     adapter.notifyDataSetChanged();
                     break;
                 case 2:
-                    Toast.makeText(FeeBack.this,R.string.intent_error,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeeBack.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
                     Refresh.setRefreshing(false);
@@ -150,15 +164,15 @@ public class FeeBack extends Activity implements View.OnClickListener {
                 hashMap = new HashMap<>();
                 hashMap.put("id", jsonObject2.getString("id") == null ? "" : jsonObject2.getString("id"));
                 hashMap.put("content", jsonObject2.getString("content") == null ? "" : jsonObject2.getString("content"));
-                hashMap.put("TYPE", jsonObject2.getString("TYPE") == null ? "" : jsonObject2.getString("TYPE"));
+                hashMap.put("type", jsonObject2.getString("type") == null ? "" : jsonObject2.getString("type"));
                 hashMap.put("picList", jsonObject2.getString("picList") == null ? "" : jsonObject2.getString("picList"));
                 hashMap.put("create_time", jsonObject2.getString("create_time") == null ? "" : jsonObject2.getString("create_time"));
                 array.add(hashMap);
             }
-        }else {
-            if (page==1){
+        } else {
+            if (page == 1) {
 
-            }else {
+            } else {
                 page--;
             }
         }
@@ -168,13 +182,48 @@ public class FeeBack extends Activity implements View.OnClickListener {
         adapter = new FeeAdapter(array, FeeBack.this);
         comentlist.setAdapter(adapter);
     }
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int a = intent.getExtras().getInt("meeage");
+            if (a == 11) {
+                Refresh.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Refresh.setRefreshing(true);
+                    }
+                });
+                onRefresh();
+            }
+        }
+
+    };
+    public void onRefresh() {
+        Refresh.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // 更新数据
+                page = 1;
+                url = GlobalVariables.urlstr + "wuye.getFeedList&uid=" + uid + "&username=" + username + "&page=" + page + "&houseid=" + houseid;
+                getList(1);
+            }
+        }, 2000);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.newsphoto:
-                Intent intent=new Intent();
-                intent.setClass(FeeBack.this,ReplyFee.class);
+                Intent intent = new Intent();
+                intent.setClass(FeeBack.this, ReplyFee.class);
                 FeeBack.this.startActivity(intent);
                 break;
             case R.id.back:

@@ -59,7 +59,7 @@ public class ComentInfo extends Activity {
                 R.layout.comenthead, null);
         id = getIntent().getStringExtra("id");
         contents = getIntent().getStringExtra("content");
-        TYPE = getIntent().getStringExtra("TYPE");
+        TYPE = getIntent().getStringExtra("type");
         picList = getIntent().getStringExtra("picList");
         create_time = getIntent().getStringExtra("time");
         url = GlobalVariables.urlstr + "Wuye.getFeedBackList&fid=" + id;

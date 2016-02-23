@@ -17,7 +17,7 @@ import util.FileUtils;
  * Created by 飞侠 on 2016/2/21.
  */
 public class UpDatephotos {
-    public String uploadFile(String Url,String category_id,String username,String content,String location) {
+    public String uploadFile(String Url,String uid,String username,String content,String houseid,String type) {
         StringBuilder sb2 = new StringBuilder();
         String BOUNDARY ="ARCFormBoundarymmd8a874lsor";
         String PREFIX = "--", LINEND = "\r\n";
@@ -45,10 +45,10 @@ public class UpDatephotos {
             sb.append(PREFIX);
             sb.append(BOUNDARY);
             sb.append(LINEND);
-            sb.append("Content-Disposition: form-data; name=\"" + "category_id"
+            sb.append("Content-Disposition: form-data; name=\"" + "uid"
                     + "\"" + LINEND);
             sb.append(LINEND);
-            sb.append(category_id);
+            sb.append(uid);
             sb.append(LINEND);
             sb.append(PREFIX);
             sb.append(BOUNDARY);
@@ -71,12 +71,19 @@ public class UpDatephotos {
             sb.append(PREFIX);
             sb.append(BOUNDARY);
             sb.append(LINEND);
-
-
-            sb.append("Content-Disposition: form-data; name=\"" + "location"
+            sb.append("Content-Disposition: form-data; name=\"" + "type"
                     + "\"" + LINEND);
             sb.append(LINEND);
-            sb.append(location);
+            sb.append(type);
+            sb.append(LINEND);
+            sb.append(PREFIX);
+            sb.append(BOUNDARY);
+            sb.append(LINEND);
+
+            sb.append("Content-Disposition: form-data; name=\"" + "houseid"
+                    + "\"" + LINEND);
+            sb.append(LINEND);
+            sb.append(houseid);
             sb.append(LINEND);
 
             outStream.write(sb.toString().getBytes());

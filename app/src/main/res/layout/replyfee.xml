@@ -171,44 +171,6 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/checkclass"
-                    android:text="反馈问题类别"
-                    android:padding="@dimen/ui_10_dip"
-                    android:background="@color/white"
-                    android:layout_width="fill_parent"
-                    android:textColor="@color/blackcolor"
-                    android:drawableLeft="@mipmap/ic_block"
-                    android:visibility="gone"
-                    android:drawablePadding="@dimen/ui_10_dip"
-                    android:gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/adress"
-                    android:text="反馈问题类别"
-                    android:padding="@dimen/ui_10_dip"
-                    android:visibility="gone"
-                    android:background="@color/white"
-                    android:layout_width="fill_parent"
-                    android:textColor="@color/blackcolor"
-                    android:drawableLeft="@mipmap/ic_addresss"
-                    android:drawablePadding="@dimen/ui_10_dip"
-                    android:layout_marginTop="@dimen/ui_10_dip"
-                    android:gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/number"
-                    android:text="反馈问题类别"
-                    android:padding="@dimen/ui_10_dip"
-                    android:background="@color/white"
-                    android:layout_width="fill_parent"
-                    android:textColor="@color/blackcolor"
-                    android:drawableLeft="@mipmap/ic_phone_green"
-                    android:drawablePadding="@dimen/ui_10_dip"
-                    android:visibility="gone"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center_vertical"
-                    android:layout_height="wrap_content" />
-                <TextView
                     android:text="感谢您对小区的支持！"
                     android:padding="@dimen/ui_10_dip"
                     android:background="@color/white"

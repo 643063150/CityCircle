@@ -91,6 +91,8 @@ public class CityServices extends Service {
 			else if(referch.equals("10"))
 			{
 				student_id=10;
+			}else if (referch.equals("11")){
+				student_id=11;
 			}
 
 			callInService();

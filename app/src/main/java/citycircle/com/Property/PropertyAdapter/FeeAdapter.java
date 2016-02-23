@@ -79,7 +79,7 @@ public class FeeAdapter extends BaseAdapter {
         getItemView.content.setText(abscure_list.get(position).get("content"));
         String time=dateUtils.getDateToStrings(Long.parseLong(abscure_list.get(position).get("create_time")));
         getItemView.time.setText(time);
-        String tyoe=abscure_list.get(position).get("TYPE");
+        String tyoe=abscure_list.get(position).get("type");
         if(tyoe.equals("0")){
             getItemView.type.setText("问题");
         }else if (tyoe.equals("1")){
