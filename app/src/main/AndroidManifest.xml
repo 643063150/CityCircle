@@ -337,6 +337,12 @@
         <activity
             android:name=".Property.MyHouse"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.Payment"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.paymentInfo"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

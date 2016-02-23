@@ -109,7 +109,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.phonenumber:
-                intent.setClass(PropertyHome.this, AddHome.class);
+                intent.setClass(PropertyHome.this, Payment.class);
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.meeting:
