@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -25,13 +26,16 @@ import net.simonvt.menudrawer.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import citycircle.com.Adapter.Addadpter;
 import citycircle.com.Property.PropertyAdapter.HomeListAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
 import citycircle.com.Utils.ImageUtils;
 import citycircle.com.Utils.PreferencesUtils;
+import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
 /**
  * Created by admins on 2016/1/30.
@@ -45,12 +49,18 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    String url, urlstr, uid, username;
+    String url, urlstr, uid, username,adduel,addurlstr;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> addarray = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     HomeListAdapter adapter;
     ListView houselist;
-
+    AutoScrollViewPager hviewpage;
+    private List<View> listViews; // 图片组
+    private View item;
+    private LayoutInflater inflater;
+    Addadpter myviewpageadapater;
+    private ImageView[] indicator_imgs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +71,17 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         uid = PreferencesUtils.getString(PropertyHome.this, "userid");
         username = PreferencesUtils.getString(PropertyHome.this, "username");
         url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
+        adduel=GlobalVariables.urlstr+"News.getGuanggao&typeid=93";
         intview();
         getHuose();
 
     }
 
     private void intview() {
+        inflater = LayoutInflater.from(this);
+        hviewpage = (AutoScrollViewPager)findViewById(R.id.view_pager);
+        hviewpage.startAutoScroll();
+        hviewpage.setInterval(2000);
         houselist = (ListView) findViewById(R.id.houselist);
         head = (ImageView) findViewById(R.id.head);
         back = (ImageView) findViewById(R.id.loginback);
@@ -130,6 +145,9 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
                 urlstr = httpRequest.doGet(url);
+                if (addurlstr==null){
+                    addurlstr=httpRequest.doGet(adduel);
+                }
                 if (urlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
                 } else {
@@ -147,6 +165,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 case 1:
                     setArray(urlstr);
                     setHouselist();
+                    setAddarray(addurlstr);
+                    setheadadd();
                     break;
                 case 2:
                     Toast.makeText(PropertyHome.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
@@ -178,12 +198,39 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         }
 
     }
-
+    public void setheadadd() {
+        listViews = new ArrayList<View>();
+        for (int i = 0; i < addarray.size(); i++) {
+            item = inflater.inflate(R.layout.viewpage, null);
+            ((TextView) item.findViewById(R.id.infor_title))
+                    .setText("");
+            listViews.add(item);
+        }
+        myviewpageadapater = new Addadpter(listViews,
+                PropertyHome.this, addarray);
+        hviewpage.setAdapter(myviewpageadapater);
+    }
     private void setHouselist() {
         adapter = new HomeListAdapter(array, PropertyHome.this, handler);
         houselist.setAdapter(adapter);
     }
+    public void setAddarray(String str) {
+        JSONObject jsonObject = JSON.parseObject(str);
+        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+        if (jsonObject1.getIntValue("code") == 0) {
+            JSONArray jsonArray = jsonObject1.getJSONArray("info");
+            indicator_imgs = new ImageView[jsonArray.size()];
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                hashMap = new HashMap<>();
+                hashMap.put("picurl", jsonObject2.getString("picurl") == null ? "" : jsonObject2.getString("picurl"));
+                hashMap.put("url", jsonObject2.getString("url") == null ? "" : jsonObject2.getString("url"));
+                addarray.add(hashMap);
+            }
+        } else {
 
+        }
+    }
     @Override
     protected void onRestart() {
         super.onRestart();

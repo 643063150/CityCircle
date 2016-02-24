@@ -16,8 +16,6 @@ import com.nineoldandroids.view.ViewHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import citycircle.com.Activity.MyReply;
-import citycircle.com.Activity.MyReport;
 import citycircle.com.R;
 
 /**
@@ -36,12 +34,13 @@ public class paymentInfo extends FragmentActivity implements View.OnClickListene
     private ImageView iv01;
     private ImageView iv02;
     private ImageView mettingback;
+    String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paymentinfo);
         intview();
-
+        type=getIntent().getStringExtra("type");
     }
     public void intview() {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -158,6 +157,9 @@ public class paymentInfo extends FragmentActivity implements View.OnClickListene
 
         @Override
         public Fragment getItem(int arg0) {
+            Bundle args = new Bundle();
+            args.putString("type", type);
+            lists.get(arg0).setArguments(args);
             return lists.get(arg0);
         }
     }

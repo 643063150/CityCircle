@@ -21,6 +21,8 @@
         android:layout_width="match_parent"
         android:gravity="right"
         android:layout_marginRight="@dimen/ui_10_dip"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:drawablePadding="5dp"
         android:drawableRight="@mipmap/iconfontcopy"
         android:layout_height="wrap_content" />

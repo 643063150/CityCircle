@@ -343,6 +343,9 @@
         <activity
             android:name=".Property.paymentInfo"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.PayMoney"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grarybackground"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,17 +16,23 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@mipmap/my_face_icon" />
-
+        <ImageView
+            android:id="@+id/imgs"
+            android:src="@mipmap/pao1"
+            android:layout_toRightOf="@id/lehead"
+            android:layout_marginTop="13dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/lecontent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/ui_10_dip"
-            android:layout_toRightOf="@id/lehead"
-            android:background="@drawable/edittext_im_left"
+            android:layout_toRightOf="@id/imgs"
+            android:background="@drawable/tackbg"
             android:padding="@dimen/ui_10_dip"
             android:text="@string/album" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,9 +54,16 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/ui_10_dip"
-            android:layout_toLeftOf="@id/rihead"
-            android:background="@drawable/edittext_im_right"
+            android:layout_toLeftOf="@id/img"
+            android:background="@drawable/button"
             android:padding="@dimen/ui_10_dip"
             android:text="@string/album" />
+        <ImageView
+            android:id="@+id/img"
+            android:src="@mipmap/pao"
+            android:layout_toLeftOf="@id/rihead"
+            android:layout_marginTop="13dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </LinearLayout>

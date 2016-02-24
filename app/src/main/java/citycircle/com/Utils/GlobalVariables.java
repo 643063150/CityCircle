@@ -28,4 +28,6 @@ public class GlobalVariables {
     public static int Typr=0;
     public static String Property,door,homenu;
     public static String Propertyid="",doorid="",homenuid="";
+    public static String housename;
+    public static String proname;
 }

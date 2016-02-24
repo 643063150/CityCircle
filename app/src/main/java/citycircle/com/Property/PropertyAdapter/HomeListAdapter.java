@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import citycircle.com.R;
+import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.PreferencesUtils;
 
 /**
@@ -50,6 +51,8 @@ public class HomeListAdapter extends BaseAdapter {
         if (array.get(position).get("houseid").equals(houseid)){
             getItemView.linearLayout.setBackgroundResource(R.color.wh);
             getItemView.title.setTextColor(context.getResources().getColor(R.color.blackcolor));
+            GlobalVariables.housename=array.get(position).get("xiaoqu")+array.get(position).get("louhao")+array.get(position).get("fanghao");
+            GlobalVariables.proname=array.get(position).get("xiaoqu");
         }
         getItemView.title.setText(array.get(position).get("xiaoqu")+array.get(position).get("louhao")+array.get(position).get("fanghao"));
         return convertView;
