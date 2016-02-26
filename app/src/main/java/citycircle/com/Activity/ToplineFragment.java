@@ -69,6 +69,7 @@ public class ToplineFragment extends Fragment {
     GridView lehuigrid;
     TextView foottxt,date;
     DataString dataString;
+    String jsonstrs;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ToplineFragment extends Fragment {
         titles = mBundle.getString("arg");
         classID = mBundle.getString("classID");
         String jsonstr = PreferencesUtils.getString(getActivity(), titles);
-        String jsonstrs = PreferencesUtils.getString(getActivity(), titles + "img");
+        jsonstrs  = PreferencesUtils.getString(getActivity(), titles + "img");
         if (titles.equals("图片")) {
             view = inflater.inflate(R.layout.photo, container, false);
             url = GlobalVariables.urlstr + "News.getBanner&category_id=" + classID;
@@ -423,12 +424,14 @@ System.out.println(array.get(position - 1).get("ordian").equals("0"));
         int a = jsonObject.getIntValue("code");
         if (a == 0) {
             JSONArray JSONArray = jsonObject.getJSONArray("info");
-            addmap = new HashMap<String, String>();
-            JSONObject JSONObjects = JSONArray.getJSONObject(JSONArray.size()-1);
-            addmap.put("id", JSONObjects.getString("id") == null ? "" : JSONObjects.getString("id"));
-            addmap.put("title", JSONObjects.getString("title") == null ? "" : JSONObjects.getString("title"));
-            addmap.put("url", JSONObjects.getString("url") == null ? "" : JSONObjects.getString("url"));
-            addarray.add(addmap);
+            if (jsonstrs==null){
+                addmap = new HashMap<String, String>();
+                JSONObject JSONObjects = JSONArray.getJSONObject(JSONArray.size()-1);
+                addmap.put("id", JSONObjects.getString("id") == null ? "" : JSONObjects.getString("id"));
+                addmap.put("title", JSONObjects.getString("title") == null ? "" : JSONObjects.getString("title"));
+                addmap.put("url", JSONObjects.getString("url") == null ? "" : JSONObjects.getString("url"));
+                addarray.add(addmap);
+            }
             for (int i = 0; i < JSONArray.size(); i++) {
                 JSONObject JSONObject = JSONArray.getJSONObject(i);
                 addmap = new HashMap<String, String>();
@@ -437,12 +440,14 @@ System.out.println(array.get(position - 1).get("ordian").equals("0"));
                 addmap.put("url", JSONObject.getString("url") == null ? "" : JSONObject.getString("url"));
                 addarray.add(addmap);
             }
-            addmap = new HashMap<String, String>();
-            JSONObject JSONObjectss = JSONArray.getJSONObject(0);
-            addmap.put("id", JSONObjectss.getString("id") == null ? "" : JSONObjectss.getString("id"));
-            addmap.put("title", JSONObjectss.getString("title") == null ? "" : JSONObjectss.getString("title"));
-            addmap.put("url", JSONObjectss.getString("url") == null ? "" : JSONObjectss.getString("url"));
-            addarray.add(addmap);
+            if (jsonstrs==null){
+                addmap = new HashMap<String, String>();
+                JSONObject JSONObjectss = JSONArray.getJSONObject(0);
+                addmap.put("id", JSONObjectss.getString("id") == null ? "" : JSONObjectss.getString("id"));
+                addmap.put("title", JSONObjectss.getString("title") == null ? "" : JSONObjectss.getString("title"));
+                addmap.put("url", JSONObjectss.getString("url") == null ? "" : JSONObjectss.getString("url"));
+                addarray.add(addmap);
+            }
             indicator_imgs = new ImageView[addarray.size()-2];
             try {
                 stringtoJson = new StringtoJson();

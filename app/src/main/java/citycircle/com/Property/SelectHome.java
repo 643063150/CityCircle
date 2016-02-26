@@ -95,14 +95,15 @@ public class SelectHome extends Fragment implements View.OnClickListener {
                         GlobalVariables.Propertyid="";
                         GlobalVariables.doorid="";
                         GlobalVariables.homenuid="";
+                        JSONObject jsonObject2=jsonObject1.getJSONObject("info");
+                        houseid =jsonObject2.getString("houseid");
                        if (types!=0){
                           String uid= PreferencesUtils.getString(getActivity(),"userid");
-                           String username=PreferencesUtils.getString(getActivity(),"username");
-                           JSONObject jsonObject2=jsonObject1.getJSONObject("info");
-                           houseid =jsonObject2.getString("houseid");
+                           String username=PreferencesUtils.getString(getActivity(), "username");
                            url = GlobalVariables.urlstr + "User.updateHouse&uid="+uid+"&username="+username+"&houseid="+houseid;
                            geturlstr(1);
                        }else {
+                           PreferencesUtils.putString(getActivity(), "houseids", houseid);
                            Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
                            getActivity().finish();
                        }
@@ -151,7 +152,7 @@ public class SelectHome extends Fragment implements View.OnClickListener {
            GlobalVariables.doorid="";
            GlobalVariables.homenuid="";
            type = 0;
-           addhouse.setBackgroundResource(R.color.graly);
+           addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
        }
         if (door.getText().equals("点击选择门牌")){
            if (GlobalVariables.doorid.equals("")){
@@ -166,15 +167,15 @@ public class SelectHome extends Fragment implements View.OnClickListener {
             homenu.setText("点击选择室号");
             GlobalVariables.homenuid="";
             type = 0;
-            addhouse.setBackgroundResource(R.color.graly);
+            addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
         }
         if(GlobalVariables.homenuid.equals("")){
             type = 0;
-            addhouse.setBackgroundResource(R.color.graly);
+            addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
         }else {
             homenu.setText(GlobalVariables.homenu);
             type = 1;
-            addhouse.setBackgroundResource(R.color.butbg);
+            addhouse.setBackgroundResource(R.mipmap.btn_bg);
         }
     }
 

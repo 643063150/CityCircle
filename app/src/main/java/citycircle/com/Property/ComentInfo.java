@@ -2,12 +2,14 @@ package citycircle.com.Property;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citycircle.com.Activity.PhotoLook;
 import citycircle.com.MyViews.MyGridView;
 import citycircle.com.Property.PropertyAdapter.ComentAdapter;
 import citycircle.com.Property.PropertyAdapter.ProImgAdapter;
@@ -107,6 +110,16 @@ public class ComentInfo extends Activity {
                 }
             }
         });
+        photogrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GlobalVariables.parrays=array;
+                Intent intent = new Intent();
+                intent.putExtra("pos", position);
+                intent.setClass(ComentInfo.this, PhotoLook.class);
+                ComentInfo.this.startActivity(intent);
+            }
+        });
     }
 
     private void getComentstr(final int type) {
@@ -181,7 +194,7 @@ public class ComentInfo extends Activity {
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             hashMap = new HashMap<>();
-            hashMap.put("url", jsonObject.getString("url") == null ? "" : jsonObject.getString("url"));
+            hashMap.put("path", jsonObject.getString("url") == null ? "" : jsonObject.getString("url"));
             array.add(hashMap);
         }
     }

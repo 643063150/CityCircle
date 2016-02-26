@@ -62,7 +62,7 @@ public class ProImgAdapter extends BaseAdapter {
         final getItemView getItemView = new getItemView();
         convertView = LayoutInflater.from(context).inflate(R.layout.pro_img_item, null);
         getItemView.lehuiimg=(ImageView)convertView.findViewById(R.id.newsimg);
-        final String url= abscure_list.get(position).get("url");
+        final String url= abscure_list.get(position).get("path");
         options=ImageUtils.setnoOptions();
         int a= PreferencesUtils.getInt(context, "photo");
 //        if (a==1){

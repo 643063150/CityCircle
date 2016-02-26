@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -106,8 +110,41 @@ public class PropertyHome extends Activity implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDrawer.closeMenu();
-                PreferencesUtils.putString(PropertyHome.this,"houseids",array.get(position).get("houseid"));
+                PreferencesUtils.putString(PropertyHome.this, "houseids", array.get(position).get("houseid"));
                 adapter.notifyDataSetChanged();
+            }
+        });
+        hviewpage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                try {
+                    // 改变所有导航的背景图片为：未选中
+
+                    for (int i = 0; i < indicator_imgs.length; i++) {
+
+                        indicator_imgs[i]
+                                .setBackgroundResource(R.mipmap.ic_indicator_off);
+
+                    }
+                    // 改变当前背景图片为：选中
+
+                    indicator_imgs[position]
+                            .setBackgroundResource(R.mipmap.ic_indicator_on);
+
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }
@@ -165,8 +202,9 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 case 1:
                     setArray(urlstr);
                     setHouselist();
-                    setAddarray(addurlstr);
-                    setheadadd();
+                        setAddarray(addurlstr);
+                        setheadadd();
+                        initIndicator();
                     break;
                 case 2:
                     Toast.makeText(PropertyHome.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
@@ -235,6 +273,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     protected void onRestart() {
         super.onRestart();
         array.clear();
+        addarray.clear();
         getHuose();
     }
 
@@ -248,5 +287,31 @@ public class PropertyHome extends Activity implements View.OnClickListener {
             }
         }
         return false;
+    }
+    private void initIndicator() {
+
+        ImageView imgView;
+        View v = findViewById(R.id.dian);// 线性水平布局，负责动态调整导航图标
+        ((ViewGroup) v).removeAllViews();
+        for (int i = 0; i < addarray.size(); i++) {
+            imgView = new ImageView(this);
+            LinearLayout.LayoutParams params_linear = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params_linear.setMargins(7, 10, 20, 10);
+            params_linear.gravity = Gravity.CENTER;
+            imgView.setLayoutParams(params_linear);
+            indicator_imgs[i] = imgView;
+
+            if (i == 0) { // 初始化第一个为选中状态
+
+                indicator_imgs[i]
+                        .setBackgroundResource(R.mipmap.ic_indicator_on);
+            } else {
+                indicator_imgs[i].setBackgroundResource(R.mipmap.ic_indicator_off);
+            }
+            ((ViewGroup) v).addView(indicator_imgs[i]);
+
+        }
+
     }
 }

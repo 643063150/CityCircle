@@ -115,6 +115,8 @@ public class MyHouse extends Activity {
                     } else {
                         if (type==3){
                             array.remove(GlobalVariables.position);
+                            String housid=PreferencesUtils.getString(MyHouse.this,"houseid");
+                            PreferencesUtils.putString(MyHouse.this, "houseids", housid);
                         }else {
                             PreferencesUtils.putString(MyHouse.this,"houseid",array.get(GlobalVariables.position).get("houseid"));
                         }

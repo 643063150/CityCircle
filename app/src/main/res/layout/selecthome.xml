@@ -101,10 +101,10 @@
         <Button
             android:id="@+id/addhouse"
             android:layout_width="fill_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:background="@color/graly"
+            android:background="@mipmap/btn_bg_g"
             android:text="新增房屋" />
     </LinearLayout>
 </LinearLayout>
