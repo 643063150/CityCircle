@@ -77,7 +77,12 @@ public class FoundFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.Property:
                 if (land==1){
-                    String houseid = PreferencesUtils.getString(getActivity(), "houseid");
+                    String houseid;
+                    try {
+                        houseid = PreferencesUtils.getString(getActivity(), "houseid");
+                    }catch (Exception e){
+                        houseid="0";
+                    }
                     if (houseid==null||houseid.equals("0")){
                         intent.putExtra("types",1);
                         intent.setClass(getActivity(), AddHome.class);
