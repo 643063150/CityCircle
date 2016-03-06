@@ -46,7 +46,7 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
  */
 public class PropertyHome extends Activity implements View.OnClickListener {
     ImageView back;
-    TextView messages, DOC, meeting, phonenumber;
+    TextView messages, DOC, meeting, phonenumber,number;
     private MenuDrawer mDrawer;
     ImageView head;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
@@ -88,6 +88,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         hviewpage.setInterval(2000);
         houselist = (ListView) findViewById(R.id.houselist);
         head = (ImageView) findViewById(R.id.head);
+        number=(TextView)findViewById(R.id.number);
         back = (ImageView) findViewById(R.id.loginback);
         back.setOnClickListener(this);
         messages = (TextView) findViewById(R.id.messages);
@@ -104,6 +105,14 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
         options = ImageUtils.setCirclelmageOptions();
         String headurl = PreferencesUtils.getString(this, "headimage");
+        try {
+            String numbers=PreferencesUtils.getString(PropertyHome.this,"mobile");
+            number.setText(numbers.replace(numbers.substring(7,11),"****"));
+        }catch (Exception e){
+            e.printStackTrace();
+            number.setText("未绑定电话号码");
+        }
+
         ImageLoader.displayImage(headurl, head, options,
                 animateFirstListener);
         houselist.setOnItemClickListener(new AdapterView.OnItemClickListener() {

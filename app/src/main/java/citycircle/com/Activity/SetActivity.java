@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.umeng.update.UpdateStatus;
 import java.io.File;
 import java.text.DecimalFormat;
 
+import citycircle.com.MyViews.CheckSwitchButton;
 import citycircle.com.R;
 import citycircle.com.Utils.PreferencesUtils;
 
@@ -26,7 +28,7 @@ import citycircle.com.Utils.PreferencesUtils;
  * Created by admins on 2015/11/20.
  */
 public class SetActivity extends Activity {
-//    CheckSwitchButton mCheckSwithcButton, mPush;
+    CheckSwitchButton mPush;
     Button logout;
     ImageView back;
     LinearLayout update,cleaner,about,free;
@@ -133,13 +135,13 @@ public class SetActivity extends Activity {
                 UmengUpdateAgent.update(SetActivity.this);
             }
         });
-//        mPush = (CheckSwitchButton) findViewById(R.id.mPush);
-//        int b = PreferencesUtils.getInt(SetActivity.this, "photo");
-//        if (b == 2) {
-//            mCheckSwithcButton.setChecked(false);
-//        } else {
-//            mCheckSwithcButton.setChecked(true);
-//        }
+        mPush = (CheckSwitchButton) findViewById(R.id.mPush);
+        int b = PreferencesUtils.getInt(SetActivity.this, "photo");
+        if (b == 2) {
+            mPush.setChecked(false);
+        } else {
+            mPush.setChecked(true);
+        }
         int a = PreferencesUtils.getInt(SetActivity.this, "land");
         Intent intent = new Intent();
         if (a == 0) {
@@ -147,22 +149,22 @@ public class SetActivity extends Activity {
         } else {
             logout.setVisibility(View.VISIBLE);
         }
-//        mPush.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-////                    PreferencesUtils.putInt(SetActivity.this, "photo", 1);
+        mPush.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    PreferencesUtils.putInt(SetActivity.this, "photo", 1);
 //                    Toast.makeText(SetActivity.this, "推送已关闭", Toast.LENGTH_SHORT)
 //                            .show();
-//                    ;
-//                } else {
-////                    PreferencesUtils.putInt(SetActivity.this, "photo", 2);
+                    ;
+                } else {
+                    PreferencesUtils.putInt(SetActivity.this, "photo", 2);
 //                    Toast.makeText(SetActivity.this, "推送打开", Toast.LENGTH_SHORT)
 //                            .show();
-//                    ;
-//                }
-//            }
-//        });
+                    ;
+                }
+            }
+        });
 //        mCheckSwithcButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

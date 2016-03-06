@@ -70,6 +70,7 @@ public class CityList extends Activity implements OnGetPoiSearchResultListener, 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     GlobalVariables.city = "";
+                    finish();
                 }else {
                     GlobalVariables.city=array.get(position).get("name");
                     finish();

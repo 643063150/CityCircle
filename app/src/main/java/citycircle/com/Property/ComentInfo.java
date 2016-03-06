@@ -21,6 +21,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -105,7 +107,11 @@ public class ComentInfo extends Activity {
             @Override
             public void onClick(View v) {
                 if (collected.getText().toString().trim().length() != 0) {
-                    feurl = GlobalVariables.urlstr + "Wuye.addFeedBack&fid=" + id + "&uid=5&username=cheng&content=" + collected.getText().toString();
+                    try {
+                        feurl = GlobalVariables.urlstr + "Wuye.addFeedBack&fid=" + id + "&uid=5&username=cheng&content=" + URLEncoder.encode(collected.getText().toString(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     getComentstr(1);
                 }
             }
