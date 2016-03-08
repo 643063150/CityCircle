@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
@@ -77,6 +80,14 @@ public class FreeBack extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    JSONObject jsonObject= JSON.parseObject(urlstr);
+                    JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                    if (jsonObject1.getIntValue("code")==0){
+                        Toast.makeText(FreeBack.this, "提交成功,谢谢反馈", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else {
+                        Toast.makeText(FreeBack.this, "提交失败", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case 2:
                     Toast.makeText(FreeBack.this, "网络超时", Toast.LENGTH_SHORT).show();

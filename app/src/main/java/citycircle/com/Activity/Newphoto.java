@@ -88,6 +88,7 @@ public class Newphoto extends Fragment {
     int po = 0;
     final Handler handlers = new Handler();
      EditText myviptxt;
+    int type=0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -164,9 +165,11 @@ public class Newphoto extends Fragment {
                 switch (scrollState) {
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
                         if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
-                            page++;
-                            url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page + "&uid=" + uid;
-                            getnews(0);
+                          if (type==1){
+                              page++;
+                              url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page + "&uid=" + uid;
+                              getnews(0);
+                          }
                         }
                         break;
                 }
@@ -258,7 +261,7 @@ public class Newphoto extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-
+                    type=1;
                     lehuirefresh.setRefreshing(false);
                     addarray.clear();
                     getArray(urlstr);
@@ -293,20 +296,24 @@ public class Newphoto extends Fragment {
                     }
                     break;
                 case 2:
+                    type=1;
                     lehuirefresh.setRefreshing(false);
                     Toast.makeText(getActivity(), "网络似乎有问题了", Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
+                    type=1;
                     lehuirefresh.setRefreshing(false);
                     Toast.makeText(getActivity(), "暂无更多内容", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
+                    type=1;
                     String did = array.get(GlobalVariables.position).get("id");
                     String username = PreferencesUtils.getString(getActivity(), "username");
                     zanurl = GlobalVariables.urlstr + "Quan.addZan&did=" + did + "&username=" + username + "&tuid=" + array.get(GlobalVariables.position).get("uid") + "&dpic=" + GlobalVariables.imgurls;
                     getnews(2);
                     break;
                 case 5:
+                    type=1;
                     JSONObject jsonObject = JSON.parseObject(urlstr);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     int a = jsonObject1.getIntValue("code");
@@ -322,11 +329,13 @@ public class Newphoto extends Fragment {
                     }
                     break;
                 case 6:
+                    type=1;
                     array.clear();
                     getArray(urlstr);
                     news_adapter.notifyDataSetChanged();
                     break;
                 case 7:
+                    type=1;
                     getarray();
                     showpop(1);
                     popView.setVisibility(View.GONE);
@@ -345,6 +354,7 @@ public class Newphoto extends Fragment {
                     popView.setVisibility(View.VISIBLE);
                     break;
                 case 8:
+                    type=1;
                     JSONObject jsonObject3 = JSON.parseObject(urlstr);
                     JSONObject jsonObject4 = jsonObject3.getJSONObject("data");
                     int b = jsonObject4.getIntValue("code");
@@ -361,6 +371,7 @@ public class Newphoto extends Fragment {
                     }
                     break;
                 case 9:
+                    type=1;
                     getarray();
                     showpop(0);
                     popView.setVisibility(View.GONE);

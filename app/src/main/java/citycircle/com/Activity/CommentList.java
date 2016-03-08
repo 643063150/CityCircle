@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +35,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import citycircle.com.Adapter.CommAdapter;
+import citycircle.com.MyViews.MyPopwindows;
+import citycircle.com.OA.LandActivity;
 import citycircle.com.R;
 import citycircle.com.Utils.DateUtils;
 import citycircle.com.Utils.GlobalVariables;
@@ -45,47 +48,52 @@ import citycircle.com.Utils.PreferencesUtils;
  */
 public class CommentList extends Activity {
     ListView comlist;
-    String url, uristr, id,newsurl,newsstr,urlinfo,comurl;
+    String url, uristr, id, newsurl, newsstr, urlinfo, comurl, delurl, delstr;
     int page = 1;
     HashMap<String, String> hashMap;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> newsarray = new ArrayList<HashMap<String, String>>();
     CommAdapter commAdapter;
     ImageView back;
-    TextView title,content,foottxt;
+    TextView title, content, foottxt;
     DateUtils dateUtils;
-    View headview,footview;
-    Button collected,submit;
+    View headview, footview;
+    Button collected, submit;
     PopupWindow popupWindow;
     View popView;
     EditText myviptxt;
+    MyPopwindows myPopwindows;
+    int positions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.commentlist);
         id = getIntent().getStringExtra("id");
         url = GlobalVariables.urlstr + "Comment.getList&did=" + id + "&page=" + page;
-        newsurl=GlobalVariables.urlstr+"News.getArticle&id="+id;
+        newsurl = GlobalVariables.urlstr + "News.getArticle&id=" + id;
+
         intview();
         setComlist();
         getstr(1);
     }
 
     public void intview() {
-        dateUtils=new DateUtils();
-        submit=(Button)findViewById(R.id.submit);
+        dateUtils = new DateUtils();
+        submit = (Button) findViewById(R.id.submit);
         collected = (Button) findViewById(R.id.collected);
         headview = LayoutInflater.from(CommentList.this).inflate(
                 R.layout.comment_hedaciew, null);
         footview = LayoutInflater.from(CommentList.this).inflate(
                 R.layout.list_footview, null);
         foottxt = (TextView) footview.findViewById(R.id.foottxt);
-        title=(TextView)headview.findViewById(R.id.title);
-        content=(TextView)headview.findViewById(R.id.content);
-        back=(ImageView)findViewById(R.id.back);
+        title = (TextView) headview.findViewById(R.id.title);
+        content = (TextView) headview.findViewById(R.id.content);
+        back = (ImageView) findViewById(R.id.back);
         comlist = (ListView) findViewById(R.id.comlist);
         comlist.addHeaderView(headview);
-        comlist.addFooterView(footview, null, false);;
+        comlist.addFooterView(footview, null, false);
+        myPopwindows = new MyPopwindows();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +104,29 @@ public class CommentList extends Activity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        comlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int land = PreferencesUtils.getInt(CommentList.this, "land");
+                if (land != 1) {
+                    Intent intent = new Intent();
+                    intent.setClass(CommentList.this, LandActivity.class);
+                    CommentList.this.startActivity(intent);
+                } else {
+                    positions = position-1;
+                    if (array.get(positions).get("uid").equals(PreferencesUtils.getString(CommentList.this, "userid"))) {
+                        myPopwindows.showpop(CommentList.this, "确定删除");
+                    }
+                }
+            }
+        });
+        myPopwindows.setMyPopwindowswListener(new MyPopwindows.MyPopwindowsListener() {
+            @Override
+            public void onRefresh() {
+                delurl = GlobalVariables.urlstr + "Comment.delComment&id=" + array.get(positions).get("id") + "&username=" + PreferencesUtils.getString(CommentList.this, "username");
+                getstr(2);
             }
         });
         comlist.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -162,16 +193,23 @@ public class CommentList extends Activity {
             public void run() {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
-                if (type==0){
+                if (type == 0) {
                     urlinfo = httpRequest.doGet(comurl);
                     if (urlinfo.equals("网络超时")) {
                         handler.sendEmptyMessage(2);
                     } else {
                         handler.sendEmptyMessage(4);
                     }
-                }else {
+                } else if (type == 2) {
+                    delstr = httpRequest.doGet(delurl);
+                    if (delstr.equals("网络超时")) {
+                        handler.sendEmptyMessage(2);
+                    } else {
+                        handler.sendEmptyMessage(5);
+                    }
+                } else {
                     uristr = httpRequest.doGet(url);
-                    newsstr=httpRequest.doGet(newsurl);
+                    newsstr = httpRequest.doGet(newsurl);
                     if (uristr.equals("网络超时")) {
                         handler.sendEmptyMessage(2);
                     } else {
@@ -192,10 +230,10 @@ public class CommentList extends Activity {
                     setHashMap(uristr);
                     setNewsstr(newsstr);
                     commAdapter.notifyDataSetChanged();
-                    String time=dateUtils.getDateToStringsss(Long.parseLong(newsarray.get(0).get("update_time")));
+                    String time = dateUtils.getDateToStringsss(Long.parseLong(newsarray.get(0).get("update_time")));
                     title.setText(newsarray.get(0).get("title"));
-                    content.setText(newsarray.get(0).get("source")+" "+time+" "+newsarray.get(0).get("comment")+"评论");
-                    if (array.size()<10){
+                    content.setText(newsarray.get(0).get("source") + " " + time + " " + newsarray.get(0).get("comment") + "评论");
+                    if (array.size() < 10) {
                         foottxt.setText("暂无更多评论");
                     }
                     break;
@@ -219,15 +257,26 @@ public class CommentList extends Activity {
                             inputmanger.hideSoftInputFromWindow(
                                     view.getWindowToken(), 0);
                         }
-                        int pagenum=page*10;
-                        page=1;
+                        int pagenum = page * 10;
+                        page = 1;
                         array.clear();
-                        url = GlobalVariables.urlstr + "Comment.getList&did=" + id + "&page=" + page+"&perNumber="+pagenum;
+                        url = GlobalVariables.urlstr + "Comment.getList&did=" + id + "&page=" + page + "&perNumber=" + pagenum;
                         getstr(1);
 
 //                        collected.setText("");
                     } else {
                         Toast.makeText(CommentList.this, "评论失败", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case 5:
+                    JSONObject jsonObject5 = JSON.parseObject(delstr);
+                    JSONObject jsonObject6 = jsonObject5.getJSONObject("data");
+                    int c = jsonObject6.getIntValue("code");
+                    if (c == 0) {
+                        array.remove(positions);
+                        commAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(CommentList.this, jsonObject6.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
@@ -243,6 +292,8 @@ public class CommentList extends Activity {
             for (int i = 0; i < jsonArray.size(); i++) {
                 hashMap = new HashMap<>();
                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                hashMap.put("id", jsonObject2.getString("id") == null ? "" : jsonObject2.getString("id"));
+                hashMap.put("uid", jsonObject2.getString("uid") == null ? "" : jsonObject2.getString("uid"));
                 hashMap.put("nickname", jsonObject2.getString("nickname") == null ? "" : jsonObject2.getString("nickname"));
                 hashMap.put("content", jsonObject2.getString("content") == null ? "" : jsonObject2.getString("content"));
                 hashMap.put("headimage", jsonObject2.getString("headimage") == null ? "" : jsonObject2.getString("headimage"));
@@ -253,6 +304,7 @@ public class CommentList extends Activity {
             handler.sendEmptyMessage(3);
         }
     }
+
     public void setNewsstr(String str) {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -272,10 +324,12 @@ public class CommentList extends Activity {
             handler.sendEmptyMessage(3);
         }
     }
-    public void setComlist(){
-        commAdapter=new CommAdapter(array,CommentList.this);
+
+    public void setComlist() {
+        commAdapter = new CommAdapter(array, CommentList.this);
         comlist.setAdapter(commAdapter);
     }
+
     public void showpop() {
         popView = getLayoutInflater().inflate(
                 R.layout.newcommentpop, null);

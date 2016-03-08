@@ -509,7 +509,10 @@ public class ReplyPhoto extends Activity {
 //                    String a=tempFile.toString();
 //                    System.out.println(a);
 //                    Bitmap bm = (Bitmap) data.getExtras().get("data");
-                    Bitmap bm = BitmapFactory.decodeFile(tempFile.toString());
+                    BitmapFactory.Options opts = new BitmapFactory.Options();
+                    opts.inJustDecodeBounds = true;
+                    Bitmap bm = BitmapFactory.decodeFile(tempFile.toString(),opts);
+
                     File file = FileUtils.saveBitmap(bm, fileName, tempFile.toString());
 
                     ImageItem takePhoto = new ImageItem();

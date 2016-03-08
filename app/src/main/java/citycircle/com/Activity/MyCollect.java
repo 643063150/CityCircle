@@ -184,7 +184,12 @@ public class MyCollect extends Activity implements View.OnClickListener {
                             }
                         }
                         collect_adapter.notifyDataSetChanged();
-                        setcollect();
+                        try {
+                            setcollect();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     } else {
                         Toast.makeText(MyCollect.this, "删除失败", Toast.LENGTH_SHORT).show();
                     }
@@ -276,7 +281,7 @@ public class MyCollect extends Activity implements View.OnClickListener {
             for (int j = 0; j < list.size(); j++) {
                 if (ID.equals(list.get(j))) {
                     jsonArray.remove(i);
-                    i=i-1;
+                    i = i - 1;
                 }
             }
         }
