@@ -39,7 +39,7 @@ public class NonpaymentFr extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.mycity, container, false);
+        view = inflater.inflate(R.layout.money, container, false);
         Bundle mBundle = getArguments();
         type=mBundle.getString("type");
         intview();

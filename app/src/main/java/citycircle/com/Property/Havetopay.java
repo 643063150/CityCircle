@@ -39,7 +39,7 @@ public class Havetopay extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.mycity,container,false);
+        view=inflater.inflate(R.layout.money,container,false);
         intview();
         setArrayList();
         uid = PreferencesUtils.getString(getActivity(), "userid");

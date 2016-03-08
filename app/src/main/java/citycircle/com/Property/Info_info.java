@@ -5,26 +5,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-
 import citycircle.com.R;
-import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
+import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by admins on 2016/1/29.
  */
 public class Info_info extends Activity {
     ImageView back;
-    TextView title, content;
+//    TextView title, content;
     String url, urlstr, id, username, uid;
-
+    WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,16 +29,18 @@ public class Info_info extends Activity {
         id = getIntent().getStringExtra("id");
 //        username = PreferencesUtils.getString(Information.this, "username");
 //        uid = PreferencesUtils.getString(Information.this, "userid");
-        username = "cheng";
-        uid = "5";
-        url = GlobalVariables.urlstr + "Wuye.getNewsContent&uid=" + uid + "&username=" + username + "&id=" + id;
+        username = PreferencesUtils.getString(Info_info.this,"username");;
+        uid = PreferencesUtils.getString(Info_info.this, "userid");;
+//        url = GlobalVariables.urlstr + "Wuye.getNewsContent&uid=" + uid + "&username=" + username + "&id=" + id;
+        url="http://101.201.169.38/city/wuyeNotice.html?uid="+uid+"&username="+username+"&id="+id;
         intview();
-        getcntent();
+//        getcntent();
     }
 
     private void intview() {
-        title = (TextView) findViewById(R.id.title);
-        content = (TextView) findViewById(R.id.content);
+        webView=(WebView)findViewById(R.id.webview);
+//        title = (TextView) findViewById(R.id.title);
+//        content = (TextView) findViewById(R.id.content);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +48,10 @@ public class Info_info extends Activity {
                 finish();
             }
         });
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().getJavaScriptEnabled();
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.loadUrl(url);
     }
 
     private void getcntent() {
@@ -73,20 +76,20 @@ public class Info_info extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    JSONObject jsonObject = JSON.parseObject(urlstr);
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                    int a = jsonObject.getIntValue("code");
-                    if (a == 0) {
-                        JSONArray jsonArray=jsonObject1.getJSONArray("info");
-                        for (int i=0;i<jsonArray.size();i++){
-                            JSONObject jsonObject2=jsonArray.getJSONObject(i);
-                            title.setText(jsonObject2.getString("title"));
-                            content.setText(jsonObject2.getString("content"));
-                        }
-
-                    } else {
-                        handler.sendEmptyMessage(3);
-                    }
+//                    JSONObject jsonObject = JSON.parseObject(urlstr);
+//                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+//                    int a = jsonObject.getIntValue("code");
+//                    if (a == 0) {
+//                        JSONArray jsonArray=jsonObject1.getJSONArray("info");
+//                        for (int i=0;i<jsonArray.size();i++){
+//                            JSONObject jsonObject2=jsonArray.getJSONObject(i);
+//                            title.setText(jsonObject2.getString("title"));
+//                            content.setText(jsonObject2.getString("content"));
+//                        }
+//
+//                    } else {
+//                        handler.sendEmptyMessage(3);
+//                    }
                     break;
                 case 2:
                     Toast.makeText(Info_info.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
