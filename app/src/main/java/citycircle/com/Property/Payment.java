@@ -42,11 +42,12 @@ public class Payment extends Activity implements View.OnClickListener {
     ImageLoadingListener animateFirstListener;
     RelativeLayout relativeLayout;
     BitmapMo bitmapMo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payment);
-        bitmapMo=new BitmapMo();
+        bitmapMo = new BitmapMo();
         view = LayoutInflater.from(this).inflate(R.layout.payhead, null);
         intview();
     }
@@ -74,10 +75,15 @@ public class Payment extends Activity implements View.OnClickListener {
         paymentlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent();
-                intent.setClass(Payment.this, paymentInfo.class);
-                intent.putExtra("type", arrayList.get(position-1).get("type").toString());
-                Payment.this.startActivity(intent);
+                if (position == 0) {
+
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(Payment.this, paymentInfo.class);
+                    intent.putExtra("type", arrayList.get(position - 1).get("type").toString());
+                    Payment.this.startActivity(intent);
+                }
+
             }
         });
 //        new Handler().postDelayed(new Runnable() {
