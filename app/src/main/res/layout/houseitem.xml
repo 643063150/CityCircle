@@ -26,6 +26,7 @@
         android:id="@+id/yanzheng"
         android:layout_width="fill_parent"
         android:text="@string/action_settings"
+        android:visibility="gone"
         android:textColor="@color/graly"
         android:padding="@dimen/ui_10_dip"
         android:layout_height="wrap_content" />

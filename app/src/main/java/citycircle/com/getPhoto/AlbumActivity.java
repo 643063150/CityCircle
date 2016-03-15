@@ -119,7 +119,7 @@ public class AlbumActivity extends Activity {
     // 取消按钮的监听
     private class CancelListener implements OnClickListener {
         public void onClick(View v) {
-            Bimp.tempSelectBitmap.clear();
+//            Bimp.tempSelectBitmap.clear();
 //			intent.setClass(mContext, ReplyPhoto.class);
 //			startActivity(intent);
             finish();

@@ -92,7 +92,7 @@ public class ReplyPhoto extends Activity {
     //    private ArrayList<ImageItem> dataList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GlobalVariables.Typr=0;
+        GlobalVariables.Typr = 0;
         Res.init(this);
         getPhotos = new GetPhotos();
         File sd = Environment.getExternalStorageDirectory();
@@ -487,7 +487,7 @@ public class ReplyPhoto extends Activity {
 
     protected void onRestart() {
         adapter.update();
-        City=GlobalVariables.city;
+        City = GlobalVariables.city;
         city.setText(City);
         super.onRestart();
     }
@@ -511,14 +511,17 @@ public class ReplyPhoto extends Activity {
 //                    Bitmap bm = (Bitmap) data.getExtras().get("data");
                     BitmapFactory.Options opts = new BitmapFactory.Options();
                     opts.inJustDecodeBounds = true;
-                    Bitmap bm = BitmapFactory.decodeFile(tempFile.toString(),opts);
+                    Bitmap bm = BitmapFactory.decodeFile(tempFile.toString(), opts);
+                    try {
+                        File file = FileUtils.saveBitmap(bm, fileName, tempFile.toString());
+                        ImageItem takePhoto = new ImageItem();
+                        takePhoto.setImagePath(file.toString());
+                        takePhoto.setBitmap(bm);
+                        Bimp.tempSelectBitmap.add(takePhoto);
+                    } catch (Exception e) {
+                        Toast.makeText(ReplyPhoto.this, "手机可运行内存不足，照片保存失败，请清理后操作", Toast.LENGTH_SHORT).show();
+                    }
 
-                    File file = FileUtils.saveBitmap(bm, fileName, tempFile.toString());
-
-                    ImageItem takePhoto = new ImageItem();
-                    takePhoto.setImagePath(file.toString());
-                    takePhoto.setBitmap(bm);
-                    Bimp.tempSelectBitmap.add(takePhoto);
                 }
                 break;
         }

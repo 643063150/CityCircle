@@ -36,7 +36,6 @@ import java.util.TimerTask;
 
 import citycircle.com.Adapter.CommAdapter;
 import citycircle.com.MyViews.MyPopwindows;
-import citycircle.com.OA.LandActivity;
 import citycircle.com.R;
 import citycircle.com.Utils.DateUtils;
 import citycircle.com.Utils.GlobalVariables;
@@ -112,7 +111,7 @@ public class CommentList extends Activity {
                 int land = PreferencesUtils.getInt(CommentList.this, "land");
                 if (land != 1) {
                     Intent intent = new Intent();
-                    intent.setClass(CommentList.this, LandActivity.class);
+                    intent.setClass(CommentList.this, Logn.class);
                     CommentList.this.startActivity(intent);
                 } else {
                     positions = position-1;

@@ -185,12 +185,21 @@ public class ReplyFee extends Activity implements View.OnClickListener {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.biaoyang:
+                        biaoyang.setTextColor(Color.parseColor("#21ACFC"));
+                        jianyi.setTextColor(Color.BLACK);
+                        fankuiwenti.setTextColor(Color.BLACK);
                         type = "2";
                         break;
                     case R.id.jianyi:
+                        jianyi.setTextColor(Color.parseColor("#21ACFC"));
+                        biaoyang.setTextColor(Color.BLACK);
+                        fankuiwenti.setTextColor(Color.BLACK);
                         type = "1";
                         break;
                     case R.id.fankuiwenti:
+                        fankuiwenti.setTextColor(Color.parseColor("#21ACFC"));
+                        biaoyang.setTextColor(Color.BLACK);
+                        jianyi.setTextColor(Color.BLACK);
                         type = "0";
                         break;
                 }

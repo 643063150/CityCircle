@@ -69,5 +69,10 @@ public class LocationApplication extends Application {
 
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        System.out.println("+++++++++++");
+    }
 
 }

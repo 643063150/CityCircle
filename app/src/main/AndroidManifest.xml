@@ -100,7 +100,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.Loading"
-
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

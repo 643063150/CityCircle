@@ -122,9 +122,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@null"
+                        android:button="@drawable/procheckbox"
+                        android:textColor="@color/butbg"
                         android:checked="true"
-                        android:drawableRight="@drawable/procheckbox"
                         android:text="表扬" />
 
                     <!--<TextView-->
@@ -137,11 +137,10 @@
                         android:id="@+id/jianyi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
+                        android:button="@drawable/procheckbox"
                         android:layout_weight="1"
                         android:layout_marginLeft="@dimen/ui_10_dip"
                         android:text="建议"
-                        android:drawableRight="@drawable/procheckbox"
                          />
 
                     <!--<TextView-->
@@ -154,11 +153,10 @@
                         android:id="@+id/fankuiwenti"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:button="@null"
+                        android:button="@drawable/procheckbox"
                         android:layout_weight="1"
                         android:text="反馈意见"
                         android:layout_marginLeft="@dimen/ui_10_dip"
-                        android:drawableRight="@drawable/procheckbox"
                         />
                 </RadioGroup>
             </LinearLayout>
