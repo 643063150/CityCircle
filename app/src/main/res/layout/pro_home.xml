@@ -104,7 +104,7 @@
                 android:drawableTop="@mipmap/index_icon08"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="生活缴费" />
+                android:text="物业缴费" />
         </LinearLayout>
 
         <LinearLayout
@@ -122,7 +122,7 @@
                 android:drawableTop="@mipmap/index_icon09"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="随手拍" />
+                android:text="物业服务" />
         </LinearLayout>
 
         <LinearLayout
@@ -140,7 +140,7 @@
                 android:drawableTop="@mipmap/index_icon10"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="我的房屋" />
+                android:text="房屋信息" />
         </LinearLayout>
     </LinearLayout>
 
