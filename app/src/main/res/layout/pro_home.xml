@@ -77,6 +77,15 @@
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="小区公告" />
+            <TextView
+                android:id="@+id/usermessages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:drawableTop="@mipmap/index_icon07"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="收件箱" />
         </LinearLayout>
 
         <LinearLayout
@@ -105,6 +114,15 @@
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="物业缴费" />
+            <TextView
+                android:id="@+id/prophonenumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:drawableTop="@mipmap/index_icon08"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="小区黄页" />
         </LinearLayout>
 
         <LinearLayout

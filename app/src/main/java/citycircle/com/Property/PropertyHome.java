@@ -43,7 +43,7 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
  */
 public class PropertyHome extends Activity implements View.OnClickListener {
     ImageView back;
-    TextView messages, DOC, meeting, phonenumber,number;
+    TextView messages, DOC, meeting, phonenumber,number,usermessages,prophonenumber;
     private MenuDrawer mDrawer;
     ImageView head;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
@@ -72,7 +72,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         setContentView(R.layout.pro_home);
         uid = PreferencesUtils.getString(PropertyHome.this, "userid");
         username = PreferencesUtils.getString(PropertyHome.this, "username");
-        url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
+//        url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
+        url=GlobalVariables.urlstr+"Wuye.getUserNewsCount&uid="+uid+"&username="+username;
         adduel=GlobalVariables.urlstr+"News.getGuanggao&typeid=93";
         intview();
         getHuose();
@@ -80,6 +81,10 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
+        prophonenumber=(TextView)findViewById(R.id.prophonenumber);
+        prophonenumber.setOnClickListener(this);
+        usermessages=(TextView)findViewById(R.id.usermessages);
+        usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
         hviewpage = (AutoScrollViewPager)findViewById(R.id.view_pager);
         hviewpage.startAutoScroll();
@@ -188,10 +193,10 @@ public class PropertyHome extends Activity implements View.OnClickListener {
             public void run() {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
-//                urlstr = httpRequest.doGet(url);
-//                if (addurlstr==null){
+                urlstr = httpRequest.doGet(url);
+                if (addurlstr==null){
                     addurlstr=httpRequest.doGet(adduel);
-//                }
+                }
                 if (addurlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
                 } else {
