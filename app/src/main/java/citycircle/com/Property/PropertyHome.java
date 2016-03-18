@@ -7,11 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,7 +24,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import net.simonvt.menudrawer.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,10 +65,11 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.RIGHT);
-        mDrawer.setContentView(R.layout.pro_home);
-        mDrawer.setMenuView(R.layout.left_meun);
-        mDrawer.setMaxAnimationDuration(R.anim.woniu_list_item);
+//        mDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.RIGHT);
+//        mDrawer.setContentView(R.layout.pro_home);
+//        mDrawer.setMenuView(R.layout.left_meun);
+//        mDrawer.setMaxAnimationDuration(R.anim.woniu_list_item);
+        setContentView(R.layout.pro_home);
         uid = PreferencesUtils.getString(PropertyHome.this, "userid");
         username = PreferencesUtils.getString(PropertyHome.this, "username");
         url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
@@ -86,9 +84,9 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         hviewpage = (AutoScrollViewPager)findViewById(R.id.view_pager);
         hviewpage.startAutoScroll();
         hviewpage.setInterval(2000);
-        houselist = (ListView) findViewById(R.id.houselist);
-        head = (ImageView) findViewById(R.id.head);
-        number=(TextView)findViewById(R.id.number);
+//        houselist = (ListView) findViewById(R.id.houselist);
+//        head = (ImageView) findViewById(R.id.head);
+//        number=(TextView)findViewById(R.id.number);
         back = (ImageView) findViewById(R.id.loginback);
         back.setOnClickListener(this);
         messages = (TextView) findViewById(R.id.messages);
@@ -104,25 +102,25 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         ImageLoader.init(ImageLoaderConfiguration.createDefault(this));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
         options = ImageUtils.setCirclelmageOptions();
-        String headurl = PreferencesUtils.getString(this, "headimage");
-        try {
-            String numbers=PreferencesUtils.getString(PropertyHome.this,"mobile");
-            number.setText(numbers.replace(numbers.substring(7,11),"****"));
-        }catch (Exception e){
-            e.printStackTrace();
-            number.setText("未绑定电话号码");
-        }
+//        String headurl = PreferencesUtils.getString(this, "headimage");
+//        try {
+//            String numbers=PreferencesUtils.getString(PropertyHome.this,"mobile");
+//            number.setText(numbers.replace(numbers.substring(7,11),"****"));
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            number.setText("未绑定电话号码");
+//        }
 
-        ImageLoader.displayImage(headurl, head, options,
-                animateFirstListener);
-        houselist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDrawer.closeMenu();
-                PreferencesUtils.putString(PropertyHome.this, "houseids", array.get(position).get("houseid"));
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        ImageLoader.displayImage(headurl, head, options,
+//                animateFirstListener);
+//        houselist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                mDrawer.closeMenu();
+//                PreferencesUtils.putString(PropertyHome.this, "houseids", array.get(position).get("houseid"));
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
         hviewpage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -190,11 +188,11 @@ public class PropertyHome extends Activity implements View.OnClickListener {
             public void run() {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
-                urlstr = httpRequest.doGet(url);
-                if (addurlstr==null){
+//                urlstr = httpRequest.doGet(url);
+//                if (addurlstr==null){
                     addurlstr=httpRequest.doGet(adduel);
-                }
-                if (urlstr.equals("网络超时")) {
+//                }
+                if (addurlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
                 } else {
                     handler.sendEmptyMessage(1);
@@ -209,8 +207,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    setArray(urlstr);
-                    setHouselist();
+//                    setArray(urlstr);
+//                    setHouselist();
                         setAddarray(addurlstr);
                         setheadadd();
                         initIndicator();
@@ -281,22 +279,22 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
-        array.clear();
+//        array.clear();
         addarray.clear();
-        getHuose();
+//        getHuose();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            if (mDrawer.isMenuVisible()){
-                mDrawer.closeMenu();
-            }else {
-                finish();
-            }
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode==KeyEvent.KEYCODE_BACK){
+//            if (mDrawer.isMenuVisible()){
+//                mDrawer.closeMenu();
+//            }else {
+//                finish();
+//            }
+//        }
+//        return false;
+//    }
     private void initIndicator() {
 
         ImageView imgView;
