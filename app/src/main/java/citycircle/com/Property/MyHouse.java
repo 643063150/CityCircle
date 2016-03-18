@@ -119,6 +119,7 @@ public class MyHouse extends Activity {
                             PreferencesUtils.putString(MyHouse.this, "houseids", housid);
                         }else {
                             PreferencesUtils.putString(MyHouse.this,"houseid",array.get(GlobalVariables.position).get("houseid"));
+                            PreferencesUtils.putString(MyHouse.this, "houseids", array.get(GlobalVariables.position).get("houseid"));
                         }
                         handler.sendEmptyMessage(6);
                     }
