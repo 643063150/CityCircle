@@ -55,4 +55,6 @@ dependencies {
     compile('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
+    compile files('libs/android-viewbadger.jar')
+    compile 'com.bigkoo:alertview:1.0.2'
 }
