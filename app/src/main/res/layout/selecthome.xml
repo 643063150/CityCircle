@@ -14,21 +14,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/ui_10_dip"
-            android:text="您的小区:" />
+            android:text="选择区/镇:" />
 
         <Button
-            android:id="@+id/Property"
+            android:id="@+id/calm"
             android:layout_width="fill_parent"
             android:layout_height="35dp"
-            android:textColor="@color/graly"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="35dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/ed_bg"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="点击选择小区" />
+            android:text="点击选择区/镇"
+            android:textColor="@color/graly" />
     </LinearLayout>
-
+    <!--选择小区-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -39,21 +37,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/ui_10_dip"
-            android:text="门牌号码:" />
+            android:text="选择小区:" />
 
         <Button
-            android:id="@+id/door"
+            android:id="@+id/village"
             android:layout_width="fill_parent"
             android:layout_height="35dp"
-            android:textColor="@color/graly"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/ed_bg"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="点击选择门牌" />
+            android:text="点击选择小区"
+            android:textColor="@color/graly" />
     </LinearLayout>
-
+    <!--选择楼号-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -64,21 +60,88 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/ui_10_dip"
-            android:text="楼层室号:" />
+            android:text="选择楼号:" />
 
         <Button
-            android:id="@+id/homenu"
+            android:id="@+id/building"
             android:layout_width="fill_parent"
             android:layout_height="35dp"
-            android:textColor="@color/graly"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/ed_bg"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="点击选择室号" />
+            android:text="点击选择楼号"
+            android:textColor="@color/graly" />
     </LinearLayout>
+    <!--选择单元-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_10_dip"
+            android:text="选择单元:" />
+
+        <Button
+            android:id="@+id/unit"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ed_bg"
+            android:text="点击选择单元"
+            android:textColor="@color/graly" />
+    </LinearLayout>
+    <!--选择楼层-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_10_dip"
+            android:text="选择楼层:" />
+
+        <Button
+            android:id="@+id/floor"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ed_bg"
+            android:text="点击选择楼层"
+            android:textColor="@color/graly" />
+    </LinearLayout>
+    <!--选择房号-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ui_10_dip"
+            android:text="选择房号:" />
+
+        <Button
+            android:id="@+id/room"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ed_bg"
+            android:text="点击选择房号"
+            android:textColor="@color/graly" />
+    </LinearLayout>
+    <!--确定-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

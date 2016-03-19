@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
@@ -62,6 +63,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     private LayoutInflater inflater;
     Addadpter myviewpageadapater;
     private ImageView[] indicator_imgs;
+     BadgeView badge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +83,21 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
+
         prophonenumber=(TextView)findViewById(R.id.prophonenumber);
         prophonenumber.setOnClickListener(this);
         usermessages=(TextView)findViewById(R.id.usermessages);
+        badge  = new BadgeView(this, usermessages);
+        badge.setText("1");
+        usermessages.post(new Runnable() {
+            @Override
+            public void run() {
+                badge.setBadgeMargin(0, (usermessages.getHeight()/5));
+            }
+        });
+
+//        badge.setBadgePosition(BadgeView.POSITION_CENTER);
+
         usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
         hviewpage = (AutoScrollViewPager)findViewById(R.id.view_pager);
@@ -184,6 +198,14 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 intent.setClass(PropertyHome.this, FeeBack.class);
                 PropertyHome.this.startActivity(intent);
                 break;
+            case R.id.usermessages:
+                intent.setClass(PropertyHome.this, MessageList.class);
+                PropertyHome.this.startActivity(intent);
+                break;
+            case R.id.prophonenumber:
+                intent.setClass(PropertyHome.this, Pronumber.class);
+                PropertyHome.this.startActivity(intent);
+                break;
         }
     }
 
@@ -214,6 +236,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 case 1:
 //                    setArray(urlstr);
 //                    setHouselist();
+                    badge.show();
                         setAddarray(addurlstr);
                         setheadadd();
                         initIndicator();
@@ -285,7 +308,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     protected void onRestart() {
         super.onRestart();
 //        array.clear();
-        addarray.clear();
+//        addarray.clear();
 //        getHuose();
     }
 

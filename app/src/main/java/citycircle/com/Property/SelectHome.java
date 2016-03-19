@@ -1,10 +1,6 @@
 package citycircle.com.Property;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,32 +11,26 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.bigkoo.alertview.AlertView;
+import com.bigkoo.alertview.OnItemClickListener;
 
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
-import citycircle.com.Utils.HttpRequest;
-import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by admins on 2016/1/30.
  */
-public class SelectHome extends Fragment implements View.OnClickListener {
+public class SelectHome extends Fragment implements OnItemClickListener, View.OnClickListener {
     private View view;
-    Button Property, door, homenu;
     Animation translateAnimation;
-    int type = 0;
-    Button addhouse;
-    String url, urlstr;
     int types;
-    String houseid;
-    @Nullable
+    Button calm, village, building, unit, floor, room, addhouse;
+    String url,urlstr;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.selecthome, container, false);
         intview();
-        types=getActivity().getIntent().getIntExtra("types",0);
+        types = getActivity().getIntent().getIntExtra("types", 0);
         return view;
     }
 
@@ -48,173 +38,53 @@ public class SelectHome extends Fragment implements View.OnClickListener {
         translateAnimation = new TranslateAnimation(0, 10, 0, 0);
         translateAnimation.setInterpolator(new CycleInterpolator(5));
         translateAnimation.setDuration(1000);
-        Property = (Button) view.findViewById(R.id.Property);
-        Property.setOnClickListener(this);
-        door = (Button) view.findViewById(R.id.door);
-        door.setOnClickListener(this);
-        homenu = (Button) view.findViewById(R.id.homenu);
-        homenu.setOnClickListener(this);
+        calm = (Button) view.findViewById(R.id.calm);
+        village = (Button) view.findViewById(R.id.village);
+        building = (Button) view.findViewById(R.id.building);
+        unit = (Button) view.findViewById(R.id.unit);
+        floor = (Button) view.findViewById(R.id.floor);
+        room = (Button) view.findViewById(R.id.room);
         addhouse = (Button) view.findViewById(R.id.addhouse);
+        calm.setOnClickListener(this);
+        village.setOnClickListener(this);
+        building.setOnClickListener(this);
+        unit.setOnClickListener(this);
+        floor.setOnClickListener(this);
+        room.setOnClickListener(this);
         addhouse.setOnClickListener(this);
     }
 
-    private void geturlstr(final int type) {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                HttpRequest httpRequest = new HttpRequest();
-               if (type==0){
-                   urlstr = httpRequest.doGet(url);
-                   if (urlstr.equals("网络超时")) {
-                       handler.sendEmptyMessage(2);
-                   } else {
-                       handler.sendEmptyMessage(1);
-                   }
-               }else {
-                   urlstr = httpRequest.doGet(url);
-                   if (urlstr.equals("网络超时")) {
-                       handler.sendEmptyMessage(2);
-                   } else {
-                       handler.sendEmptyMessage(4);
-                   }
-               }
-            }
-        }.start();
+    private void Alertshow(String str[]) {
+        new AlertView(null, null, null, null,
+                str, getActivity(), AlertView.Style.Alert, this).show();
     }
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    JSONObject jsonObject = JSON.parseObject(urlstr);
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                    if (jsonObject1.getIntValue("code") == 0) {
-                        GlobalVariables.Propertyid="";
-                        GlobalVariables.doorid="";
-                        GlobalVariables.homenuid="";
-                        JSONObject jsonObject2=jsonObject1.getJSONObject("info");
-                        houseid =jsonObject2.getString("houseid");
-                       if (types!=0){
-                          String uid= PreferencesUtils.getString(getActivity(),"userid");
-                           String username=PreferencesUtils.getString(getActivity(), "username");
-                           url = GlobalVariables.urlstr + "User.updateHouse&uid="+uid+"&username="+username+"&houseid="+houseid;
-                           geturlstr(1);
-                       }else {
-                           PreferencesUtils.putString(getActivity(), "houseids", houseid);
-                           Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
-                           getActivity().finish();
-                       }
-
-                    } else {
-                        Toast.makeText(getActivity(), jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case 2:
-                    Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
-                    break;
-                case 3:
-                    Toast.makeText(getActivity(), "结果未知", Toast.LENGTH_SHORT).show();
-                    break;
-                case 4:
-                    JSONObject jsonObject3=JSON.parseObject(urlstr);
-                    JSONObject jsonObject4=jsonObject3.getJSONObject("data");
-                    int a=jsonObject4.getIntValue("code");
-                    if (a!=0){
-                        Toast.makeText(getActivity(), jsonObject3.getString("msg"), Toast.LENGTH_SHORT).show();
-                    }else {
-                        PreferencesUtils.putString(getActivity(), "houseid", houseid);
-                        PreferencesUtils.putString(getActivity(), "houseids", houseid);
-                        getActivity().finish();
-                    }
-                    break;
-            }
-        }
-    };
-
+    //弹出框点击
     @Override
-    public void onResume() {
-        super.onResume();
-       if (Property.getText().equals("点击选择小区")){
-           if (GlobalVariables.Propertyid.equals("")){
-
-           }else {
-               Property.setText(GlobalVariables.Property);
-           }
-       }else if (Property.getText().equals(GlobalVariables.Property)){
-
-       }else {
-           Property.setText(GlobalVariables.Property);
-           door.setText("点击选择门牌");
-           homenu.setText("点击选择室号");
-           GlobalVariables.doorid="";
-           GlobalVariables.homenuid="";
-           type = 0;
-           addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-       }
-        if (door.getText().equals("点击选择门牌")){
-           if (GlobalVariables.doorid.equals("")){
-
-           }else {
-               door.setText(GlobalVariables.door);
-           }
-        }else if (door.getText().equals(GlobalVariables.door)){
-
-        }else {
-            door.setText(GlobalVariables.door);
-            homenu.setText("点击选择室号");
-            GlobalVariables.homenuid="";
-            type = 0;
-            addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-        }
-        if(GlobalVariables.homenuid.equals("")){
-            type = 0;
-            addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-        }else {
-            homenu.setText(GlobalVariables.homenu);
-            type = 1;
-            addhouse.setBackgroundResource(R.mipmap.btn_bg);
-        }
+    public void onItemClick(Object o, int i) {
+        Toast.makeText(getActivity(), i + "", Toast.LENGTH_SHORT).show();
     }
 
+    //按钮点击
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
         switch (v.getId()) {
-            case R.id.Property:
-                intent.putExtra("type", 1);
-                intent.setClass(getActivity(), SelectMessage.class);
-                getActivity().startActivity(intent);
+            case R.id.calm:
+//                Alertshow(new String[]{"其他按钮1", "其他按钮2", "其他按钮3", "其他按钮4", "其他按钮5", "其他按钮6",
+//                "其他按钮7", "其他按钮8", "其他按钮9", "其他按钮10", "其他按钮11", "其他按钮12"});
+                url= GlobalVariables.urlstr+"Common.getHouseList&pid=0";
                 break;
-            case R.id.door:
-                if (GlobalVariables.Propertyid.equals("")) {
-                    Property.startAnimation(translateAnimation);
-                } else {
-                    intent.putExtra("type", 2);
-                    intent.setClass(getActivity(), SelectMessage.class);
-                    getActivity().startActivity(intent);
-                }
+            case R.id.village:
                 break;
-            case R.id.homenu:
-                if (GlobalVariables.Propertyid.equals("")) {
-                    Property.startAnimation(translateAnimation);
-                } else if (GlobalVariables.doorid.equals("")) {
-                    door.startAnimation(translateAnimation);
-                } else {
-                    intent.putExtra("type", 3);
-                    intent.setClass(getActivity(), SelectMessage.class);
-                    getActivity().startActivity(intent);
-                }
+            case R.id.building:
+                break;
+            case R.id.unit:
+                break;
+            case R.id.floor:
+                break;
+            case R.id.room:
                 break;
             case R.id.addhouse:
-                if (type == 1) {
-                   String uid= PreferencesUtils.getString(getActivity(), "userid");
-                    String username=PreferencesUtils.getString(getActivity(),"username");
-                    url = GlobalVariables.urlstr + "User.addHouse&uid="+uid+"&username="+username+"&houseid=" + GlobalVariables.homenuid;
-                    geturlstr(0);
-                }
                 break;
         }
     }

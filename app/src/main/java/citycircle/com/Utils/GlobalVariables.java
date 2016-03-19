@@ -27,7 +27,7 @@ public class GlobalVariables {
     public  static  ArrayList<HashMap<String, String>> arraylist;
     public static int Typr=0;
     public static String Property,door,homenu;
-    public static String Propertyid="",doorid="",homenuid="";
+    public static String calm="", Propertyid="",doorid="",unit="",storey="",homenuid="";
     public static String housename;
     public static String proname;
 }
