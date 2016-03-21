@@ -119,7 +119,7 @@ public class MyHouse extends Activity {
                             PreferencesUtils.putString(MyHouse.this, "houseids", housid);
                         }else {
                             PreferencesUtils.putString(MyHouse.this,"houseid",array.get(GlobalVariables.position).get("houseid"));
-                            PreferencesUtils.putString(MyHouse.this,"fanghaoid",array.get(GlobalVariables.position).get("fanghao"));
+                            PreferencesUtils.putString(MyHouse.this,"fanghaoid",array.get(GlobalVariables.position).get("fanghaoid"));
                             PreferencesUtils.putString(MyHouse.this, "houseids", array.get(GlobalVariables.position).get("houseid"));
                         }
                         handler.sendEmptyMessage(6);
@@ -154,7 +154,7 @@ public class MyHouse extends Activity {
                     adapter.notifyDataSetChanged();
                     break;
                 case 5:
-                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid="+uid+"&username="+username+"&houseid="+array.get(GlobalVariables.position).get("houseid");
+                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid="+uid+"&username="+username+"&houseid="+array.get(GlobalVariables.position).get("houseid")+"&fanghaoid="+array.get(GlobalVariables.position).get("fanghaoid");
                     gethouselist(2);
                     break;
                 case 6:
@@ -188,6 +188,7 @@ public class MyHouse extends Activity {
                 hashMap.put("xiaoqu", jsonObject2.getString("xiaoqu") == null ? "" : jsonObject2.getString("xiaoqu"));
                 hashMap.put("louhao", jsonObject2.getString("louhao") == null ? "" : jsonObject2.getString("louhao"));
                 hashMap.put("fanghao", jsonObject2.getString("fanghao") == null ? "" : jsonObject2.getString("fanghao"));
+                hashMap.put("fanghaoid", jsonObject2.getString("fanghaoid") == null ? "" : jsonObject2.getString("fanghaoid"));
                 array.add(hashMap);
             }
         } else {

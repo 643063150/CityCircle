@@ -25,6 +25,7 @@ import java.util.HashMap;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
+import citycircle.com.Utils.PreferencesUtils;
 
 /**
  * Created by admins on 2016/1/30.
@@ -34,17 +35,21 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
     Animation translateAnimation;
     int types;
     Button calm, village, building, unit, floor, room, addhouse;
-    String url, urlstr, calmid, villageid, buildingid, unitid, floorid, roomid, addurl;
+    String url, urlstr, calmid, villageid, buildingid, unitid, floorid, roomid, addurl, uid, username;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     String alretstr[];
-    int type = 0;
+    int type = 0, satatus = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.selecthome, container, false);
         intview();
         types = getActivity().getIntent().getIntExtra("types", 0);
+        username = PreferencesUtils.getString(getActivity(), "username");
+        ;
+        uid = PreferencesUtils.getString(getActivity(), "userid");
+        ;
 //        Alertshow(new String[]{"其他按钮1", "其他按钮2", "其他按钮3"});
         return view;
     }
@@ -75,12 +80,22 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
             public void run() {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
-                urlstr = httpRequest.doGet(url);
-                if (urlstr.equals("网络超时")) {
-                    handler.sendEmptyMessage(2);
+                if (type == 0) {
+                    urlstr = httpRequest.doGet(url);
+                    if (urlstr.equals("网络超时")) {
+                        handler.sendEmptyMessage(2);
+                    } else {
+                        handler.sendEmptyMessage(1);
+                    }
                 } else {
-                    handler.sendEmptyMessage(1);
+                    urlstr = httpRequest.doGet(addurl);
+                    if (urlstr.equals("网络超时")) {
+                        handler.sendEmptyMessage(2);
+                    } else {
+                        handler.sendEmptyMessage(4);
+                    }
                 }
+
             }
         }.start();
     }
@@ -118,6 +133,25 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                 case 3:
                     Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
                     break;
+                case 4:
+                    JSONObject jsonObject = JSON.parseObject(urlstr);
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                    if (jsonObject1.getIntValue("code") == 0) {
+                        if (types == 1) {
+                            PreferencesUtils.putString(getActivity(), "houseid", villageid);
+                            PreferencesUtils.putString(getActivity(), "houseids", villageid);
+                            PreferencesUtils.putString(getActivity(), "fanghaoid", roomid);
+                            addurl=GlobalVariables.urlstr+"User.updateHouse&uid="+uid+"&username="+username+"&houseid="+villageid+"&fanghaoid="+roomid;
+                            getStr(1);
+                        } else {
+                            Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
+                        }
+                        getActivity().finish();
+
+                    } else {
+                        Toast.makeText(getActivity(), jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
         }
     };
@@ -145,10 +179,11 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
         } else if (type == 4) {
             floorid = array.get(i).get("id");
             floor.setText(array.get(i).get("title"));
-        }else if (type==5){
-            roomid=array.get(i).get("id");
+        } else if (type == 5) {
+            roomid = array.get(i).get("id");
             room.setText(array.get(i).get("title"));
             addhouse.setBackgroundResource(R.drawable.btn_bg);
+            satatus = 1;
         }
     }
 
@@ -213,6 +248,10 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                 }
                 break;
             case R.id.addhouse:
+                if (satatus != 0) {
+                    addurl = GlobalVariables.urlstr + "User.addHouse&uid=" + uid + "&username=" + username + "&fanghaoid=" + roomid;
+                    getStr(1);
+                }
                 break;
         }
     }
