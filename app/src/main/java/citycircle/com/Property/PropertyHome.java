@@ -44,14 +44,14 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
  */
 public class PropertyHome extends Activity implements View.OnClickListener {
     ImageView back;
-    TextView messages, DOC, meeting, phonenumber,number,usermessages,prophonenumber;
+    TextView messages, DOC, meeting, phonenumber, number, usermessages, prophonenumber;
     private MenuDrawer mDrawer;
     ImageView head;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    String url, urlstr, uid, username,adduel,addurlstr;
+    String url, urlstr, uid, username, adduel, addurlstr;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> addarray = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
@@ -63,7 +63,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     private LayoutInflater inflater;
     Addadpter myviewpageadapater;
     private ImageView[] indicator_imgs;
-     BadgeView badge;
+    BadgeView badge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +76,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         uid = PreferencesUtils.getString(PropertyHome.this, "userid");
         username = PreferencesUtils.getString(PropertyHome.this, "username");
 //        url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
-        url=GlobalVariables.urlstr+"Wuye.getUserNewsCount&uid="+uid+"&username="+username;
-        adduel=GlobalVariables.urlstr+"News.getGuanggao&typeid=93";
+        url = GlobalVariables.urlstr + "Wuye.getUserNewsCount&uid=" + uid + "&username=" + username;
+        adduel = GlobalVariables.urlstr + "News.getGuanggao&typeid=93";
         intview();
         getHuose();
 
@@ -84,15 +85,14 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 
     private void intview() {
 
-        prophonenumber=(TextView)findViewById(R.id.prophonenumber);
+        prophonenumber = (TextView) findViewById(R.id.prophonenumber);
         prophonenumber.setOnClickListener(this);
-        usermessages=(TextView)findViewById(R.id.usermessages);
-        badge  = new BadgeView(this, usermessages);
-        badge.setText("1");
+        usermessages = (TextView) findViewById(R.id.usermessages);
+        badge = new BadgeView(this, usermessages);
         usermessages.post(new Runnable() {
             @Override
             public void run() {
-                badge.setBadgeMargin(0, (usermessages.getHeight()/5));
+                badge.setBadgeMargin(0, (usermessages.getHeight() / 5));
             }
         });
 
@@ -100,7 +100,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 
         usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
-        hviewpage = (AutoScrollViewPager)findViewById(R.id.view_pager);
+        hviewpage = (AutoScrollViewPager) findViewById(R.id.view_pager);
         hviewpage.startAutoScroll();
         hviewpage.setInterval(2000);
 //        houselist = (ListView) findViewById(R.id.houselist);
@@ -216,8 +216,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 super.run();
                 HttpRequest httpRequest = new HttpRequest();
                 urlstr = httpRequest.doGet(url);
-                if (addurlstr==null){
-                    addurlstr=httpRequest.doGet(adduel);
+                if (addurlstr == null) {
+                    addurlstr = httpRequest.doGet(adduel);
                 }
                 if (addurlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
@@ -234,12 +234,25 @@ public class PropertyHome extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    JSONObject jsonObject = JSON.parseObject(urlstr);
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                    int message = 0;
+                    if (jsonObject1.getIntValue("code") == 0) {
+                        JSONArray jsonArray = jsonObject1.getJSONArray("info");
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                            message = jsonObject2.getIntValue("count");
+                        }
+                    }
 //                    setArray(urlstr);
 //                    setHouselist();
-                    badge.show();
-                        setAddarray(addurlstr);
-                        setheadadd();
-                        initIndicator();
+                    if (message != 0) {
+                        badge.setText(message+"");
+                        badge.show();
+                    }
+                    setAddarray(addurlstr);
+                    setheadadd();
+                    initIndicator();
                     break;
                 case 2:
                     Toast.makeText(PropertyHome.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
@@ -271,6 +284,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         }
 
     }
+
     public void setheadadd() {
         listViews = new ArrayList<View>();
         for (int i = 0; i < addarray.size(); i++) {
@@ -283,10 +297,12 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 PropertyHome.this, addarray);
         hviewpage.setAdapter(myviewpageadapater);
     }
+
     private void setHouselist() {
         adapter = new HomeListAdapter(array, PropertyHome.this, handler);
         houselist.setAdapter(adapter);
     }
+
     public void setAddarray(String str) {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -304,6 +320,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 
         }
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -312,7 +329,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 //        getHuose();
     }
 
-//    @Override
+    //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        if (keyCode==KeyEvent.KEYCODE_BACK){
 //            if (mDrawer.isMenuVisible()){

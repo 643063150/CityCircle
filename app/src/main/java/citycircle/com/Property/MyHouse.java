@@ -189,6 +189,7 @@ public class MyHouse extends Activity {
                 hashMap.put("louhao", jsonObject2.getString("louhao") == null ? "" : jsonObject2.getString("louhao"));
                 hashMap.put("fanghao", jsonObject2.getString("fanghao") == null ? "" : jsonObject2.getString("fanghao"));
                 hashMap.put("fanghaoid", jsonObject2.getString("fanghaoid") == null ? "" : jsonObject2.getString("fanghaoid"));
+                hashMap.put("danyuan", jsonObject2.getString("danyuan") == null ? "" : jsonObject2.getString("danyuan"));
                 array.add(hashMap);
             }
         } else {

@@ -64,12 +64,12 @@ public class HouseAdapter extends BaseAdapter {
         getItemView.yanzheng=(TextView)convertView.findViewById(R.id.yanzheng);
         getItemView.del=(TextView)convertView.findViewById(R.id.del);
         getItemView.defaults=(TextView)convertView.findViewById(R.id.defaults);
-        getItemView.adress.setText(array.get(position).get("xiaoqu")+array.get(position).get("louhao")+array.get(position).get("fanghao"));
+        getItemView.adress.setText(array.get(position).get("xiaoqu")+array.get(position).get("louhao")+array.get(position).get("danyuan")+array.get(position).get("fanghao"));
         getItemView.title.setText(array.get(position).get("xiaoqu"));
         final String houseid= PreferencesUtils.getString(context,"houseid");
-        String fanghaoid=PreferencesUtils.getString(context,"fanghaoid");
+        final String fanghaoid=PreferencesUtils.getString(context,"fanghaoid");
         if (array.get(position).get("houseid").equals(houseid)&&array.get(position).get("fanghaoid").equals(fanghaoid)){
-            Drawable drawable=context.getDrawable(R.mipmap.checkbox_blue_selected);
+            Drawable drawable=context.getResources().getDrawable(R.mipmap.checkbox_blue_selected);
             drawable.setBounds(0, 0,drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             getItemView.defaults.setCompoundDrawables(drawable,null,null,null);
         }
@@ -83,7 +83,7 @@ public class HouseAdapter extends BaseAdapter {
         getItemView.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (array.get(position).get("houseid").equals(houseid)){
+                if (array.get(position).get("houseid").equals(houseid)&&array.get(position).get("fanghaoid").equals(fanghaoid)){
 
                 }else {
                     GlobalVariables.position=position;

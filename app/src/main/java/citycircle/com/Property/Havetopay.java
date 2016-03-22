@@ -34,7 +34,7 @@ public class Havetopay extends Fragment {
     ListView list;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
     HashMap<String, String> hashMap;
-    String url, urlstr, uid, username, houseid, type;
+    String url, urlstr, uid, username, houseid, type,fangid;
     PaysAdapter paysAdapter;
     @Nullable
     @Override
@@ -44,9 +44,10 @@ public class Havetopay extends Fragment {
         setArrayList();
         uid = PreferencesUtils.getString(getActivity(), "userid");
         username = PreferencesUtils.getString(getActivity(), "username");
-        houseid = PreferencesUtils.getString(getActivity(), "houseids");
+//        houseid = PreferencesUtils.getString(getActivity(), "houseids");
+        fangid=PreferencesUtils.getString(getActivity(),"fanghaoid");
         type = "1";
-        url="http://101.201.169.38/api/Public/Found/?service=wuye.getPayList&uid=5&username=cheng&houseid=80&type=1&status=1";
+        url="http://101.201.169.38/api/Public/Found/?service=wuye.getPayList&uid="+uid+"&username="+username+"&fanghaoid="+fangid+"&type="+type+"&status=1";
         getList();
         return view;
     }
