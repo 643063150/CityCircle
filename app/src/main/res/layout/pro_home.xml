@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@mipmap/index_icon07"
+                android:drawableTop="@mipmap/email"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="收件箱" />
