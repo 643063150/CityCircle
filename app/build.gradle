@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "citycircle.com"
-        minSdkVersion 9
+        minSdkVersion 10
         targetSdkVersion 22
         versionCode 5
         versionName "2.0"
@@ -57,4 +57,5 @@ dependencies {
     }
     compile files('libs/android-viewbadger.jar')
     compile 'com.bigkoo:alertview:1.0.2'
+    compile 'com.github.iwgang:countdownview:1.2'
 }
