@@ -121,6 +121,9 @@ public class MyHouse extends Activity {
                             PreferencesUtils.putString(MyHouse.this,"houseid",array.get(GlobalVariables.position).get("houseid"));
                             PreferencesUtils.putString(MyHouse.this,"fanghaoid",array.get(GlobalVariables.position).get("fanghaoid"));
                             PreferencesUtils.putString(MyHouse.this, "houseids", array.get(GlobalVariables.position).get("houseid"));
+                            PreferencesUtils.putString(MyHouse.this,"xiaoqu",array.get(GlobalVariables.position).get("xiaoqu"));
+                            String hosename = array.get(GlobalVariables.position).get("xiaoqu") + array.get(GlobalVariables.position).get("louhao") + array.get(GlobalVariables.position).get("fanghao") + array.get(GlobalVariables.position).get("danyuan");
+                            PreferencesUtils.putString(MyHouse.this, "housename", hosename);
                         }
                         handler.sendEmptyMessage(6);
                     }

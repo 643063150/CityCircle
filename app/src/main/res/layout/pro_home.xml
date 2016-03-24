@@ -122,7 +122,7 @@
                 android:drawableTop="@mipmap/index_icon111"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="小区黄页" />
+                android:text="电话黄页" />
         </LinearLayout>
 
         <LinearLayout

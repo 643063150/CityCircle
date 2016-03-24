@@ -20,7 +20,6 @@ import java.util.HashMap;
 
 import citycircle.com.Property.PropertyAdapter.PayAdapter;
 import citycircle.com.R;
-import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.ImageUtils;
 import citycircle.com.Utils.PreferencesUtils;
 import util.BitmapMo;
@@ -61,8 +60,8 @@ public class Payment extends Activity implements View.OnClickListener {
         paymentlist = (ListView) findViewById(R.id.paymentlist);
         back.setOnClickListener(this);
         paymentlist.addHeaderView(view);
-        xiaoquu.setText("小区：" + GlobalVariables.proname);
-        adress.setText("地址：" + GlobalVariables.housename);
+        xiaoquu.setText("小区：" +PreferencesUtils.getString(Payment.this,"xiaoqu"));
+        adress.setText("地址：" + PreferencesUtils.getString(Payment.this,"housename"));
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(this));

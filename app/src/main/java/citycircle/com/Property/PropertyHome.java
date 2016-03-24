@@ -51,7 +51,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    String url, urlstr, uid, username, adduel, addurlstr;
+    String url, urlstr, uid, username, adduel, addurlstr, houseurl, housestr;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> addarray = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
@@ -75,7 +75,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         setContentView(R.layout.pro_home);
         uid = PreferencesUtils.getString(PropertyHome.this, "userid");
         username = PreferencesUtils.getString(PropertyHome.this, "username");
-//        url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
+        houseurl = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
         url = GlobalVariables.urlstr + "Wuye.getUserNewsCount&uid=" + uid + "&username=" + username;
         adduel = GlobalVariables.urlstr + "News.getGuanggao&typeid=93";
         intview();
@@ -218,6 +218,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 urlstr = httpRequest.doGet(url);
                 if (addurlstr == null) {
                     addurlstr = httpRequest.doGet(adduel);
+                    housestr = httpRequest.doGet(houseurl);
                 }
                 if (addurlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
@@ -244,10 +245,19 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                             message = jsonObject2.getIntValue("count");
                         }
                     }
-//                    setArray(urlstr);
+                    setArray(housestr);
+                    final String houseid = PreferencesUtils.getString(PropertyHome.this, "houseid");
+                    final String fanghaoid = PreferencesUtils.getString(PropertyHome.this, "fanghaoid");
+                    for (int i = 0; i < array.size(); i++) {
+                        if (array.get(i).get("houseid").equals(houseid) && array.get(i).get("fanghaoid").equals(fanghaoid)) {
+                            PreferencesUtils.putString(PropertyHome.this, "xiaoqu", array.get(i).get("xiaoqu"));
+                            String hosename = array.get(i).get("xiaoqu") + array.get(i).get("louhao") + array.get(i).get("fanghao") + array.get(i).get("danyuan");
+                            PreferencesUtils.putString(PropertyHome.this, "housename", hosename);
+                        }
+                    }
 //                    setHouselist();
                     if (message != 0) {
-                        badge.setText(message+"");
+                        badge.setText(message + "");
                         badge.show();
                     }
                     setAddarray(addurlstr);
@@ -277,6 +287,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 hashMap.put("xiaoqu", jsonObject2.getString("xiaoqu") == null ? "" : jsonObject2.getString("xiaoqu"));
                 hashMap.put("louhao", jsonObject2.getString("louhao") == null ? "" : jsonObject2.getString("louhao"));
                 hashMap.put("fanghao", jsonObject2.getString("fanghao") == null ? "" : jsonObject2.getString("fanghao"));
+                hashMap.put("fanghaoid", jsonObject2.getString("fanghaoid") == null ? "" : jsonObject2.getString("fanghaoid"));
+                hashMap.put("danyuan", jsonObject2.getString("danyuan") == null ? "" : jsonObject2.getString("danyuan"));
                 array.add(hashMap);
             }
         } else {
