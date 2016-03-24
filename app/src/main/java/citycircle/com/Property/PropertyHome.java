@@ -245,7 +245,11 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                             message = jsonObject2.getIntValue("count");
                         }
                     }
-                    setArray(housestr);
+                    try {
+                        setArray(housestr);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     final String houseid = PreferencesUtils.getString(PropertyHome.this, "houseid");
                     final String fanghaoid = PreferencesUtils.getString(PropertyHome.this, "fanghaoid");
                     for (int i = 0; i < array.size(); i++) {
@@ -273,7 +277,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         }
     };
 
-    private void setArray(String str) {
+    private void setArray(String str) throws Exception{
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
         int a = jsonObject1.getIntValue("code");

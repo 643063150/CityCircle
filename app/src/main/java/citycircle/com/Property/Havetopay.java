@@ -30,45 +30,48 @@ import citycircle.com.Utils.PreferencesUtils;
  */
 public class Havetopay extends Fragment {
     View view;
-//    SwipeRefreshLayout swipeRefreshLayout;
+    //    SwipeRefreshLayout swipeRefreshLayout;
     ListView list;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
     HashMap<String, String> hashMap;
-    String url, urlstr, uid, username, houseid, type,fangid;
+    String url, urlstr, uid, username, houseid, type, fangid;
     PaysAdapter paysAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.money,container,false);
+        view = inflater.inflate(R.layout.money, container, false);
         intview();
         setArrayList();
         uid = PreferencesUtils.getString(getActivity(), "userid");
         username = PreferencesUtils.getString(getActivity(), "username");
 //        houseid = PreferencesUtils.getString(getActivity(), "houseids");
-        fangid=PreferencesUtils.getString(getActivity(),"fanghaoid");
+        fangid = PreferencesUtils.getString(getActivity(), "fanghaoid");
         type = "1";
-        url="http://101.201.169.38/api/Public/Found/?service=wuye.getPayList&uid="+uid+"&username="+username+"&fanghaoid="+fangid+"&type="+type+"&status=1";
+        url = "http://101.201.169.38/api/Public/Found/?service=wuye.getPayList&uid=" + uid + "&username=" + username + "&fanghaoid=" + fangid + "&type=" + type + "&status=1";
         getList();
         return view;
     }
+
     private void intview() {
 //        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
         list = (ListView) view.findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent();
-                intent.setClass(getActivity(),PayMoney.class);
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), PayMoney.class);
                 intent.putExtra("type", type);
-                intent.putExtra("money",arrayList.get(position).get("money"));
-                intent.putExtra("id",arrayList.get(position).get("id"));
-                intent.putExtra("bak",arrayList.get(position).get("bak"));
-                intent.putExtra("create_time",arrayList.get(position).get("create_time"));
-                intent.putExtra("status","1");
+                intent.putExtra("money", arrayList.get(position).get("money"));
+                intent.putExtra("id", arrayList.get(position).get("id"));
+                intent.putExtra("bak", arrayList.get(position).get("bak"));
+                intent.putExtra("create_time", arrayList.get(position).get("create_time"));
+                intent.putExtra("status", "1");
                 getActivity().startActivity(intent);
             }
         });
     }
+
     private void getList() {
         new Thread() {
             @Override
@@ -84,6 +87,7 @@ public class Havetopay extends Fragment {
             }
         }.start();
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -94,14 +98,25 @@ public class Havetopay extends Fragment {
                     paysAdapter.notifyDataSetChanged();
                     break;
                 case 2:
-                    Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+
+                    }
+
                     break;
                 case 3:
-                    Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+
+                    }
+
                     break;
             }
         }
     };
+
     private void getarray(String str) {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -122,8 +137,9 @@ public class Havetopay extends Fragment {
         }
 
     }
-    private void setArrayList(){
-        paysAdapter=new PaysAdapter(arrayList,getActivity());
+
+    private void setArrayList() {
+        paysAdapter = new PaysAdapter(arrayList, getActivity());
         list.setAdapter(paysAdapter);
     }
 }

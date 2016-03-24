@@ -40,7 +40,10 @@ public class Myviewpageadapater extends PagerAdapter {
 		this.imgarray = imgarray;
 		ImageUtils = new ImageUtils();
 		ImageLoader = ImageLoader.getInstance();
-		ImageLoader.init(ImageLoaderConfiguration.createDefault(context));
+		try{
+			ImageLoader.init(ImageLoaderConfiguration.createDefault(context));
+		}catch (Exception e){
+		}
 		animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
 		this.handler=handler;
 	}

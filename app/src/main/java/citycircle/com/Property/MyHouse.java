@@ -139,7 +139,11 @@ public class MyHouse extends Activity {
             switch (msg.what) {
                 case 1:
                     Refresh.setRefreshing(false);
-                    setArray(urlstr);
+                    try {
+                        setArray(urlstr);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     adapter.notifyDataSetChanged();
                     break;
                 case 2:
@@ -153,7 +157,11 @@ public class MyHouse extends Activity {
                 case 4:
                     Refresh.setRefreshing(false);
                     array.clear();
-                    setArray(urlstr);
+                    try {
+                        setArray(urlstr);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     adapter.notifyDataSetChanged();
                     break;
                 case 5:
@@ -177,7 +185,7 @@ public class MyHouse extends Activity {
         }
     };
 
-    private void setArray(String str) {
+    private void setArray(String str)throws Exception{
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
         int a = jsonObject1.getIntValue("code");

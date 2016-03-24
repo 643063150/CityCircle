@@ -1,5 +1,6 @@
 package citycircle.com.Property;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -128,10 +129,20 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                     Alertshow(alretstr);
                     break;
                 case 2:
-                    Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+
+                    }
+
                     break;
                 case 3:
-                    Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+
+                    }
+
                     break;
                 case 4:
                     JSONObject jsonObject = JSON.parseObject(urlstr);
@@ -141,10 +152,15 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                             PreferencesUtils.putString(getActivity(), "houseid", villageid);
                             PreferencesUtils.putString(getActivity(), "houseids", villageid);
                             PreferencesUtils.putString(getActivity(), "fanghaoid", roomid);
-                            addurl=GlobalVariables.urlstr+"User.updateHouse&uid="+uid+"&username="+username+"&houseid="+villageid+"&fanghaoid="+roomid;
+                            addurl = GlobalVariables.urlstr + "User.updateHouse&uid=" + uid + "&username=" + username + "&houseid=" + villageid + "&fanghaoid=" + roomid;
                             getStr(1);
                         } else {
                             Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
+                        }
+                        if (types==1){
+                            Intent intent=new Intent();
+                            intent.setClass(getActivity(),PropertyHome.class);
+                            getActivity().startActivity(intent);
                         }
                         getActivity().finish();
 
@@ -164,76 +180,78 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
     //弹出框点击
     @Override
     public void onItemClick(Object o, int i) {
-        if (type == 0) {
-            if (calmid!=null&&!calmid.equals(array.get(i).get("id"))){
-                villageid=null;
-                village.setText("点击选择小区");
-                buildingid=null;
-                building.setText("点击选择楼号");
-                unitid=null;
-                unit.setText("点击选择单元");
-                floorid=null;
-                floor.setText("点击选择楼层");
-                roomid=null;
-                room.setText("点击选择房号");
-                addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-                satatus = 0;
+        if (array.size()!=0){
+            if (type == 0) {
+                if (calmid != null && !calmid.equals(array.get(i).get("id"))) {
+                    villageid = null;
+                    village.setText("点击选择小区");
+                    buildingid = null;
+                    building.setText("点击选择楼号");
+                    unitid = null;
+                    unit.setText("点击选择单元");
+                    floorid = null;
+                    floor.setText("点击选择楼层");
+                    roomid = null;
+                    room.setText("点击选择房号");
+                    addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
+                    satatus = 0;
+                }
+                calmid = array.get(i).get("id");
+                calm.setText(array.get(i).get("title"));
+            } else if (type == 1) {
+                if (villageid != null && !villageid.equals(array.get(i).get("id"))) {
+                    buildingid = null;
+                    building.setText("点击选择楼号");
+                    unitid = null;
+                    unit.setText("点击选择单元");
+                    floorid = null;
+                    floor.setText("点击选择楼层");
+                    roomid = null;
+                    room.setText("点击选择房号");
+                    addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
+                    satatus = 0;
+                }
+                villageid = array.get(i).get("id");
+                village.setText(array.get(i).get("title"));
+            } else if (type == 2) {
+                if (buildingid != null && !buildingid.equals(array.get(i).get("id"))) {
+                    unitid = null;
+                    unit.setText("点击选择单元");
+                    floorid = null;
+                    floor.setText("点击选择楼层");
+                    roomid = null;
+                    room.setText("点击选择房号");
+                    addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
+                    satatus = 0;
+                }
+                buildingid = array.get(i).get("id");
+                building.setText(array.get(i).get("title"));
+            } else if (type == 3) {
+                if (unitid != null && !unitid.equals(array.get(i).get("id"))) {
+                    floorid = null;
+                    floor.setText("点击选择楼层");
+                    roomid = null;
+                    room.setText("点击选择房号");
+                    addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
+                    satatus = 0;
+                }
+                unitid = array.get(i).get("id");
+                unit.setText(array.get(i).get("title"));
+            } else if (type == 4) {
+                if (floorid != null && !floorid.equals(array.get(i).get("id"))) {
+                    roomid = null;
+                    room.setText("点击选择房号");
+                    addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
+                    satatus = 0;
+                }
+                floorid = array.get(i).get("id");
+                floor.setText(array.get(i).get("title"));
+            } else if (type == 5) {
+                roomid = array.get(i).get("id");
+                room.setText(array.get(i).get("title"));
+                addhouse.setBackgroundResource(R.drawable.btn_bg);
+                satatus = 1;
             }
-            calmid = array.get(i).get("id");
-            calm.setText(array.get(i).get("title"));
-        } else if (type == 1) {
-            if (villageid!=null&&!villageid.equals(array.get(i).get("id"))){
-                buildingid=null;
-                building.setText("点击选择楼号");
-                unitid=null;
-                unit.setText("点击选择单元");
-                floorid=null;
-                floor.setText("点击选择楼层");
-                roomid=null;
-                room.setText("点击选择房号");
-                addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-                satatus = 0;
-            }
-            villageid = array.get(i).get("id");
-            village.setText(array.get(i).get("title"));
-        } else if (type == 2) {
-            if (buildingid!=null&&!buildingid.equals(array.get(i).get("id"))){
-                unitid=null;
-                unit.setText("点击选择单元");
-                floorid=null;
-                floor.setText("点击选择楼层");
-                roomid=null;
-                room.setText("点击选择房号");
-                addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-                satatus = 0;
-            }
-            buildingid = array.get(i).get("id");
-            building.setText(array.get(i).get("title"));
-        } else if (type == 3) {
-            if (unitid!=null&&!unitid.equals(array.get(i).get("id"))){
-                floorid=null;
-                floor.setText("点击选择楼层");
-                roomid=null;
-                room.setText("点击选择房号");
-                addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-                satatus = 0;
-            }
-            unitid = array.get(i).get("id");
-            unit.setText(array.get(i).get("title"));
-        } else if (type == 4) {
-            if (floorid!=null&&!floorid.equals(array.get(i).get("id"))){
-                roomid=null;
-                room.setText("点击选择房号");
-                addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
-                satatus = 0;
-            }
-            floorid = array.get(i).get("id");
-            floor.setText(array.get(i).get("title"));
-        } else if (type == 5) {
-            roomid = array.get(i).get("id");
-            room.setText(array.get(i).get("title"));
-            addhouse.setBackgroundResource(R.drawable.btn_bg);
-            satatus = 1;
         }
     }
 
