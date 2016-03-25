@@ -245,6 +245,14 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                             message = jsonObject2.getIntValue("count");
                         }
                     }
+//                    setHouselist();
+                    if (message != 0) {
+                        badge.setText(message + "");
+                        badge.show();
+                    }
+                    setAddarray(addurlstr);
+                    setheadadd();
+                    initIndicator();
                     try {
                         setArray(housestr);
                     } catch (Exception e) {
@@ -259,14 +267,6 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                             PreferencesUtils.putString(PropertyHome.this, "housename", hosename);
                         }
                     }
-//                    setHouselist();
-                    if (message != 0) {
-                        badge.setText(message + "");
-                        badge.show();
-                    }
-                    setAddarray(addurlstr);
-                    setheadadd();
-                    initIndicator();
                     break;
                 case 2:
                     Toast.makeText(PropertyHome.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
@@ -340,9 +340,9 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
-//        array.clear();
-//        addarray.clear();
-//        getHuose();
+        array.clear();
+        addarray.clear();
+        getHuose();
     }
 
     //    @Override
