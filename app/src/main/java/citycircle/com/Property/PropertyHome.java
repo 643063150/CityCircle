@@ -249,6 +249,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                     if (message != 0) {
                         badge.setText(message + "");
                         badge.show();
+                    }else {
+                        badge.hide();
                     }
                     setAddarray(addurlstr);
                     setheadadd();

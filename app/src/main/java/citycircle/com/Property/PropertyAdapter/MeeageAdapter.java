@@ -45,12 +45,17 @@ public class MeeageAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.estatemessagelist, null);
         getItem.title=(TextView)convertView.findViewById(R.id.title);
         getItem.time=(TextView)convertView.findViewById(R.id.time);
+        getItem.username=(TextView)convertView.findViewById(R.id.username);
         getItem.title.setText(array.get(position).get("content"));
         getItem.time.setText(DateUtils.getDateToStringss(Long.parseLong(array.get(position).get("create_time"))));
+        getItem.username.setText(array.get(position).get("xiaoqu"));
+        if (array.get(position).get("dian").equals("1")){
+            getItem.username.setTextColor(context.getResources().getColor(R.color.graly));
+        }
         return convertView;
     }
 
     public class getItem {
-        TextView title, time;
+        TextView title, time,username;
     }
 }
