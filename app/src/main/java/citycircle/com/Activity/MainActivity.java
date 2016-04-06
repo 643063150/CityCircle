@@ -44,6 +44,12 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
 
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     public void initComponents() {
         home = (RadioButton) findViewById(R.id.rb_home);
         rb_lehui = (RadioButton) findViewById(R.id.rb_lehui);
