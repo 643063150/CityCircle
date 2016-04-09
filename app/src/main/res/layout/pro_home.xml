@@ -140,7 +140,7 @@
                 android:drawableTop="@mipmap/index_icon09"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="物业服务" />
+                android:text="物业报修" />
         </LinearLayout>
 
         <LinearLayout

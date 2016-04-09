@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="小区资讯"
+            android:text="小区公告"
             android:textColor="@color/blackcolor"
             android:textSize="17sp" />
     </RelativeLayout>
