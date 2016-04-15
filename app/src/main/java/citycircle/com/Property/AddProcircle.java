@@ -39,6 +39,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.File;
 
+import citycircle.com.MyAppService.LocationApplication;
 import citycircle.com.MyViews.MyDialog;
 import citycircle.com.MyViews.MyGridView;
 import citycircle.com.Property.uitls.UpdateCircle;
@@ -184,7 +185,8 @@ public class AddProcircle extends Activity implements View.OnClickListener{
                 String uid = PreferencesUtils.getString(AddProcircle.this, "userid");
                 String houseid = PreferencesUtils.getString(AddProcircle.this, "houseids");
                 String contents = content.getText().toString();
-                urlstr = upDatephotos.uploadFile(url, "68", username, contents, houseid, houseid);
+                String City = ((LocationApplication) getApplication()).city + " " + ((LocationApplication) getApplication()).getStreet;
+                urlstr = upDatephotos.uploadFile(url, "68", username, contents, City, houseid);
                 if (urlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
                 } else {

@@ -20,7 +20,7 @@
                 android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="按房屋地址查询"
+                android:text="添加别墅"
                 android:textColor="@color/butbg" />
         </RelativeLayout>
 
@@ -35,7 +35,7 @@
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="按小区名称查询" />
+                android:text="添加小区" />
         </RelativeLayout>
 
         <!--<RelativeLayout-->

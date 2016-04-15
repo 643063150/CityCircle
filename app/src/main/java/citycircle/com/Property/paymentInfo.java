@@ -39,8 +39,8 @@ public class paymentInfo extends FragmentActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paymentinfo);
-        intview();
         type=getIntent().getStringExtra("type");
+        intview();
     }
     public void intview() {
         viewPager = (ViewPager) findViewById(R.id.view_pager);

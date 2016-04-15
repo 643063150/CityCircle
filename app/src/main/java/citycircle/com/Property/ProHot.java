@@ -57,7 +57,7 @@ public class ProHot  extends Fragment {
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));//设置RecyclerView布局管理器为2列垂直排布
         adapter = new MyRecyclerAdapter(getActivity(),array);
         mRecyclerView.setAdapter(adapter);
-        getnews();
+        getnews(0);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -72,7 +72,7 @@ public class ProHot  extends Fragment {
                     if (lastItem == count - 1) {
                         page++;
                         url = GlobalVariables.urlstr + "Quan.getListHot&page=" + page+"&xiaoquid="+houseid;
-                        getnews();
+                        getnews(0);
                     }
                 }
             }
@@ -81,9 +81,9 @@ public class ProHot  extends Fragment {
             @Override
             public void onRefresh() {
                 page=1;
-                array.clear();
+//                array.clear();
                 url = GlobalVariables.urlstr + "Quan.getListHot&page=" + page+"&xiaoquid="+houseid;
-                getnews();
+                getnews(1);
             }
         });
         adapter.setOnClickListener(new MyRecyclerAdapter.OnItemClickListener() {
@@ -103,7 +103,7 @@ public class ProHot  extends Fragment {
         });
         return view;
     }
-    public void getnews() {
+    public void getnews(final int type) {
         new Thread() {
             @Override
             public void run() {
@@ -113,7 +113,11 @@ public class ProHot  extends Fragment {
                 if (urlstr.equals("网络超时")) {
                     handler.sendEmptyMessage(2);
                 } else {
-                    handler.sendEmptyMessage(1);
+                   if (type==1){
+                       handler.sendEmptyMessage(4);
+                   }else {
+                       handler.sendEmptyMessage(1);
+                   }
 
 
                 }
@@ -138,6 +142,12 @@ public class ProHot  extends Fragment {
                 case 3:
                     lehuirefresh.setRefreshing(false);
                     Toast.makeText(getActivity(), "暂无更多内容", Toast.LENGTH_SHORT).show();
+                    break;
+                case 4:
+                    lehuirefresh.setRefreshing(false);
+                    array.clear();
+                    getArray(urlstr);
+                    adapter.notifyDataSetChanged();
                     break;
             }
         }

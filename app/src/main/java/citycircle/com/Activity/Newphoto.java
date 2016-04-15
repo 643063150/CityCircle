@@ -314,7 +314,7 @@ public class Newphoto extends Fragment {
                     break;
                 case 5:
                     type=1;
-                    JSONObject jsonObject = JSON.parseObject(urlstr);
+                    JSONObject jsonObject = JSON.parseObject(zanstr);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     int a = jsonObject1.getIntValue("code");
                     if (a == 0) {
@@ -355,7 +355,7 @@ public class Newphoto extends Fragment {
                     break;
                 case 8:
                     type=1;
-                    JSONObject jsonObject3 = JSON.parseObject(urlstr);
+                    JSONObject jsonObject3 = JSON.parseObject(addcomstr);
                     JSONObject jsonObject4 = jsonObject3.getJSONObject("data");
                     int b = jsonObject4.getIntValue("code");
                     if (b == 0) {

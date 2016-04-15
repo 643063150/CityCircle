@@ -56,4 +56,9 @@ public class DateUtils {
         }
         return date.getTime();
     }
+    public static String getDateToStringssss(long time) {
+        Date d = new Date(time*1000);
+        sf = new SimpleDateFormat("yyyyMM");
+        return sf.format(d);
+    }
 }

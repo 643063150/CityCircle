@@ -108,9 +108,9 @@ public class Payment extends Activity implements View.OnClickListener {
     }
 
     private void setArrayList() {
-        String title[] = new String[]{"电费", "物业费"};
-        String type[] = new String[]{"2", "1"};
-        int drable[] = new int[]{R.mipmap.iconfontdian, R.mipmap.iconfontwuyejiaofei};
+        String title[] = new String[]{"电费","水费", "物业费","停车费"};
+        String type[] = new String[]{"2","3", "1","4"};
+        int drable[] = new int[]{R.mipmap.iconfontdian,R.mipmap.water, R.mipmap.iconfontwuyejiaofei,R.mipmap.car};
         for (int i = 0; i < title.length; i++) {
             hashMap = new HashMap<>();
             hashMap.put("title", title[i]);

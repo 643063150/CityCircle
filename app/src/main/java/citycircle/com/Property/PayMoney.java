@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import citycircle.com.R;
@@ -14,39 +15,56 @@ import citycircle.com.Utils.GlobalVariables;
 /**
  * Created by admins on 2016/2/24.
  */
-public class PayMoney extends Activity implements View.OnClickListener{
-    ImageView loginback,typeimg;
-    TextView danwei,beizhu,money,time;
+public class PayMoney extends Activity implements View.OnClickListener {
+    ImageView loginback, typeimg;
+    TextView sbiao, bbiao, dian, time, pmoney, smoney, ymoney;
     Button submit;
-    String type,moneys,id,bak,create_time,status;
+    String type, yumoney, snumber, bnumber, create_time, status, unumber, ymoneys, smoneys;
+    LinearLayout lay2,lay3,lay4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paymoney);
-        type=getIntent().getStringExtra("type");
-        moneys=getIntent().getStringExtra("money");
-        id=getIntent().getStringExtra("id");
-        bak=getIntent().getStringExtra("bak");
-        create_time=getIntent().getStringExtra("create_time");
-        status=getIntent().getStringExtra("status");
+        type = getIntent().getStringExtra("type");
+        yumoney = getIntent().getStringExtra("money");
+        snumber = getIntent().getStringExtra("snumber");
+        bnumber = getIntent().getStringExtra("bnumber");
+        unumber = getIntent().getStringExtra("unumber");
+        ymoneys = getIntent().getStringExtra("ymoney");
+        smoneys = getIntent().getStringExtra("smoney");
+        create_time = getIntent().getStringExtra("create_time");
+        status = getIntent().getStringExtra("status");
         intview();
     }
-    private void intview(){
-        loginback=(ImageView)findViewById(R.id.loginback);
-        typeimg=(ImageView)findViewById(R.id.typeimg);
-        money=(TextView)findViewById(R.id.money);
-        danwei=(TextView)findViewById(R.id.danwei);
-        time=(TextView)findViewById(R.id.time);
-        beizhu=(TextView)findViewById(R.id.beizhu);
-        submit=(Button)findViewById(R.id.submit);
+
+    private void intview() {
+        lay2=(LinearLayout)findViewById(R.id.lay2);
+        lay3=(LinearLayout)findViewById(R.id.lay3);
+        lay4=(LinearLayout)findViewById(R.id.lay4);
+        loginback = (ImageView) findViewById(R.id.loginback);
+//        typeimg=(ImageView)findViewById(R.id.typeimg);
+        sbiao = (TextView) findViewById(R.id.sbiao);
+        bbiao = (TextView) findViewById(R.id.bbiao);
+        time = (TextView) findViewById(R.id.time);
+        dian = (TextView) findViewById(R.id.dian);
+        pmoney = (TextView) findViewById(R.id.pmoney);
+        smoney = (TextView) findViewById(R.id.smoney);
+        ymoney = (TextView) findViewById(R.id.ymoney);
+        submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(this);
         loginback.setOnClickListener(this);
-        if (type.equals("1")){
-            typeimg.setImageResource(R.mipmap.iconfontwuyezujin);
+        sbiao.setText(snumber);
+        bbiao.setText(bnumber);
+        dian.setText(unumber);
+        pmoney.setText(ymoneys);
+        smoney.setText(smoneys);
+        ymoney.setText(yumoney);
+        if (type.equals("1") || type.equals("4")) {
+            lay2.setVisibility(View.GONE);
+            lay3.setVisibility(View.GONE);
+            lay4.setVisibility(View.GONE);
         }
-        money.setText(moneys);
-        beizhu.setText(bak);
-        danwei.setText(GlobalVariables.housename);
+
         time.setText(DateUtils.getDateToStrings(Long.parseLong(create_time)));
         if (status.equals("1")) {
             submit.setVisibility(View.GONE);
@@ -55,7 +73,7 @@ public class PayMoney extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.loginback:
                 break;
             case R.id.submit:

@@ -16,11 +16,11 @@ import citycircle.com.Utils.DateUtils;
 /**
  * Created by admins on 2016/2/24.
  */
-public class PaysAdapter extends BaseAdapter {
+public class PayWuAdapter extends BaseAdapter {
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
     Context context;
     DateUtils dateUtils;
-    public PaysAdapter(ArrayList<HashMap<String, String>> arrayList ,Context context){
+    public PayWuAdapter(ArrayList<HashMap<String, String>> arrayList ,Context context){
         this.arrayList=arrayList;
         this.context=context;
         dateUtils=new DateUtils();
@@ -55,8 +55,8 @@ public class PaysAdapter extends BaseAdapter {
         getItemView.time=(TextView)convertView.findViewById(R.id.time);
         getItemView.moremoney=(TextView)convertView.findViewById(R.id.moremoney);
         String time=dateUtils.getDateToStringssss(Long.parseLong(arrayList.get(position).get("create_time")));
-        getItemView.title.setText(arrayList.get(position).get("ymoney"));
-        getItemView.money.setText(arrayList.get(position).get("bnumber"));
+        getItemView.title.setText(arrayList.get(position).get("smoney"));
+        getItemView.money.setText(arrayList.get(position).get("ymoney"));
         getItemView.moremoney.setText(arrayList.get(position).get("yumoney"));
         getItemView.time.setText(time);
         return convertView;

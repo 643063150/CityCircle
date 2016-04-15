@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="我的城市圈"
+            android:text="添加房屋"
             android:textColor="@color/blackcolor"
             android:textSize="17sp" />
     </RelativeLayout>
@@ -29,7 +29,6 @@
         android:background="@color/linecolor"></LinearLayout>
     <include
         layout="@layout/protitle"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></include>
     <android.support.v4.view.ViewPager

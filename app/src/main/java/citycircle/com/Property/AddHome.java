@@ -1,5 +1,6 @@
 package citycircle.com.Property;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nineoldandroids.view.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,78 +56,78 @@ public class AddHome extends FragmentActivity implements View.OnClickListener {
         iv01 = (ImageView) findViewById(R.id.iv01);
         iv02 = (ImageView) findViewById(R.id.iv02);
         lists = new ArrayList<Fragment>();
-//        SerachHome MallFragment = new SerachHome();
+        SerachHome MallFragment = new SerachHome();
         SelectHome WareFragment = new SelectHome();
-//        lists.add(MallFragment);
+        lists.add(MallFragment);
         lists.add(WareFragment);
         viewPager.setOffscreenPageLimit(3);
         fa = new FragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fa);
-//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                switch (position) {
-//                    case 0:
-//
-//                        ViewHelper.setAlpha(iv1, 1 - positionOffset);
-//                        ViewHelper.setAlpha(iv01, positionOffset);
-//                        ViewHelper.setAlpha(iv2, 1 - positionOffset);
-//                        ViewHelper.setAlpha(iv02, positionOffset);
-//
-//                        iv01.setVisibility(View.VISIBLE);
-//                        iv02.setVisibility(View.VISIBLE);
-//                        break;
-////                    case 1:
-////
-////                        ViewHelper.setAlpha(iv2, positionOffset);
-////                        ViewHelper.setAlpha(iv02, 1 - positionOffset);
-////                        ViewHelper.setAlpha(iv3, 1 - positionOffset);
-////                        ViewHelper.setAlpha(iv03, positionOffset);
-////                        iv02.setVisibility(View.VISIBLE);
-////                        iv03.setVisibility(View.VISIBLE);
-////                        break;
-//                    case 2:
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                int color = getResources().getColor(R.color.topbule);
-//                switch (position) {
-//                    case 0:
-//                        tv1.setTextColor(color);
-//                        tv2.setTextColor(Color.BLACK);
-//                        iv1.setVisibility(View.VISIBLE);
-//                        iv01.setVisibility(View.GONE);
-//                        iv2.setVisibility(View.VISIBLE);
-//                        iv02.setVisibility(View.GONE);
-//                        break;
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                switch (position) {
+                    case 0:
+
+                        ViewHelper.setAlpha(iv1, 1 - positionOffset);
+                        ViewHelper.setAlpha(iv01, positionOffset);
+                        ViewHelper.setAlpha(iv2, 1 - positionOffset);
+                        ViewHelper.setAlpha(iv02, positionOffset);
+
+                        iv01.setVisibility(View.VISIBLE);
+                        iv02.setVisibility(View.VISIBLE);
+                        break;
 //                    case 1:
-//                        tv2.setTextColor(color);
-//                        tv1.setTextColor(Color.BLACK);
 //
-//                        iv1.setVisibility(View.GONE);
-//                        iv01.setVisibility(View.VISIBLE);
-//
-//                        iv2.setVisibility(View.GONE);
+//                        ViewHelper.setAlpha(iv2, positionOffset);
+//                        ViewHelper.setAlpha(iv02, 1 - positionOffset);
+//                        ViewHelper.setAlpha(iv3, 1 - positionOffset);
+//                        ViewHelper.setAlpha(iv03, positionOffset);
 //                        iv02.setVisibility(View.VISIBLE);
-//
-//
+//                        iv03.setVisibility(View.VISIBLE);
 //                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
+                    case 2:
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int color = getResources().getColor(R.color.topbule);
+                switch (position) {
+                    case 0:
+                        tv1.setTextColor(color);
+                        tv2.setTextColor(Color.BLACK);
+                        iv1.setVisibility(View.VISIBLE);
+                        iv01.setVisibility(View.GONE);
+                        iv2.setVisibility(View.VISIBLE);
+                        iv02.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        tv2.setTextColor(color);
+                        tv1.setTextColor(Color.BLACK);
+
+                        iv1.setVisibility(View.GONE);
+                        iv01.setVisibility(View.VISIBLE);
+
+                        iv2.setVisibility(View.GONE);
+                        iv02.setVisibility(View.VISIBLE);
+
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
