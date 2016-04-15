@@ -66,7 +66,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     BadgeView badge;
     int hosestat = 0;
     Intent intent = new Intent();
-
+    TextView wuyu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +87,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
-
+        wuyu=(TextView)findViewById(R.id.wuyu);
         prophonenumber = (TextView) findViewById(R.id.prophonenumber);
         prophonenumber.setOnClickListener(this);
         usermessages = (TextView) findViewById(R.id.usermessages);
@@ -100,7 +100,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         });
 
 //        badge.setBadgePosition(BadgeView.POSITION_CENTER);
-
+        wuyu.setText(PreferencesUtils.getString(PropertyHome.this,"xiaoqu"));
         usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
         hviewpage = (AutoScrollViewPager) findViewById(R.id.view_pager);
@@ -400,6 +400,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         array.clear();
         addarray.clear();
         getHuose();
+        wuyu.setText(PreferencesUtils.getString(PropertyHome.this, "xiaoqu"));
     }
 
     //    @Override

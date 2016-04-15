@@ -19,6 +19,7 @@
             android:src="@mipmap/news_info_back_arrow01" />
 
         <TextView
+            android:id="@+id/wuyu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

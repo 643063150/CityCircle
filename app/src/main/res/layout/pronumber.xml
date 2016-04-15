@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="小区黄页"
+            android:text="常用电话"
             android:textColor="@color/blackcolor"
             android:textSize="17sp" />
 

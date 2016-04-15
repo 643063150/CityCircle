@@ -68,6 +68,8 @@ public class HouseAdapter extends BaseAdapter {
         getItemView.title.setText(array.get(position).get("xiaoqu"));
         final String houseid= PreferencesUtils.getString(context,"houseid");
         final String fanghaoid=PreferencesUtils.getString(context,"fanghaoid");
+        String truename=PreferencesUtils.getString(context,"truename");
+        getItemView.yanzheng.setText("业主:"+truename);
         if (array.get(position).get("houseid").equals(houseid)&&array.get(position).get("fanghaoid").equals(fanghaoid)){
             Drawable drawable=context.getResources().getDrawable(R.mipmap.checkbox_blue_selected);
             drawable.setBounds(0, 0,drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());

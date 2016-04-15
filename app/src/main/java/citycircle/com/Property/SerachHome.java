@@ -36,9 +36,9 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
     private View view;
     Animation translateAnimation;
     int types;
-    Button calm, village, door,addhouse;
+    Button calm, village, door, addhouse, villages;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
-    String url, urlstr, addurl, calmid, villageid, doord, username, uid;
+    String url, urlstr, addurl, calmid, villageid, doord, username, uid, villagesid;
     HashMap<String, String> hashMap;
     String alretstr[];
     int type = 0, satatus = 0;
@@ -62,6 +62,8 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
         village = (Button) view.findViewById(R.id.village);
         door = (Button) view.findViewById(R.id.door);
         addhouse = (Button) view.findViewById(R.id.addhouse);
+        villages = (Button) view.findViewById(R.id.villages);
+        villages.setOnClickListener(this);
         calm.setOnClickListener(this);
         village.setOnClickListener(this);
         door.setOnClickListener(this);
@@ -148,9 +150,9 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                         } else {
                             Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
                         }
-                        if (types==1){
-                            Intent intent=new Intent();
-                            intent.setClass(getActivity(),PropertyHome.class);
+                        if (types == 1) {
+                            Intent intent = new Intent();
+                            intent.setClass(getActivity(), PropertyHome.class);
                             getActivity().startActivity(intent);
                         }
                         getActivity().finish();
@@ -173,8 +175,10 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
         if (array.size() != 0) {
             if (type == 0) {
                 if (calmid != null && !calmid.equals(array.get(position).get("id"))) {
+                    villagesid = null;
+                    villages.setText("点击选择小区");
                     villageid = null;
-                    village.setText("点击选择小区");
+                    village.setText("点击选择区域");
                     doord = null;
                     door.setText("点击选择门牌");
                     addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
@@ -182,8 +186,20 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                 }
                 calmid = array.get(position).get("id");
                 calm.setText(array.get(position).get("title"));
-            }else if (type == 1) {
+            } else if (type == 1) {
+                if (villagesid != null && !villageid.equals(array.get(position).get("id"))) {
+                    villageid = null;
+                    village.setText("点击选择区域");
+                    doord = null;
+                    door.setText("点击选择门牌");
+                    addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
+                    satatus = 0;
+                }
+                villagesid = array.get(position).get("id");
+                villages.setText(array.get(position).get("title"));
+            } else if (type == 2) {
                 if (villageid != null && !villageid.equals(array.get(position).get("id"))) {
+
                     doord = null;
                     door.setText("点击选择门牌");
                     addhouse.setBackgroundResource(R.mipmap.btn_bg_g);
@@ -191,7 +207,7 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                 }
                 villageid = array.get(position).get("id");
                 village.setText(array.get(position).get("title"));
-            }else if (type == 2) {
+            } else if (type == 3) {
                 doord = array.get(position).get("id");
                 door.setText(array.get(position).get("title"));
                 addhouse.setBackgroundResource(R.drawable.btn_bg);
@@ -209,7 +225,7 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                 url = GlobalVariables.urlstr + "Common.getHouseList&pid=0&type=2";
                 getStr(0);
                 break;
-            case R.id.village:
+            case R.id.villages:
                 type = 1;
                 if (calmid == null) {
                     calm.startAnimation(translateAnimation);
@@ -220,7 +236,7 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                 }
                 break;
             case R.id.door:
-                type = 2;
+                type = 3;
                 if (villageid == null) {
                     village.startAnimation(translateAnimation);
                 } else {
@@ -233,6 +249,16 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                 if (satatus != 0) {
                     addurl = GlobalVariables.urlstr + "User.addHouse&uid=" + uid + "&username=" + username + "&fanghaoid=" + doord;
                     getStr(1);
+                }
+                break;
+            case R.id.village:
+                type = 2;
+                if (villagesid == null) {
+                    calm.startAnimation(translateAnimation);
+                } else {
+                    array.clear();
+                    url = GlobalVariables.urlstr + "Common.getHouseList&type=2&pid=" + villagesid;
+                    getStr(0);
                 }
                 break;
         }
