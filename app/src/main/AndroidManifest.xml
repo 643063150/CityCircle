@@ -355,6 +355,9 @@
         <activity
             android:name=".Property.Messagecontent"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Property.ProCircle"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

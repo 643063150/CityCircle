@@ -44,7 +44,7 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
  */
 public class PropertyHome extends Activity implements View.OnClickListener {
     ImageView back;
-    TextView messages, DOC, meeting, phonenumber, number, usermessages, prophonenumber;
+    TextView messages, DOC, meeting, phonenumber, number, usermessages, prophonenumber,prcitcle;
     private MenuDrawer mDrawer;
     ImageView head;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
@@ -112,10 +112,12 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         DOC = (TextView) findViewById(R.id.DOC);
         phonenumber = (TextView) findViewById(R.id.phonenumber);
         meeting = (TextView) findViewById(R.id.meeting);
+        prcitcle=(TextView)findViewById(R.id.prcitcle);
         messages.setOnClickListener(this);
         DOC.setOnClickListener(this);
         meeting.setOnClickListener(this);
         phonenumber.setOnClickListener(this);
+        prcitcle.setOnClickListener(this);
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(this));
@@ -204,6 +206,10 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 break;
             case R.id.prophonenumber:
                 intent.setClass(PropertyHome.this, Pronumber.class);
+                PropertyHome.this.startActivity(intent);
+                break;
+            case R.id.prcitcle:
+                intent.setClass(PropertyHome.this,ProCircle.class);
                 PropertyHome.this.startActivity(intent);
                 break;
         }
