@@ -74,7 +74,13 @@ public class Addadpter extends PagerAdapter {
         options=ImageUtils.setnoOptions();
         final View view = mList.get(position);
         image = (ImageView) view.findViewById(R.id.viewimage);
-        final String url= imgarray.get(position).get("picurl");
+        String url = null;
+        try {
+            url  = imgarray.get(position).get("picurl");
+        }catch (Exception e){
+
+        }
+
         final int a= PreferencesUtils.getInt(context, "photo");
 //		if (a==1){
         ImageLoader.displayImage(url, image, options,

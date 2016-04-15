@@ -57,12 +57,12 @@ import citycircle.com.Utils.ImageUtils;
 import citycircle.com.Utils.PreferencesUtils;
 
 /**
- * Created by admins on 2016/4/12.
+ * Created by admins on 2015/11/23.
  */
 public class ProNew extends Fragment {
     View view, adddview;
     ListView newlist;
-    String url, urlstr, zanstr, getnewme, newmestr, username, addurl, addstr,addcom, addcomstr;
+    String url, urlstr, zanstr, getnewme, newmestr, username, addurl, addstr,addcom, addcomstr,xiaoquid;
     int page = 1;
     HashMap<String, String> hashMap;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
@@ -91,7 +91,6 @@ public class ProNew extends Fragment {
     final Handler handlers = new Handler();
     EditText myviptxt;
     int type=0;
-    String houseid;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +99,7 @@ public class ProNew extends Fragment {
                 R.layout.newmessage, null);
         adddview = LayoutInflater.from(getActivity()).inflate(
                 R.layout.addviewpage, null);
-        houseid=PreferencesUtils.getString(getActivity(), "houseid");
+        xiaoquid=PreferencesUtils.getString(getActivity(),"houseid");
         addurl = GlobalVariables.urlstr + "News.getGuanggao&typeid=84";
         int a = PreferencesUtils.getInt(getActivity(), "land");
         uid=PreferencesUtils.getString(getActivity(),"userid");
@@ -110,7 +109,7 @@ public class ProNew extends Fragment {
             username = PreferencesUtils.getString(getActivity(), "username");
             getnewme = GlobalVariables.urlstr + "Quan.getNewsTop&username=" + username;
         }
-        url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+houseid;
+        url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+xiaoquid;
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
@@ -170,7 +169,7 @@ public class ProNew extends Fragment {
                         if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
                             if (type==1){
                                 page++;
-                                url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+houseid;
+                                url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+xiaoquid;
                                 getnews(0);
                             }
                         }
@@ -196,9 +195,9 @@ public class ProNew extends Fragment {
         lehuirefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                array.clear();
+
                 page = 1;
-                mesarray.clear();
+
                 uid=PreferencesUtils.getString(getActivity(),"userid");
                 int a = PreferencesUtils.getInt(getActivity(), "land");
                 if (a == 0) {
@@ -208,8 +207,8 @@ public class ProNew extends Fragment {
                     getnewme = GlobalVariables.urlstr + "Quan.getNewsTop&username=" + username;
                 }
 //                newsurl = "http://appapi.rexian.cn:8080/HKCityApi/news/newsFocusList?areaID=1&pageSize=10&pageIndex=" + page;
-                url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+houseid;
-                getnews(0);
+                url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+xiaoquid;
+                getnews(1);
             }
         });
     }
@@ -317,7 +316,7 @@ public class ProNew extends Fragment {
                     break;
                 case 5:
                     type=1;
-                    JSONObject jsonObject = JSON.parseObject(urlstr);
+                    JSONObject jsonObject = JSON.parseObject(zanstr);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     int a = jsonObject1.getIntValue("code");
                     if (a == 0) {
@@ -325,7 +324,7 @@ public class ProNew extends Fragment {
 //                        addarray.clear();
                         uid=PreferencesUtils.getString(getActivity(),"userid");
                         int pagenumber = page * 10;
-                        url = GlobalVariables.urlstr + "Quan.getListAll&page=" + 1 + "&perNumber=" + pagenumber+"&uid="+uid+"&xiaoquid="+houseid;
+                        url = GlobalVariables.urlstr + "Quan.getListAll&page=" + 1 + "&perNumber=" + pagenumber+"&uid="+uid+"&xiaoquid="+xiaoquid;
                         getnews(1);
                     } else {
                         Toast.makeText(getActivity(), "失败", Toast.LENGTH_SHORT).show();
@@ -333,6 +332,7 @@ public class ProNew extends Fragment {
                     break;
                 case 6:
                     type=1;
+                    lehuirefresh.setRefreshing(false);
                     array.clear();
                     getArray(urlstr);
                     news_adapter.notifyDataSetChanged();
@@ -358,7 +358,7 @@ public class ProNew extends Fragment {
                     break;
                 case 8:
                     type=1;
-                    JSONObject jsonObject3 = JSON.parseObject(urlstr);
+                    JSONObject jsonObject3 = JSON.parseObject(addcomstr);
                     JSONObject jsonObject4 = jsonObject3.getJSONObject("data");
                     int b = jsonObject4.getIntValue("code");
                     if (b == 0) {
@@ -366,7 +366,7 @@ public class ProNew extends Fragment {
                         popupWindow.dismiss();
                         uid=PreferencesUtils.getString(getActivity(),"userid");
                         int pagenumber = page * 10;
-                        url = GlobalVariables.urlstr + "Quan.getListAll&page=" + 1 + "&perNumber=" + pagenumber+"&uid="+uid+"&xiaoquid="+houseid;
+                        url = GlobalVariables.urlstr + "Quan.getListAll&page=" + 1 + "&perNumber=" + pagenumber+"&uid="+uid+"&xiaoquid="+xiaoquid;
                         getnews(1);
 //                        handler.sendEmptyMessage(6);
                     } else {
@@ -494,7 +494,7 @@ public class ProNew extends Fragment {
                 addarray.clear();
                 page = 1;
 //                newsurl = "http://appapi.rexian.cn:8080/HKCityApi/news/newsFocusList?areaID=1&pageSize=10&pageIndex=" + page;
-                url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+houseid;
+                url = GlobalVariables.urlstr + "Quan.getListAll&page=" + page+"&uid="+uid+"&xiaoquid="+xiaoquid;
                 getnews(0);
             }
         }, 2000);

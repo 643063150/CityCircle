@@ -148,7 +148,7 @@
                 android:drawableTop="@mipmap/index_icon1111"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="物业缴费" />
+                android:text="小区朋友圈" />
 
         </LinearLayout>
 

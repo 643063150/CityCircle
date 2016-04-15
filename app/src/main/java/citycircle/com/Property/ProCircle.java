@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import citycircle.com.Activity.CityClass;
 import citycircle.com.Activity.Logn;
-import citycircle.com.Activity.ReplyPhoto;
 import citycircle.com.Adapter.MyFragmentPagerAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.PreferencesUtils;
@@ -40,6 +39,7 @@ public class ProCircle extends FragmentActivity implements View.OnClickListener 
         newsphoto.setOnClickListener(this);
         back=(ImageView)findViewById(R.id.back);
         back.setOnClickListener(this);
+        back.setVisibility(View.GONE);
         mPager = (ViewPager)findViewById(R.id.vPager);
         hot = (TextView)findViewById(R.id.hot);
         news = (TextView)findViewById(R.id.news);
@@ -101,7 +101,7 @@ public class ProCircle extends FragmentActivity implements View.OnClickListener 
                     intent.setClass(ProCircle.this,Logn.class);
                     ProCircle.this.startActivity(intent);
                 }else {
-                    intent.setClass(ProCircle.this, ReplyPhoto.class);
+                    intent.setClass(ProCircle.this, AddProcircle.class);
                     ProCircle.this.startActivity(intent);
                 }
                 break;
