@@ -54,7 +54,7 @@ import util.FileUtils;
  * Created by admins on 2015/11/21.
  */
 public class MyInfo extends Activity implements View.OnClickListener {
-    TextView name, sex, tell_phone;
+    TextView name, sex, tell_phone, truename;
     ImageView uesrhead, back;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
@@ -67,16 +67,17 @@ public class MyInfo extends Activity implements View.OnClickListener {
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
     String url, urlstr, upinfourl, upinfostr;
     int sexs;
-    String username, nickname, headimage;
+    String username, nickname, headimage,true_name;
     UpUserHead upUserHead;
     Dialog dialog;
     View popView;
     PopupWindow popupWindow;
-    LinearLayout namelay, sexlay;
+    LinearLayout namelay, sexlay, truenamelay;
     View CheckView = null;
     private LayoutInflater inflater = null;
     PopupWindow menuWindow;
     String mobile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +92,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
         File sd = Environment.getExternalStorageDirectory();
         String path = sd.getPath() + "/citycircle/Cache";
         upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + nickname + "&sex=" + sex;
-        mobile=PreferencesUtils.getString(MyInfo.this,"mobile");
+        mobile = PreferencesUtils.getString(MyInfo.this, "mobile");
         File file = new File(path);
         if (!file.exists())
             file.mkdir();
@@ -102,10 +103,13 @@ public class MyInfo extends Activity implements View.OnClickListener {
     }
 
     public void intview() {
+        truename = (TextView) findViewById(R.id.truename);
+        truenamelay = (LinearLayout) findViewById(R.id.truenamelay);
+        truenamelay.setOnClickListener(this);
         inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        namelay=(LinearLayout)findViewById(R.id.namelay);
+        namelay = (LinearLayout) findViewById(R.id.namelay);
         namelay.setOnClickListener(this);
-        sexlay=(LinearLayout)findViewById(R.id.sexlay);
+        sexlay = (LinearLayout) findViewById(R.id.sexlay);
         sexlay.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
@@ -138,7 +142,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                     } else {
                         handler.sendEmptyMessage(3);
                     }
-                } else{
+                } else {
                     HttpRequest httpRequest = new HttpRequest();
                     upinfostr = httpRequest.doGet(upinfourl);
                     if (upinfostr.equals("网络超时")) {
@@ -159,13 +163,14 @@ public class MyInfo extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-
+                     true_name = PreferencesUtils.getString(MyInfo.this, "truename");
                     nickname = PreferencesUtils.getString(MyInfo.this, "nickname");
                     headimage = PreferencesUtils.getString(MyInfo.this, "headimage");
                     sexs = PreferencesUtils.getInt(MyInfo.this, "sex");
                     headimage = PreferencesUtils.getString(MyInfo.this, "headimage");
                     name.setText(nickname);
                     tell_phone.setText(mobile);
+                    truename.setText(true_name);
                     if (sexs == 1) {
                         sex.setText("男");
                     } else {
@@ -207,6 +212,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         Toast.makeText(MyInfo.this, "修改成功！", Toast.LENGTH_SHORT).show();
                         PreferencesUtils.putString(MyInfo.this, "nickname", nickname);
                         PreferencesUtils.putInt(MyInfo.this, "sex", sexs);
+                        PreferencesUtils.putString(MyInfo.this, "truename", true_name);
                         Intent intent = new Intent();
                         intent.setAction("com.servicedemo4");
                         intent.putExtra("getmeeage", "0");
@@ -214,7 +220,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         handler.sendEmptyMessage(1);
                         try {
                             popupWindow.dismiss();
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                     } else {
@@ -238,7 +244,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
 //                    Bitmap bm = (Bitmap) data.getExtras().get("data");
                 Bitmap bm = BitmapFactory.decodeFile(tempFile.toString());
                 File file = FileUtils.saveBitmap(bm, fileName, tempFile.toString());
-                tempFile=file;
+                tempFile = file;
                 getuserinfo(0);
                 break;
 
@@ -302,11 +308,15 @@ public class MyInfo extends Activity implements View.OnClickListener {
                 showPopwindow(getSexCheck());
                 break;
             case R.id.namelay:
-                showpop("请输入昵称");
+                showpop("请输入昵称", R.id.namelay);
+                break;
+            case R.id.truenamelay:
+                showpop("请输入姓名", R.id.truenamelay);
                 break;
         }
 
     }
+
     private void showPopwindow(View view) {
         menuWindow = new PopupWindow(view, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         menuWindow.setFocusable(true);
@@ -323,7 +333,8 @@ public class MyInfo extends Activity implements View.OnClickListener {
             }
         });
     }
-    public void showpop(String title) {
+
+    public void showpop(String title, final int id) {
         popView = getLayoutInflater().inflate(
                 R.layout.editextpop, null);
         WindowManager windowManager = getWindowManager();
@@ -343,18 +354,35 @@ public class MyInfo extends Activity implements View.OnClickListener {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (myviptxt.getText().toString().trim().length() == 0) {
-                    Toast.makeText(MyInfo.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
-                } else {
-                    nickname = myviptxt.getText().toString();
-                    try {
-                        upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs;
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    getuserinfo(1);
+                switch (id) {
+                    case R.id.namelay:
+                        if (myviptxt.getText().toString().trim().length() == 0) {
+                            Toast.makeText(MyInfo.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+                        } else {
+                            nickname = myviptxt.getText().toString();
+                            try {
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs+"&truename="+URLEncoder.encode(true_name, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            getuserinfo(1);
+                        }
+                        break;
+                    case R.id.truenamelay:
+                        if (myviptxt.getText().toString().trim().length() == 0) {
+                           popupWindow.dismiss();
+                        } else {
+                            true_name = myviptxt.getText().toString();
+                            try {
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs+"&truename="+URLEncoder.encode(true_name, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            getuserinfo(1);
+                        }
+                        break;
                 }
+
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -365,6 +393,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
             }
         });
     }
+
     private View getSexCheck() {
         CheckView = inflater.inflate(R.layout.sexcheck, null);
         RadioGroup RadioGroup = (RadioGroup) CheckView.findViewById(R.id.check);
