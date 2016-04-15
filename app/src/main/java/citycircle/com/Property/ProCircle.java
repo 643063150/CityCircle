@@ -13,9 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import citycircle.com.Activity.CityClass;
-import citycircle.com.Activity.Hotphoto;
 import citycircle.com.Activity.Logn;
-import citycircle.com.Activity.Newphoto;
 import citycircle.com.Activity.ReplyPhoto;
 import citycircle.com.Adapter.MyFragmentPagerAdapter;
 import citycircle.com.R;
@@ -48,8 +46,8 @@ public class ProCircle extends FragmentActivity implements View.OnClickListener 
         hot.setOnClickListener(this);
         news.setOnClickListener(this);
         fragmentsList = new ArrayList<Fragment>();
-        home1 = new Newphoto();
-        home2 = new Hotphoto();
+        home1 = new ProNew();
+        home2 = new ProHot();
         fragmentsList.add(home1);
         fragmentsList.add(home2);
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),
