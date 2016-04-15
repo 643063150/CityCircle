@@ -147,6 +147,7 @@ Object openRegisterstr;
                             PreferencesUtils.putString(Logn.this, "houseid", jsonObject2.getString("houseid"));
                             PreferencesUtils.putString(Logn.this, "houseids", jsonObject2.getString("houseid"));
                             PreferencesUtils.putString(Logn.this, "fanghaoid", jsonObject2.getString("fanghaoid"));
+                            PreferencesUtils.putString(Logn.this, "truename", jsonObject2.getString("truename"));
                         }
                         PreferencesUtils.putInt(Logn.this, "land", 1);
                         Intent intent = new Intent();
@@ -203,6 +204,7 @@ Object openRegisterstr;
                             PreferencesUtils.putInt(Logn.this, "houseid", jsonObject6.getIntValue("houseid"));
                             PreferencesUtils.putString(Logn.this, "houseids", jsonObject6.getString("houseid"));
                             PreferencesUtils.putString(Logn.this, "fanghaoid", jsonObject6.getString("fanghaoid"));
+                            PreferencesUtils.putString(Logn.this, "truename", jsonObject6.getString("truename"));
                         }
                         PreferencesUtils.putInt(Logn.this, "land", 1);
                         Intent intent = new Intent();
