@@ -44,14 +44,14 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
  */
 public class PropertyHome extends Activity implements View.OnClickListener {
     ImageView back;
-    TextView messages, DOC, meeting, phonenumber, number, usermessages, prophonenumber,prcitcle;
+    TextView messages, DOC, meeting, phonenumber, number, usermessages, prophonenumber, prcitcle;
     private MenuDrawer mDrawer;
     ImageView head;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    String url, urlstr, uid, username, adduel, addurlstr, houseurl, housestr;
+    String url, urlstr, uid, username, adduel, addurlstr, houseurl, housestr, hosestatstr, fanghaoid;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String, String>> addarray = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
@@ -64,6 +64,8 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     Addadpter myviewpageadapater;
     private ImageView[] indicator_imgs;
     BadgeView badge;
+    int hosestat = 0;
+    Intent intent = new Intent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 //        mDrawer.setMenuView(R.layout.left_meun);
 //        mDrawer.setMaxAnimationDuration(R.anim.woniu_list_item);
         setContentView(R.layout.pro_home);
+
         uid = PreferencesUtils.getString(PropertyHome.this, "userid");
         username = PreferencesUtils.getString(PropertyHome.this, "username");
         houseurl = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
@@ -112,7 +115,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         DOC = (TextView) findViewById(R.id.DOC);
         phonenumber = (TextView) findViewById(R.id.phonenumber);
         meeting = (TextView) findViewById(R.id.meeting);
-        prcitcle=(TextView)findViewById(R.id.prcitcle);
+        prcitcle = (TextView) findViewById(R.id.prcitcle);
         messages.setOnClickListener(this);
         DOC.setOnClickListener(this);
         meeting.setOnClickListener(this);
@@ -179,38 +182,49 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
+
         switch (v.getId()) {
             case R.id.loginback:
                 finish();
                 break;
             case R.id.messages:
+
                 intent.setClass(PropertyHome.this, Information.class);
-                PropertyHome.this.startActivity(intent);
+                gethousestate();
                 break;
             case R.id.phonenumber:
+
                 intent.setClass(PropertyHome.this, Payment.class);
-                PropertyHome.this.startActivity(intent);
+                gethousestate();
+//                PropertyHome.this.startActivity(intent);
                 break;
             case R.id.meeting:
                 intent.setClass(PropertyHome.this, MyHouse.class);
                 PropertyHome.this.startActivity(intent);
                 break;
             case R.id.DOC:
+
                 intent.setClass(PropertyHome.this, FeeBack.class);
-                PropertyHome.this.startActivity(intent);
+                gethousestate();
+//                PropertyHome.this.startActivity(intent);
                 break;
             case R.id.usermessages:
+
                 intent.setClass(PropertyHome.this, MessageList.class);
-                PropertyHome.this.startActivity(intent);
+                gethousestate();
+//                PropertyHome.this.startActivity(intent);
                 break;
             case R.id.prophonenumber:
+
                 intent.setClass(PropertyHome.this, Pronumber.class);
-                PropertyHome.this.startActivity(intent);
+                gethousestate();
+//                PropertyHome.this.startActivity(intent);
                 break;
             case R.id.prcitcle:
-                intent.setClass(PropertyHome.this,ProCircle.class);
-                PropertyHome.this.startActivity(intent);
+
+                intent.setClass(PropertyHome.this, ProCircle.class);
+                gethousestate();
+//                PropertyHome.this.startActivity(intent);
                 break;
         }
     }
@@ -230,6 +244,24 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                     handler.sendEmptyMessage(2);
                 } else {
                     handler.sendEmptyMessage(1);
+                }
+            }
+        }.start();
+    }
+
+    private void gethousestate() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                HttpRequest httpRequest = new HttpRequest();
+                fanghaoid = PreferencesUtils.getString(PropertyHome.this, "fanghaoid");
+                String url = GlobalVariables.urlstr + "wuye.getshenhe&fanghaoid=" + fanghaoid + "&uid=" + uid;
+                hosestatstr = httpRequest.doGet(url);
+                if (hosestatstr.equals("网络超时")) {
+                    handler.sendEmptyMessage(3);
+                } else {
+                    handler.sendEmptyMessage(4);
                 }
             }
         }.start();
@@ -255,7 +287,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                     if (message != 0) {
                         badge.setText(message + "");
                         badge.show();
-                    }else {
+                    } else {
                         badge.hide();
                     }
                     setAddarray(addurlstr);
@@ -280,12 +312,29 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                     Toast.makeText(PropertyHome.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
+                    Toast.makeText(PropertyHome.this, "未审核通过", Toast.LENGTH_SHORT).show();
+                    break;
+                case 4:
+                    JSONObject jsonObject2 = JSON.parseObject(hosestatstr);
+                    JSONObject jsonObject3 = jsonObject2.getJSONObject("data");
+                    if (jsonObject3.getIntValue("code") == 0) {
+                        JSONArray jsonArray = jsonObject3.getJSONArray("info");
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            JSONObject jsonObject4 = jsonArray.getJSONObject(i);
+                            hosestat = jsonObject4.getIntValue("status");
+                        }
+                    }
+                    if (hosestat == 0) {
+                        handler.sendEmptyMessage(3);
+                    } else {
+                        PropertyHome.this.startActivity(intent);
+                    }
                     break;
             }
         }
     };
 
-    private void setArray(String str) throws Exception{
+    private void setArray(String str) throws Exception {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
         int a = jsonObject1.getIntValue("code");

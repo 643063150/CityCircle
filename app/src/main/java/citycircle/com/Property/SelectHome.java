@@ -262,7 +262,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
             case R.id.calm:
                 array.clear();
                 type = 0;
-                url = GlobalVariables.urlstr + "Common.getHouseList&pid=0";
+                url = GlobalVariables.urlstr + "Common.getHouseList&pid=0&type=1";
                 getStr(0);
                 break;
             case R.id.village:
@@ -271,7 +271,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                     calm.startAnimation(translateAnimation);
                 } else {
                     array.clear();
-                    url = GlobalVariables.urlstr + "Common.getHouseList&pid=" + calmid;
+                    url = GlobalVariables.urlstr + "Common.getHouseList&type=1&pid=" + calmid;
                     getStr(0);
                 }
                 break;
@@ -281,7 +281,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                     village.startAnimation(translateAnimation);
                 } else {
                     array.clear();
-                    url = GlobalVariables.urlstr + "Common.getHouseList&pid=" + villageid;
+                    url = GlobalVariables.urlstr + "Common.getHouseList&type=1&pid=" + villageid;
                     getStr(0);
                 }
                 break;
@@ -291,7 +291,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                     building.startAnimation(translateAnimation);
                 } else {
                     array.clear();
-                    url = GlobalVariables.urlstr + "Common.getHouseList&pid=" + buildingid;
+                    url = GlobalVariables.urlstr + "Common.getHouseList&type=1&pid=" + buildingid;
                     getStr(0);
                 }
                 break;
@@ -301,7 +301,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                     unit.startAnimation(translateAnimation);
                 } else {
                     array.clear();
-                    url = GlobalVariables.urlstr + "Common.getHouseList&pid=" + unitid;
+                    url = GlobalVariables.urlstr + "Common.getHouseList&type=1&pid=" + unitid;
                     getStr(0);
                 }
                 break;
@@ -311,7 +311,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                     floor.startAnimation(translateAnimation);
                 } else {
                     array.clear();
-                    url = GlobalVariables.urlstr + "Common.getHouseList&pid=" + floorid;
+                    url = GlobalVariables.urlstr + "Common.getHouseList&type=1&pid=" + floorid;
                     getStr(0);
                 }
                 break;
