@@ -26,7 +26,7 @@ public class PayMoney extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paymoney);
         type = getIntent().getStringExtra("type");
-        yumoney = getIntent().getStringExtra("money");
+        yumoney = getIntent().getStringExtra("yumoney");
         snumber = getIntent().getStringExtra("snumber");
         bnumber = getIntent().getStringExtra("bnumber");
         unumber = getIntent().getStringExtra("unumber");

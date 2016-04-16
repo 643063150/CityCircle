@@ -317,7 +317,7 @@ public class SelectHome extends Fragment implements OnItemClickListener, View.On
                 break;
             case R.id.addhouse:
                 if (satatus != 0) {
-                    addurl = GlobalVariables.urlstr + "User.addHouse&uid=" + uid + "&username=" + username + "&fanghaoid=" + roomid;
+                    addurl = GlobalVariables.urlstr + "User.addHouse&uid=" + uid + "&username=" + username + "&fanghaoid=" + roomid+"&houseid="+villageid;
                     getStr(1);
                 }
                 break;

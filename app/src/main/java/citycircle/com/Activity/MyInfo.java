@@ -79,7 +79,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
     PopupWindow menuWindow;
     String mobile;
     int type = 0;
-
+    int types=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +90,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
         ImageLoader.init(ImageLoaderConfiguration.createDefault(MyInfo.this));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
         getPhotos = new GetPhotos();
+        types=getIntent().getIntExtra("type",0);
         username = PreferencesUtils.getString(MyInfo.this, "username");
         File sd = Environment.getExternalStorageDirectory();
         String path = sd.getPath() + "/citycircle/Cache";
@@ -225,11 +226,13 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         } catch (Exception e) {
 
                         }
-                        if (type == 1) {
-                            Intent intent1 = new Intent();
-                            intent1.setClass(MyInfo.this, AddHome.class);
-                            MyInfo.this.startActivity(intent);
-                        }
+//                       if (types==1){
+//                           if (type == 1) {
+//                               Intent intent1 = new Intent();
+//                               intent1.setClass(MyInfo.this, AddHome.class);
+//                               MyInfo.this.startActivity(intent);
+//                           }
+//                       }
                     } else {
                         Toast.makeText(MyInfo.this, "修改失败！", Toast.LENGTH_SHORT).show();
                     }
@@ -318,7 +321,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
 //                showpop("请输入昵称", R.id.namelay);
                 break;
             case R.id.truenamelay:
-                if (true_name != null) {
+                if (true_name == null) {
                     showpop("请输入姓名", R.id.truenamelay);
                 }
                 break;

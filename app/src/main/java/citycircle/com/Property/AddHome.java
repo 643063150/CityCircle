@@ -58,8 +58,8 @@ public class AddHome extends FragmentActivity implements View.OnClickListener {
         lists = new ArrayList<Fragment>();
         SerachHome MallFragment = new SerachHome();
         SelectHome WareFragment = new SelectHome();
-        lists.add(MallFragment);
         lists.add(WareFragment);
+        lists.add(MallFragment);
         viewPager.setOffscreenPageLimit(3);
         fa = new FragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fa);

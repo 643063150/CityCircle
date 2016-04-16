@@ -119,6 +119,7 @@ public class FoundFragment extends Fragment implements View.OnClickListener, OnI
        if (i!=-1){
            Intent intent = new Intent();
            intent.setClass(getActivity(), MyInfo.class);
+//           intent.putExtra("type",1);
            getActivity().startActivity(intent);
        }
 

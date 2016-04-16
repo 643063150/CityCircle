@@ -247,7 +247,7 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                 break;
             case R.id.addhouse:
                 if (satatus != 0) {
-                    addurl = GlobalVariables.urlstr + "User.addHouse&uid=" + uid + "&username=" + username + "&fanghaoid=" + doord;
+                    addurl = GlobalVariables.urlstr + "User.addHouse&uid=" + uid + "&username=" + username + "&fanghaoid=" + doord+"&houseid="+villagesid;
                     getStr(1);
                 }
                 break;
