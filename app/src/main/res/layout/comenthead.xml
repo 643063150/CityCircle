@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/text_bg"
             android:padding="3dp"
+            android:visibility="gone"
             android:text="表扬"
             android:textColor="@color/white"
             android:textSize="12sp" />
