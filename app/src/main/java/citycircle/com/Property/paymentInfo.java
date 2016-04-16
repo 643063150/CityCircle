@@ -25,7 +25,7 @@ public class paymentInfo extends FragmentActivity implements View.OnClickListene
     private ViewPager viewPager;
     private List<Fragment> lists;
     private FragmentAdapter fa;
-    private TextView tv1;
+    private TextView tv1,title;
     private TextView tv2;
 
     private ImageView iv1;
@@ -34,15 +34,18 @@ public class paymentInfo extends FragmentActivity implements View.OnClickListene
     private ImageView iv01;
     private ImageView iv02;
     private ImageView mettingback;
-    String type;
+    String type,titstr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paymentinfo);
         type=getIntent().getStringExtra("type");
+        titstr=getIntent().getStringExtra("title");
         intview();
     }
     public void intview() {
+        title=(TextView)findViewById(R.id.title);
+        title.setText(titstr);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         tv1 = (TextView) findViewById(R.id.tv1);
         tv1.setOnClickListener(this);

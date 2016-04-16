@@ -75,6 +75,7 @@ public class PayMoney extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginback:
+                finish();
                 break;
             case R.id.submit:
                 break;

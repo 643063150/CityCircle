@@ -41,6 +41,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import citycircle.com.MyViews.MyDialog;
+import citycircle.com.Property.AddHome;
 import citycircle.com.R;
 import citycircle.com.Utils.GetPhotos;
 import citycircle.com.Utils.GlobalVariables;
@@ -67,7 +68,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
     String url, urlstr, upinfourl, upinfostr;
     int sexs;
-    String username, nickname, headimage,true_name;
+    String username, nickname, headimage, true_name;
     UpUserHead upUserHead;
     Dialog dialog;
     View popView;
@@ -77,6 +78,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
     private LayoutInflater inflater = null;
     PopupWindow menuWindow;
     String mobile;
+    int type = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +165,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                     true_name = PreferencesUtils.getString(MyInfo.this, "truename");
+                    true_name = PreferencesUtils.getString(MyInfo.this, "truename");
                     nickname = PreferencesUtils.getString(MyInfo.this, "nickname");
                     headimage = PreferencesUtils.getString(MyInfo.this, "headimage");
                     sexs = PreferencesUtils.getInt(MyInfo.this, "sex");
@@ -222,6 +224,11 @@ public class MyInfo extends Activity implements View.OnClickListener {
                             popupWindow.dismiss();
                         } catch (Exception e) {
 
+                        }
+                        if (type == 1) {
+                            Intent intent1 = new Intent();
+                            intent1.setClass(MyInfo.this, AddHome.class);
+                            MyInfo.this.startActivity(intent);
                         }
                     } else {
                         Toast.makeText(MyInfo.this, "修改失败！", Toast.LENGTH_SHORT).show();
@@ -308,10 +315,12 @@ public class MyInfo extends Activity implements View.OnClickListener {
                 showPopwindow(getSexCheck());
                 break;
             case R.id.namelay:
-                showpop("请输入昵称", R.id.namelay);
+//                showpop("请输入昵称", R.id.namelay);
                 break;
             case R.id.truenamelay:
-                showpop("请输入姓名", R.id.truenamelay);
+                if (true_name != null) {
+                    showpop("请输入姓名", R.id.truenamelay);
+                }
                 break;
         }
 
@@ -361,7 +370,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         } else {
                             nickname = myviptxt.getText().toString();
                             try {
-                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs+"&truename="+URLEncoder.encode(true_name, "UTF-8");
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8");
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -370,14 +379,15 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         break;
                     case R.id.truenamelay:
                         if (myviptxt.getText().toString().trim().length() == 0) {
-                           popupWindow.dismiss();
+                            popupWindow.dismiss();
                         } else {
                             true_name = myviptxt.getText().toString();
                             try {
-                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs+"&truename="+URLEncoder.encode(true_name, "UTF-8");
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8");
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
+                            type = 1;
                             getuserinfo(1);
                         }
                         break;

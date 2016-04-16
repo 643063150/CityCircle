@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="物业随手拍"
+            android:text="物业报修"
             android:textColor="@color/blackcolor"
             android:textSize="17sp" />
 

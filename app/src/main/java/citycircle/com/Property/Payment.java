@@ -80,6 +80,7 @@ public class Payment extends Activity implements View.OnClickListener {
                     Intent intent = new Intent();
                     intent.setClass(Payment.this, paymentInfo.class);
                     intent.putExtra("type", arrayList.get(position - 1).get("type").toString());
+                    intent.putExtra("title", arrayList.get(position - 1).get("title").toString());
                     Payment.this.startActivity(intent);
                 }
 

@@ -39,7 +39,7 @@ public class ProCircle extends FragmentActivity implements View.OnClickListener 
         newsphoto.setOnClickListener(this);
         back=(ImageView)findViewById(R.id.back);
         back.setOnClickListener(this);
-        back.setVisibility(View.GONE);
+        back.setImageResource(R.mipmap.news_info_back_arrow01);
         mPager = (ViewPager)findViewById(R.id.vPager);
         hot = (TextView)findViewById(R.id.hot);
         news = (TextView)findViewById(R.id.news);
@@ -92,8 +92,9 @@ public class ProCircle extends FragmentActivity implements View.OnClickListener 
                 mPager.setCurrentItem(0);
                 break;
             case R.id.back:
-                intent.setClass(ProCircle.this, CityClass.class);
-                ProCircle.this.startActivity(intent);
+//                intent.setClass(ProCircle.this, CityClass.class);
+//                ProCircle.this.startActivity(intent);
+                finish();
                 break;
             case R.id.newsphoto:
                 int a= PreferencesUtils.getInt(ProCircle.this, "land");

@@ -259,7 +259,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 String url = GlobalVariables.urlstr + "wuye.getshenhe&fanghaoid=" + fanghaoid + "&uid=" + uid;
                 hosestatstr = httpRequest.doGet(url);
                 if (hosestatstr.equals("网络超时")) {
-                    handler.sendEmptyMessage(3);
+//                    handler.sendEmptyMessage(3);
                 } else {
                     handler.sendEmptyMessage(4);
                 }
@@ -353,7 +353,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 array.add(hashMap);
             }
         } else {
-            handler.sendEmptyMessage(3);
+//            handler.sendEmptyMessage(3);
         }
 
     }

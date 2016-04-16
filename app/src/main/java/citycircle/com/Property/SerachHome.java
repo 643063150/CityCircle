@@ -145,7 +145,7 @@ public class SerachHome extends Fragment implements View.OnClickListener, OnItem
                             PreferencesUtils.putString(getActivity(), "houseid", villageid);
                             PreferencesUtils.putString(getActivity(), "houseids", villageid);
                             PreferencesUtils.putString(getActivity(), "fanghaoid", doord);
-                            addurl = GlobalVariables.urlstr + "User.updateHouse&uid=" + uid + "&username=" + username + "&houseid=" + villageid + "&fanghaoid=" + doord;
+                            addurl = GlobalVariables.urlstr + "User.updateHouse&uid=" + uid + "&username=" + username + "&houseid=" + villagesid + "&fanghaoid=" + doord;
                             getStr(1);
                         } else {
                             Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
