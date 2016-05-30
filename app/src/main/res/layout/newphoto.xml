@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="分类"
-            android:textColor="@color/blackcolor"
+            android:textColor="@color/white"
             android:textSize="15sp" />
         <ImageView
             android:id="@+id/newsphoto"

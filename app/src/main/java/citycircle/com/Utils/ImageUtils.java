@@ -83,7 +83,7 @@ public class ImageUtils {
 //                .showImageOnFail(R.mipmap.app) // 设置图片加载或解码过程中发生错误显示的图片
                 .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
                 .cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
-                .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
+                .displayer(new RoundedBitmapDisplayer(0)) // 设置成圆角图片
                 .build(); // 创建配置过得DisplayImageOption对象
 
 

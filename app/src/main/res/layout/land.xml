@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="工作平台登陆"
-            android:textColor="@color/blackcolor"
+            android:textColor="@color/white"
             android:textSize="17sp" />
         <ImageView
             android:id="@+id/addmessaget"

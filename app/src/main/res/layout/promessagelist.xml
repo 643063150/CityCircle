@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="收件箱"
-            android:textColor="@color/blackcolor"
+            android:textColor="@color/white"
             android:textSize="17sp" />
 
         <ImageView

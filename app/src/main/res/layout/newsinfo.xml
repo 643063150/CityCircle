@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="#f2f2f2">
+        android:background="@color/buttonbule">
 
         <ImageView
             android:id="@+id/back"
@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="怀府网新闻"
-            android:textColor="#5c5c5c"
+            android:textColor="@color/white"
             android:textSize="17sp" />
 
         <ImageView
