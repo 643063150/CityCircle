@@ -32,6 +32,16 @@
             android:textSize="12sp"
             android:drawableTop="@drawable/select_home"
             android:text="@string/home" />
+        <RadioButton
+            android:id="@+id/rb_vipcard"
+            style="@style/rb_main"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:drawableTop="@drawable/select_vip"
+            android:text="会员卡"
+            android:checked="false" />
 
         <RadioButton
             android:id="@+id/rb_lehui"

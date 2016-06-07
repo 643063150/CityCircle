@@ -361,6 +361,21 @@
         <activity
             android:name=".Property.AddProcircle"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.MyWallet"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.ShopInfo"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.VipcardInfo"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.Mymessage"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.MyVipcard"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

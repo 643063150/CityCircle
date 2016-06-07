@@ -6,7 +6,7 @@
     <color name="graly">#808082</color>
     <color name="titlecolors">#02cc95</color>
     <color name="bottom">#f9f9f9</color>
-    <color name="grarybackground">#f9f9f9</color>
+    <color name="grarybackground">#f3f5f7</color>
     <color name="linecolor">#e6e6e6</color>
     <color name="lincolors">#bdbdbd</color>
     <color name="blackcolor">#232323</color>
@@ -40,6 +40,7 @@
     <color name="aaa">#f6f6f6</color>
     <color name="name">#676767</color>
     <color name="time">#dcdcdc</color>
+    <color name="linr">#fcfcfc</color>
     <color name="content">#5e5e5e</color>
     <color name="cityname">#919191</color>
     <color name="aaaa">#979797</color>

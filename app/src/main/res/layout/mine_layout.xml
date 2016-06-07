@@ -26,80 +26,102 @@
             android:text="我的"
             android:textColor="@color/white"
             android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/seting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/linecolor"></LinearLayout>
-    <RelativeLayout
-        android:id="@+id/userino"
-        android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/head"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:src="@mipmap/my_face_icon" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/vip"
-                android:textColor="@color/blackcolor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp" />
+            <RelativeLayout
+                android:id="@+id/userino"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="wwww"
-                android:textColor="@color/linecolor"
-                android:textSize="18sp" />
-        </LinearLayout>
-        <ImageView
-            android:src="@mipmap/go_arrow_icon"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/head"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/my_face_icon" />
 
-    <citycircle.com.MyViews.MyListView
-        android:id="@+id/popset"
-        android:layout_marginTop="20dp"
-        android:layout_width="fill_parent"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-    </citycircle.com.MyViews.MyListView>
-    <!--<LinearLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:background="@color/linecolor"-->
-        <!--android:layout_height="1dp"></LinearLayout>-->
-    <!--<LinearLayout-->
-        <!--android:id="@+id/phone"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:background="@color/white"-->
-        <!--android:padding="11dp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:gravity="center"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<TextView-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/head"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/vip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blackcolor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="wwww"
+                        android:textColor="@color/linecolor"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/go_arrow_icon" />
+            </RelativeLayout>
+
+            <citycircle.com.MyViews.MyListView
+                android:id="@+id/popset"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"></citycircle.com.MyViews.MyListView>
+            <!--<LinearLayout-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:background="@color/linecolor"-->
+            <!--android:layout_height="1dp"></LinearLayout>-->
+            <!--<LinearLayout-->
+            <!--android:id="@+id/phone"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:background="@color/white"-->
+            <!--android:padding="11dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:drawableLeft="@mipmap/mysetup"-->
             <!--android:layout_weight="1"-->
@@ -108,32 +130,37 @@
             <!--android:drawablePadding="@dimen/ui_10_dip"-->
             <!--android:gravity="center_vertical"-->
             <!--android:layout_height="wrap_content" />-->
-        <!--<ImageView-->
+            <!--<ImageView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:src="@mipmap/go_arrow_icon"-->
             <!--android:layout_height="wrap_content" />-->
-    <!--</LinearLayout>-->
-    <LinearLayout
-        android:id="@+id/set"
-        android:layout_width="fill_parent"
-        android:background="@color/white"
-        android:padding="11dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:drawableLeft="@mipmap/mysetup"
-            android:layout_weight="1"
-            android:text="设置"
-            android:textSize="18sp"
-            android:drawablePadding="@dimen/ui_10_dip"
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@mipmap/go_arrow_icon"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <!--</LinearLayout>-->
+            <LinearLayout
+                android:id="@+id/set"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/my_icon5x"
+                    android:drawablePadding="@dimen/ui_10_dip"
+                    android:gravity="center_vertical"
+                    android:text="修改密码"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/go_arrow_icon" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -31,6 +31,9 @@ import citycircle.com.Activity.Logn;
 import citycircle.com.Activity.MyCity;
 import citycircle.com.Activity.MyCollect;
 import citycircle.com.Activity.MyInfo;
+import citycircle.com.Activity.MyVipcard;
+import citycircle.com.Activity.MyWallet;
+import citycircle.com.Activity.Mymessage;
 import citycircle.com.Activity.SetActivity;
 import citycircle.com.Activity.UpPassword;
 import citycircle.com.MyAppService.CityServices;
@@ -48,13 +51,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
     HashMap<String, Object> map;
     RelativeLayout userino;
-    TextView name, vip;
+    TextView name, vip,password,seting;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
     ImageView head;
-    String[] item = new String[]{"收藏", "怀府圈", "修改密码"};
+    String[] item = new String[]{"我的发布", "我的消息", "我的会员卡","我的收藏","我的钱包"};
     SimpleAdapter adapter;
     LinearLayout set;
     String opid;
@@ -82,6 +85,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         set = (LinearLayout) view.findViewById(R.id.set);
         set.setOnClickListener(this);
         vip = (TextView) view.findViewById(R.id.vip);
+        seting=(TextView)view.findViewById(R.id.seting);
+        password=(TextView)view.findViewById(R.id.password) ;
         head = (ImageView) view.findViewById(R.id.head);
         name = (TextView) view.findViewById(R.id.name);
         userino = (RelativeLayout) view.findViewById(R.id.userino);
@@ -90,6 +95,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         setMyListView();
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
+        seting.setOnClickListener(this);
         ImageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,26 +108,23 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     getActivity().startActivity(intent);
                 } else {
                     if (position == 1) {
-                        intent.setClass(getActivity(), MyCity.class);
+                        intent.setClass(getActivity(), Mymessage.class);
                         getActivity().startActivity(intent);
                     } else if (position == 0) {
+                        intent.setClass(getActivity(), MyCity.class);
+                        getActivity().startActivity(intent);
+                    } else if (position==2){
+                        intent.setClass(getActivity(), MyVipcard.class);
+                        getActivity().startActivity(intent);
+                    }else if (position==3){
                         intent.setClass(getActivity(), MyCollect.class);
                         getActivity().startActivity(intent);
-                    } else {
-                        if (opid.length() == 0) {
-                            intent.setClass(getActivity(), UpPassword.class);
-                            getActivity().startActivity(intent);
-
-                        } else {
-                            intent.setClass(getActivity(), GetPhone.class);
-                            getActivity().startActivity(intent);
-                        }
-
-
-
+                    }else {
+                        intent.setClass(getActivity(), MyWallet.class);
+                        getActivity().startActivity(intent);
                     }
                 }
-
+//
 //
 //
 //                    if (position == 0) {
@@ -152,16 +155,17 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         opid="";
                     }
                     String tel=PreferencesUtils.getString(getActivity(),"mobile");
+                    name.setText("账号:" + names);
                     if (opid.length() == 0||!(tel.length()==0)) {
-                        list.clear();
-                        item = new String[]{"收藏", "怀府圈", "修改密码"};
-                        setMyListView();
-                        name.setText("账号:" + names);
+//                        list.clear();
+//                        item = new String[]{"收藏", "怀府圈", "修改密码"};
+                        password.setText("修改密码");
                     } else {
-                        list.clear();
-                        item = new String[]{"收藏", "怀府圈", "绑定手机号"};
-                        setMyListView();
-                        name.setText("账号:" + names);
+//                        list.clear();
+//                        item = new String[]{"收藏", "怀府圈", "绑定手机号"};
+//                        setMyListView();
+//                        name.setText("账号:" + names);
+                        password.setText("绑定手机号");
                     }
                     break;
                 case 2:
@@ -176,9 +180,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     };
 
     public void setMyListView() {
-        int[] drable = new int[]{R.mipmap.mycollect, R.mipmap.quan, R.mipmap.changpass};
+        int[] drable = new int[]{R.mipmap.my_icon0, R.mipmap.my_icon1x, R.mipmap.my_iconx,R.mipmap.my_icon3x,R.mipmap.my_icon4x};
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < drable.length; i++) {
             map = new HashMap<String, Object>();
             map.put("drable", drable[i]);
             map.put("item", item[i]);
@@ -203,6 +207,16 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.set:
+                if (opid.length() == 0) {
+                    intent.setClass(getActivity(), UpPassword.class);
+                    getActivity().startActivity(intent);
+
+                } else {
+                    intent.setClass(getActivity(), GetPhone.class);
+                    getActivity().startActivity(intent);
+                }
+                break;
+            case R.id.seting:
                 intent.setClass(getActivity(), SetActivity.class);
                 getActivity().startActivity(intent);
                 break;

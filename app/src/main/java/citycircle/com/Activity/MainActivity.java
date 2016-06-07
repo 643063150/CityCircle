@@ -17,18 +17,20 @@ import citycircle.com.Fragment.CityCircleFragment;
 import citycircle.com.Fragment.FoundFragment;
 import citycircle.com.Fragment.HomeFragment;
 import citycircle.com.Fragment.MineFragment;
+import citycircle.com.Fragment.VipCardFragment;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.PreferencesUtils;
 
 public class MainActivity extends FragmentActivity implements CompoundButton.OnCheckedChangeListener {
-    private RadioButton home, rb_lehui, rb_subscribe, rb_mall;
+    private RadioButton home, rb_lehui, rb_subscribe, rb_mall,rb_vipcard;
     public static FragmentTransaction transaction;
     String activityStyle = null;
     public HomeFragment HomeFragment;
     public CityCircleFragment LehuiFragment;
     public FoundFragment MallFragment;
     public MineFragment MemberFragment;
+    public VipCardFragment vipCardFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +55,14 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
     public void initComponents() {
         home = (RadioButton) findViewById(R.id.rb_home);
         rb_lehui = (RadioButton) findViewById(R.id.rb_lehui);
+        rb_vipcard = (RadioButton) findViewById(R.id.rb_vipcard);
         rb_subscribe = (RadioButton) findViewById(R.id.rb_subscribe);
         rb_mall = (RadioButton) findViewById(R.id.rb_mall);
         home.setOnCheckedChangeListener(this);
         rb_lehui.setOnCheckedChangeListener(this);
         rb_subscribe.setOnCheckedChangeListener(this);
         rb_mall.setOnCheckedChangeListener(this);
+        rb_vipcard.setOnCheckedChangeListener(this);
         transaction = getSupportFragmentManager().beginTransaction();
 
     }
@@ -84,7 +88,9 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
                     if (MemberFragment != null) {
                         transaction.hide(MemberFragment);
                     }
-
+                    if (vipCardFragment != null) {
+                        transaction.hide(vipCardFragment);
+                    }
                     transaction.show(HomeFragment);
                     break;
                 case R.id.rb_lehui:
@@ -102,7 +108,9 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
                     if (MemberFragment != null) {
                         transaction.hide(MemberFragment);
                     }
-
+                    if (vipCardFragment != null) {
+                        transaction.hide(vipCardFragment);
+                    }
                     transaction.show(LehuiFragment);
                     break;
                 case R.id.rb_subscribe:
@@ -118,6 +126,9 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
                     }
                     if (LehuiFragment != null) {
                         transaction.hide(LehuiFragment);
+                    }
+                    if (vipCardFragment != null) {
+                        transaction.hide(vipCardFragment);
                     }
                     transaction.show(MallFragment);
                     break;
@@ -136,9 +147,31 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
                     if (LehuiFragment != null) {
                         transaction.hide(LehuiFragment);
                     }
+                    if (vipCardFragment != null) {
+                        transaction.hide(vipCardFragment);
+                    }
                     transaction.show(MemberFragment);
                     break;
+                case R.id.rb_vipcard:
+                    if (vipCardFragment == null) {
+                        vipCardFragment = new VipCardFragment();
+                        transaction.add(R.id.all_content, vipCardFragment);
+                    }
+                    if (HomeFragment != null) {
+                        transaction.hide(HomeFragment);
+                    }
 
+                    if (MallFragment != null) {
+                        transaction.hide(MallFragment);
+                    }
+                    if (LehuiFragment != null) {
+                        transaction.hide(LehuiFragment);
+                    }
+                    if (MemberFragment != null) {
+                        transaction.hide(MemberFragment);
+                    }
+                    transaction.show(vipCardFragment);
+                    break;
             }
             transaction.commitAllowingStateLoss();
         }

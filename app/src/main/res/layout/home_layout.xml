@@ -1,74 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-    <!--<RelativeLayout-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/buttonbule">-->
 
-    <!--<ImageView-->
-    <!--android:id="@+id/back"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:padding="12dp"-->
-    <!--android:visibility="invisible"-->
-    <!--android:src="@mipmap/back_arrow" />-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--android:text="@string/app_name"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="17sp"-->
-    <!--/>-->
-    <!--</RelativeLayout>-->
-    <!--<include layout="@layout/title_menu"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--/>-->
-
-    <com.viewpagerindicator.TabPageIndicator
-        android:id="@+id/indicator"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/base_action_bar_bg"></com.viewpagerindicator.TabPageIndicator>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/linecolor"></LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/intnet"
-
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/vipworld"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:background="@color/buttonbule">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/vipworld"
-            android:padding="5dp"
-            android:text="网络异常点击此处重新加载" />
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textSize="18sp"
+            android:textColor="@color/white" />
+        <ImageView
+            android:src="@mipmap/search"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mytabs"
+        app:tabIndicatorColor="@color/buttonbule"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/ui_10_dip"
+        android:layout_marginRight="@dimen/ui_10_dip"
+        android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/vPager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center" />
-
-    <include
-        layout="@layout/wifi_error"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></include>
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </LinearLayout>

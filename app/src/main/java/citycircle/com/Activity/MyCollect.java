@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AbsListView;
@@ -170,6 +171,8 @@ public class MyCollect extends Activity implements View.OnClickListener {
                 case 3:
                     lehuirefresh.setRefreshing(false);
                     Toast.makeText(MyCollect.this, "暂无更多收藏", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(lehuirefresh, "暂无更多收藏", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
                     break;
                 case 4:
                     JSONObject jsonObject = JSON.parseObject(deurlstr);
