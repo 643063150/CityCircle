@@ -46,12 +46,12 @@ public class HomeFragment extends Fragment {
     }
     private void setView(){
         viewPager=(ViewPager)view.findViewById(R.id.viewpager);
-        attaFragment=new AttaFragment();
-        arrayList.add(attaFragment);
-        localFragment=new LocalFragment();
-        arrayList.add(localFragment);
         recommFragment=new RecommFragment();
         arrayList.add(recommFragment);
+        localFragment=new LocalFragment();
+        arrayList.add(localFragment);
+        attaFragment=new AttaFragment();
+        arrayList.add(attaFragment);
         camFragment=new CamFragment();
         arrayList.add(camFragment);
         adapter=new SectionsPagerAdapter(getChildFragmentManager(),arrayList);

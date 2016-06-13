@@ -39,11 +39,18 @@
             android:lines="2"
             android:text="内容" />
         <TextView
-            android:id="@+id/views"
+            android:id="@+id/name"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_below="@id/title"
-            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:text="176" />
+        <TextView
+            android:id="@+id/views"
+            android:textSize="12sp"
+            android:layout_marginLeft="80dp"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/title"
             android:layout_height="wrap_content"
             android:text="176" />
     </RelativeLayout>

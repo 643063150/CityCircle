@@ -286,9 +286,9 @@
         <activity
             android:name=".OA.OaUserinfo"
             android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".OA.MessageActivity"
-            android:screenOrientation="portrait"></activity>
+        <!--<activity-->
+            <!--android:name=".OA.MessageActivity"-->
+            <!--android:screenOrientation="portrait"></activity>-->
         <activity
             android:name=".OA.Meeagecontent"
             android:screenOrientation="portrait"></activity>
