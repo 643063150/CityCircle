@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,6 @@ import citycircle.com.Activity.AttaFragment;
 import citycircle.com.Activity.CamFragment;
 import citycircle.com.Activity.LocalFragment;
 import citycircle.com.Activity.RecommFragment;
-import citycircle.com.Adapter.SectionsPagerAdapter;
 import citycircle.com.R;
 
 /**
@@ -46,18 +47,70 @@ public class HomeFragment extends Fragment {
     }
     private void setView(){
         viewPager=(ViewPager)view.findViewById(R.id.viewpager);
-        recommFragment=new RecommFragment();
-        arrayList.add(recommFragment);
-        localFragment=new LocalFragment();
-        arrayList.add(localFragment);
-        attaFragment=new AttaFragment();
-        arrayList.add(attaFragment);
-        camFragment=new CamFragment();
-        arrayList.add(camFragment);
-        adapter=new SectionsPagerAdapter(getChildFragmentManager(),arrayList);
+        viewPager.setOffscreenPageLimit(4);
+        adapter=new SectionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout)view. findViewById(R.id.mytabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+    }
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+//        ArrayList<Fragment> arrayList=new ArrayList<>();
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+//            this.arrayList=arrayList;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            switch (position) {
+                case 0:
+                    if (null == recommFragment)
+                        recommFragment = recommFragment.instance();
+                    return recommFragment;
+
+                case 1:
+                    if (null == localFragment)
+                        localFragment = localFragment.instance();
+                    return localFragment;
+
+                case 2:
+                    if (null == attaFragment)
+                        attaFragment = attaFragment.instance();
+                    return attaFragment;
+
+                case 3:
+                    if (null == camFragment)
+                        camFragment = camFragment.instance();
+                    return camFragment;
+                default:
+                    break;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "推荐";
+                case 1:
+                    return "本地";
+                case 2:
+                    return "关注";
+                case 3:
+                    return "活动";
+            }
+            return null;
+        }
     }
 }

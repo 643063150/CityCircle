@@ -14,6 +14,10 @@ import citycircle.com.R;
  */
 public class AttaFragment extends Fragment {
     View view;
+    public static AttaFragment instance() {
+        AttaFragment view = new AttaFragment();
+        return view;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

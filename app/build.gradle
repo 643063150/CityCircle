@@ -19,6 +19,14 @@ android {
     }
     productFlavors {
     }
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+    }
 }
 
 
@@ -59,4 +67,6 @@ dependencies {
     compile 'com.bigkoo:alertview:1.0.2'
     compile 'com.github.iwgang:countdownview:1.2'
     compile 'com.android.support:palette-v7:23.3.0'
+    compile 'com.zhy:okhttputils:2.3.9'
+    compile 'com.bigkoo:convenientbanner:2.0.5'
 }
