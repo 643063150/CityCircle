@@ -376,6 +376,12 @@
         <activity
             android:name=".Activity.MyVipcard"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.ShopVipcard"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.ShopCam"
+            android:screenOrientation="portrait"></activity>
         <!--<activity-->
         <!--android:name="com.mob.tools.MobUIShell"-->
         <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->

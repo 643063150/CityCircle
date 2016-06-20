@@ -19,7 +19,7 @@ public class DateUtils {
 
     /*时间戳转换成字符窜*/
     public static String getDateToString(long time) {
-        Date d = new Date(time);
+        Date d = new Date(time*1000);
         sf = new SimpleDateFormat("yyyy-MM-dd");
         return sf.format(d);
     }

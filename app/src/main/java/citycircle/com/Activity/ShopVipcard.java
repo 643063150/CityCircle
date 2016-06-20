@@ -3,12 +3,13 @@ package citycircle.com.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -24,63 +25,56 @@ import citycircle.com.Adapter.MyVipcardAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.Loadmore;
-import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Created by admins on 2016/6/3.
+ * Created by admins on 2016/6/17.
  */
-public class MyVipcard extends Activity {
-    TextView title;
+public class ShopVipcard extends Activity implements AdapterView.OnItemClickListener, OnClickListener {
     ImageView back;
     SwipeRefreshLayout Refresh;
     ListView viplist;
-    String uesename,url;
-    int page=1;
+    String url, shopid;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
+    int page = 1;
     MyVipcardAdapter adapter;
     Loadmore loadmore;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopvipcard);
-        uesename= PreferencesUtils.getString(MyVipcard.this,"username");
-        url=GlobalVariables.urlstr+"hyk.getuserlist&username="+uesename+"&page="+page;
+        shopid = getIntent().getStringExtra("id");
+        url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid;
         intview();
         setAdapter();
-        getJson();
+        getjson();
     }
-    private void intview(){
+
+    private void intview() {
         loadmore = new Loadmore();
-        title=(TextView)findViewById(R.id.titile);
-        back=(ImageView)findViewById(R.id.back);
-        Refresh=(SwipeRefreshLayout)findViewById(R.id.Refresh);
-        viplist=(ListView)findViewById(R.id.viplist);
+        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
+        viplist = (ListView) findViewById(R.id.viplist);
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(this);
+        viplist.setOnItemClickListener(this);
         loadmore.loadmore(viplist);
         loadmore.setMyPopwindowswListener(new Loadmore.LoadmoreList() {
             @Override
             public void loadmore() {
                 page++;
-                url=GlobalVariables.urlstr+"hyk.getuserlist&username="+uesename+"&page="+page;
-                getJson();
-            }
-        });
-        viplist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position).get("id"));
-                intent.setClass(MyVipcard.this, VipcardInfo.class);
-                MyVipcard.this.startActivity(intent);
+                url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid;
+                getjson();
             }
         });
     }
-    private void getJson(){
+
+    private void getjson() {
         OkHttpUtils.get().url(url).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                Toast.makeText(MyVipcard.this,R.string.intent_error,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShopVipcard.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -90,6 +84,7 @@ public class MyVipcard extends Activity {
             }
         });
     }
+
     private void setarray(String str) {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -110,11 +105,33 @@ public class MyVipcard extends Activity {
             if (page != 1) {
                 page--;
             }
-            Toast.makeText(MyVipcard.this, R.string.nomore, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShopVipcard.this, R.string.nomore, Toast.LENGTH_SHORT).show();
         }
     }
-    private void setAdapter(){
-        adapter=new MyVipcardAdapter(arrayList,MyVipcard.this);
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.viplist:
+                Intent intent = new Intent();
+                intent.putExtra("id", arrayList.get(position).get("id"));
+                intent.setClass(ShopVipcard.this, VipcardInfo.class);
+                ShopVipcard.this.startActivity(intent);
+                break;
+        }
+    }
+
+    private void setAdapter() {
+        adapter = new MyVipcardAdapter(arrayList, ShopVipcard.this);
         viplist.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                finish();
+                break;
+        }
     }
 }

@@ -21,16 +21,16 @@ import citycircle.com.R;
 import citycircle.com.Utils.ImageUtils;
 
 /**
- * Created by admins on 2016/6/14.
+ * Created by admins on 2016/6/17.
  */
-public class VipAdapter extends BaseAdapter {
+public class MyVipcardAdapter extends BaseAdapter {
     ArrayList<HashMap<String, String>> arrayList;
     Context context;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    public VipAdapter(ArrayList<HashMap<String, String>> arrayList, Context context) {
+    public MyVipcardAdapter(ArrayList<HashMap<String, String>> arrayList, Context context){
         this.arrayList = arrayList;
         this.context = context;
         ImageUtils = new ImageUtils();
@@ -38,7 +38,6 @@ public class VipAdapter extends BaseAdapter {
         ImageLoader.init(ImageLoaderConfiguration.createDefault(context));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
     }
-
     @Override
     public int getCount() {
         return arrayList.size();
@@ -65,11 +64,6 @@ public class VipAdapter extends BaseAdapter {
         getItem.logo=(ImageView)convertView.findViewById(R.id.logo);
         getItem.cardView.setCardBackgroundColor(Color.parseColor(arrayList.get(position).get("color")));
         getItem.cardtype.setText(arrayList.get(position).get("type"));
-        if (arrayList.get(position).get("orlq").equals("0")){
-            getItem.orlq.setText("立即领取");
-        }else {
-            getItem.orlq.setText("已领取");
-        }
         getItem.titile.setText(arrayList.get(position).get("shopname"));
         options=ImageUtils.setCirclelmageOptions();
         String url=arrayList.get(position).get("logo");

@@ -42,12 +42,21 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/app" />
-
+                 />
+            <TextView
+                android:id="@+id/titile"
+                android:text="1好点"
+                android:layout_margin="10dp"
+                android:textSize="16dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -57,6 +66,7 @@
                 android:padding="5dp">
 
                 <TextView
+                    android:id="@+id/shiy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -65,6 +75,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/cardtype"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="计次卡"
@@ -75,12 +86,14 @@
     </android.support.v7.widget.CardView>
 
     <LinearLayout
+        android:id="@+id/shengyulay"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/shengyu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/ui_10_dip"
@@ -88,7 +101,7 @@
             android:drawablePadding="5dp"
             android:drawableLeft="@mipmap/card_moneyx"
             android:gravity="center_vertical"
-            android:text="剩余次数:10" />
+             />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -119,9 +132,10 @@
             android:background="@color/linecolor"
             android:layout_height="0.5dp"></View>
         <TextView
+            android:id="@+id/callphone"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/card_phone"
-            android:text="电话:aaaaaa"
+            android:drawableRight="@mipmap/card_go"
             android:layout_marginLeft="@dimen/ui_10_dip"
             android:drawablePadding="5dp"
             android:textSize="16dp"
@@ -133,9 +147,9 @@
             android:background="@color/linecolor"
             android:layout_height="0.5dp"></View>
         <TextView
+            android:id="@+id/adress"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/card_addressx"
-            android:text="地址:aaaaa"
             android:textSize="16dp"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
@@ -144,7 +158,8 @@
             android:layout_height="match_parent" />
     </LinearLayout>
     <TextView
-        android:text="商家信息"
+        android:id="@+id/info"
+        android:text="用户需知"
         android:layout_marginTop="@dimen/ui_10_dip"
         android:textSize="16dp"
         android:drawableRight="@mipmap/card_down"
@@ -153,4 +168,13 @@
         android:layout_width="match_parent"
         android:padding="@dimen/ui_10_dip"
         android:layout_height="40dp" />
+    <Button
+        android:id="@+id/btn_lq"
+        android:background="@mipmap/btn_bg"
+        android:layout_margin="18dp"
+        android:text="立即领取"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
