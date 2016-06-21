@@ -111,7 +111,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
                         ImageLoader.displayImage(list.get(i).getLogo(),logo,options,animateFirstListener);
                         if (list.get(i).getOrlq()==0){
                             shengyu.setText("未领取");
-                            shiy.setVisibility(View.GONE);
+                            shiy.setVisibility(View.INVISIBLE);
                             info.setText("用户须知");
                             shengyulay.setVisibility(View.GONE);
                         }else {
