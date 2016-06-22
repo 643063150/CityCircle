@@ -48,7 +48,7 @@ public class ShopCamadapter extends BaseAdapter {
         getItem.time = (TextView) convertView.findViewById(R.id.time);
         getItem.titile.setText(arrayList.get(position).get("title"));
         DateUtils dateUtils = new DateUtils();
-        String time = dateUtils.getDateToString(Long.parseLong(arrayList.get(position).get("create_time")));
+        String time = dateUtils.getDateToString(Long.parseLong(arrayList.get(position).get("s_time")));
         getItem.time.setText(time);
         return convertView;
     }

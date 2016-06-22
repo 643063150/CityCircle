@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import citycircle.com.R;
+import citycircle.com.Utils.DateUtils;
 import citycircle.com.Utils.ImageUtils;
 
 /**
@@ -56,15 +57,26 @@ public class Camadapter extends BaseAdapter {
         getitem getitem=new getitem();
         convertView= LayoutInflater.from(context).inflate(R.layout.cam_item,null);
         getitem.title=(TextView)convertView.findViewById(R.id.title);
+        getitem.time=(TextView)convertView.findViewById(R.id.time);
         getitem.banner=(ImageView) convertView.findViewById(R.id.banner);
+        getitem.statimg=(ImageView) convertView.findViewById(R.id.statimg);
         getitem.title.setText(arrayList.get(position).get("title"));
+        String sTime=DateUtils.getDateToString(Long.parseLong(arrayList.get(position).get("s_time")));
+        String eTime=DateUtils.getDateToString(Long.parseLong(arrayList.get(position).get("e_time")));
+        getitem.time.setText("活动时间:"+sTime+"-"+eTime);
         options=ImageUtils.setcenterOptions();
         String url=arrayList.get(position).get("url");
         ImageLoader.displayImage(url,getitem.banner,options,animateFirstListener);
+        long time=System.currentTimeMillis();
+        if (time>Long.parseLong(arrayList.get(position).get("e_time"))){
+            getitem.statimg.setImageResource(R.mipmap.indexstateing);
+        }else {
+            getitem.statimg.setImageResource(R.mipmap.indexstateend);
+        }
         return convertView;
     }
     private class getitem{
-        TextView title;
-        ImageView banner;
+        TextView title,time;
+        ImageView banner,statimg;
     }
 }

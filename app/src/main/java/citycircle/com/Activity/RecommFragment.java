@@ -55,7 +55,7 @@ public class RecommFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.newhomelist, null);
         url = GlobalVariables.urlstr + "News.getListTJ&perNumber=10&page=" + page;
-        bannerurl = GlobalVariables.urlstr + "News.getGuanggao&typeid=103";
+        bannerurl = GlobalVariables.urlstr + "News.getGuanggao&typeid=83";
         intview();
         setAdapter();
         getJson();

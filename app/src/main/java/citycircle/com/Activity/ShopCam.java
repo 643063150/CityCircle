@@ -80,6 +80,8 @@ public class ShopCam extends Activity {
                 hashMap.put("description", jsonObject2.getString("description") == null ? "" : jsonObject2.getString("description"));
                 hashMap.put("url", jsonObject2.getString("url") == null ? "" : jsonObject2.getString("url"));
                 hashMap.put("create_time", jsonObject2.getString("create_time") == null ? "" : jsonObject2.getString("create_time"));
+                hashMap.put("s_time", jsonObject2.getString("s_time") == null ? "" : jsonObject2.getString("s_time"));
+                hashMap.put("e_time", jsonObject2.getString("e_time") == null ? "" : jsonObject2.getString("e_time"));
                 arrayList.add(hashMap);
             }
 

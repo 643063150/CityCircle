@@ -80,7 +80,8 @@ public class CamFragment extends Fragment {
                 hashMap.put("view", jsonObject2.getString("view") == null ? "" : jsonObject2.getString("view"));
                 hashMap.put("url", jsonObject2.getString("url") == null ? "" : jsonObject2.getString("url"));
                 hashMap.put("name", jsonObject2.getString("name") == null ? "" : jsonObject2.getString("name"));
-                hashMap.put("category_id", jsonObject2.getString("category_id") == null ? "" : jsonObject2.getString("category_id"));
+                hashMap.put("s_time", jsonObject2.getString("s_time") == null ? "" : jsonObject2.getString("s_time"));
+                hashMap.put("e_time", jsonObject2.getString("e_time") == null ? "" : jsonObject2.getString("e_time"));
                 arrayList.add(hashMap);
             }
 

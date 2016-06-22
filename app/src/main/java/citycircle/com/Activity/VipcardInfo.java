@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -37,11 +38,11 @@ import okhttp3.Call;
  */
 public class VipcardInfo extends Activity implements View.OnClickListener {
     CardView cardView;
-    TextView shopinfo, cardtype, titile, callphone, adress,shengyu,info,shiy;
+    TextView shopinfo, cardtype, titile, callphone, adress, shengyu, info, shiy;
     ImageView back, logo;
     VipInfo vipInfo;
-    String url,username,id,shopid;
-   List<VipInfo.DataBean.InfoBean> list=new ArrayList<VipInfo.DataBean.InfoBean>();
+    String url, username, id, shopid, addurl;
+    List<VipInfo.DataBean.InfoBean> list = new ArrayList<VipInfo.DataBean.InfoBean>();
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
@@ -49,28 +50,29 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
     LinearLayout shengyulay;
     int a;
     Button btn_lq;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vipcardinfo);
         a = PreferencesUtils.getInt(this, "land");
-        id=getIntent().getStringExtra("id");
-        if (a==0){
-            url= GlobalVariables.urlstr+"Hyk.getArticle&id="+id;
-        }else {
-            username=PreferencesUtils.getString(this,"username");
-            url= GlobalVariables.urlstr+"Hyk.getArticle&id="+id+"&username="+username;
+        id = getIntent().getStringExtra("id");
+        if (a == 0) {
+            url = GlobalVariables.urlstr + "Hyk.getArticle&id=" + id;
+        } else {
+            username = PreferencesUtils.getString(this, "username");
+            url = GlobalVariables.urlstr + "Hyk.getArticle&id=" + id + "&username=" + username;
         }
         intview();
         getjson();
     }
 
     private void intview() {
-        btn_lq=(Button)findViewById(R.id.btn_lq);
-        info=(TextView)findViewById(R.id.info);
-        shiy=(TextView)findViewById(R.id.shiy);
-        shengyulay=(LinearLayout)findViewById(R.id.shengyulay);
-        shengyu=(TextView)findViewById(R.id.shengyu);
+        btn_lq = (Button) findViewById(R.id.btn_lq);
+        info = (TextView) findViewById(R.id.info);
+        shiy = (TextView) findViewById(R.id.shiy);
+        shengyulay = (LinearLayout) findViewById(R.id.shengyulay);
+        shengyu = (TextView) findViewById(R.id.shengyu);
         cardView = (CardView) findViewById(R.id.cardview);
         shopinfo = (TextView) findViewById(R.id.shopinfo);
         cardtype = (TextView) findViewById(R.id.cardtype);
@@ -97,52 +99,77 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
 
             @Override
             public void onResponse(String response) {
-                vipInfo= JSON.parseObject(response,VipInfo.class);
-                if (vipInfo.getData().getCode()==0){
+                vipInfo = JSON.parseObject(response, VipInfo.class);
+                if (vipInfo.getData().getCode() == 0) {
                     list.addAll(vipInfo.getData().getInfo());
-                    for (int i=0;i<list.size();i++){
-                        shopid=list.get(i).getShopid();
+                    for (int i = 0; i < list.size(); i++) {
+                        shopid = list.get(i).getShopid();
                         cardtype.setText(list.get(i).getType());
                         titile.setText(list.get(i).getShopname());
-                        callphone.setText("电话:"+list.get(i).getTel());
-                        adress.setText("地址:"+list.get(i).getAddress());
+                        callphone.setText("电话:" + list.get(i).getTel());
+                        adress.setText("地址:" + list.get(i).getAddress());
                         cardView.setCardBackgroundColor(Color.parseColor(list.get(i).getColor()));
-                        options=ImageUtils.setCirclelmageOptions();
-                        ImageLoader.displayImage(list.get(i).getLogo(),logo,options,animateFirstListener);
-                        if (list.get(i).getOrlq()==0){
+                        options = ImageUtils.setCirclelmageOptions();
+                        ImageLoader.displayImage(list.get(i).getLogo(), logo, options, animateFirstListener);
+                        if (list.get(i).getOrlq() == 0) {
                             shengyu.setText("未领取");
                             shiy.setVisibility(View.INVISIBLE);
                             info.setText("用户须知");
                             shengyulay.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             btn_lq.setVisibility(View.GONE);
                             shengyulay.setVisibility(View.VISIBLE);
                             SpannableStringBuilder stringBuilder;
-                            if (cardtype.getText().equals("打折卡")){
-                                String str="打折额度:"+list.get(i).getValues();
-                                stringBuilder=new SpannableStringBuilder(str);
-                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")),4,str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            if (cardtype.getText().equals("打折卡")) {
+                                String str = "打折额度:" + list.get(i).getValues();
+                                stringBuilder = new SpannableStringBuilder(str);
+                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")), 4, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 shengyu.setText(stringBuilder);
-                            }else if (cardtype.getText().equals("计次卡")){
-                                String str="剩余次数:"+list.get(i).getValues();
-                                stringBuilder=new SpannableStringBuilder(str);
-                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")),4,str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            } else if (cardtype.getText().equals("计次卡")) {
+                                String str = "剩余次数:" + list.get(i).getValues();
+                                stringBuilder = new SpannableStringBuilder(str);
+                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")), 4, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 shengyu.setText(stringBuilder);
-                            }else if (cardtype.getText().equals("充值卡")){
-                                String str="剩余金额:"+list.get(i).getValues();
-                                stringBuilder=new SpannableStringBuilder(str);
-                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")),4,str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            } else if (cardtype.getText().equals("充值卡")) {
+                                String str = "剩余金额:" + list.get(i).getValues();
+                                stringBuilder = new SpannableStringBuilder(str);
+                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")), 4, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 shengyu.setText(stringBuilder);
-                            }else {
-                                String str="剩余积分:"+list.get(i).getValues();
-                                stringBuilder=new SpannableStringBuilder(str);
-                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")),4,str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            } else {
+                                String str = "剩余积分:" + list.get(i).getValues();
+                                stringBuilder = new SpannableStringBuilder(str);
+                                stringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#21ADFD")), 4, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 shengyu.setText(stringBuilder);
                             }
                         }
                     }
-                }else {
-                    Toast.makeText(VipcardInfo.this,R.string.nomore,Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(VipcardInfo.this, R.string.nomore, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getCard() {
+        OkHttpUtils.get().url(addurl).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+                Toast.makeText(VipcardInfo.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(String response) {
+                JSONObject jsonObject = JSON.parseObject(response);
+                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                if (jsonObject1.getIntValue("code") == 0) {
+                    getjson();
+                    Toast.makeText(VipcardInfo.this, "领取成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction("com.servicedemo4");
+                    intent.putExtra("getmeeage", "12");
+                    VipcardInfo.this.sendBroadcast(intent);
+                } else {
+                    Toast.makeText(VipcardInfo.this, jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -153,8 +180,8 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.shopinfo:
                 Intent intent = new Intent();
-                intent.putExtra("id",shopid);
-                intent.putExtra("shopname",titile.getText());
+                intent.putExtra("id", shopid);
+                intent.putExtra("shopname", titile.getText());
                 intent.setClass(VipcardInfo.this, ShopInfo.class);
                 startActivity(intent);
                 break;
@@ -162,7 +189,11 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.btn_lq:
-                Toast.makeText(this,"领取",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this,"领取",Toast.LENGTH_SHORT).show();
+                String username = PreferencesUtils.getString(VipcardInfo.this, "username");
+                String uid = PreferencesUtils.getString(VipcardInfo.this, "userid");
+                addurl = GlobalVariables.urlstr + "Hyk.addCard&username=" + username + "&cardid=" + id + "&uid=" + uid;
+                getCard();
                 break;
         }
     }

@@ -1,6 +1,9 @@
 package citycircle.com.Fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 
 import citycircle.com.Activity.VipcardInfo;
 import citycircle.com.Adapter.VipAdapter;
+import citycircle.com.MyAppService.CityServices;
 import citycircle.com.MyViews.MyClassPopwd;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
@@ -59,6 +63,10 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.vipcard, null);
         a = PreferencesUtils.getInt(getActivity(), "land");
+        Intent intent = new Intent(getActivity(), CityServices.class);
+        getActivity().startService(intent);
+        IntentFilter filter = new IntentFilter(CityServices.action);
+        getActivity().registerReceiver(broadcastReceiver, filter);
         allclassurl=GlobalVariables.urlstr+"hyk.getCategory ";
         if (a == 0) {
             url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page;
@@ -257,5 +265,23 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
                 getjson(1);
             }
         });
+    }
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            a = PreferencesUtils.getInt(getActivity(), "land");
+            if (a == 0) {
+                url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page;
+            } else {
+                username = PreferencesUtils.getString(getActivity(), "username");
+                url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
+            }
+            getjson(1);
+        }
+    };
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 }

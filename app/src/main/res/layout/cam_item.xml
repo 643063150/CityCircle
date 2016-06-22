@@ -37,6 +37,7 @@
             android:layout_marginTop="5dp"
             android:layout_height="110dp" />
         <ImageView
+            android:id="@+id/statimg"
             android:src="@mipmap/indexstateend"
             android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
@@ -51,6 +52,7 @@
         android:orientation="horizontal"
         android:layout_height="30dp">
         <TextView
+            android:id="@+id/time"
             android:text="活动时间:2016-4-11~2016-4-15"
             android:textColor="@color/white"
             android:layout_width="match_parent"
