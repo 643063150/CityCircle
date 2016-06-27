@@ -54,20 +54,20 @@ public class ShopVipcard extends Activity implements AdapterView.OnItemClickList
 
     private void intview() {
         loadmore = new Loadmore();
-        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
+//        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
         viplist = (ListView) findViewById(R.id.viplist);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
         viplist.setOnItemClickListener(this);
-        loadmore.loadmore(viplist);
-        loadmore.setMyPopwindowswListener(new Loadmore.LoadmoreList() {
-            @Override
-            public void loadmore() {
-                page++;
-                url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid;
-                getjson();
-            }
-        });
+//        loadmore.loadmore(viplist);
+//        loadmore.setMyPopwindowswListener(new Loadmore.LoadmoreList() {
+//            @Override
+//            public void loadmore() {
+//                page++;
+//                url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid;
+//                getjson();
+//            }
+//        });
     }
 
     private void getjson() {

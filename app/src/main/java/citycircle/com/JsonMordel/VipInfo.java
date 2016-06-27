@@ -98,7 +98,7 @@ public class VipInfo {
             private String type;
             private String tel;
             private String address;
-            private Object info;
+            private String info;
             private String shopid;
             private int orlq;
             private String values;
@@ -159,11 +159,11 @@ public class VipInfo {
                 this.address = address;
             }
 
-            public Object getInfo() {
+            public String getInfo() {
                 return info;
             }
 
-            public void setInfo(Object info) {
+            public void setInfo(String info) {
                 this.info = info;
             }
 

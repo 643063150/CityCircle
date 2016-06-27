@@ -26,8 +26,8 @@ import citycircle.com.Utils.PreferencesUtils;
  * Created by admins on 2015/11/30.
  */
 public class UpPassword extends Activity implements OnClickListener {
-    EditText number, password;
-    Button submit, getcode;
+    EditText number, password,surepassword;
+    Button submit;
     String url, urlstr;
     ImageView back;
     String smurl, smurlstr, smyurl, smyanstr;
@@ -43,18 +43,17 @@ public class UpPassword extends Activity implements OnClickListener {
         intview();
         username = PreferencesUtils.getString(UpPassword.this, "username");
         mobile=PreferencesUtils.getString(UpPassword.this, "mobile");
-        url = GlobalVariables.urlstr + "User.updatePass";
+        url = GlobalVariables.urlstr + "User.updatePass2";
     }
 
     public void intview() {
+        surepassword = (EditText) findViewById(R.id.surepassword);
         number = (EditText) findViewById(R.id.number);
         back = (ImageView) findViewById(R.id.back);
         password = (EditText) findViewById(R.id.password);
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(this);
         back.setOnClickListener(this);
-        getcode = (Button) findViewById(R.id.getcode);
-        getcode.setOnClickListener(this);
     }
 
     public void getuser(final int type) {
@@ -135,27 +134,6 @@ public class UpPassword extends Activity implements OnClickListener {
             }
         }
     };
-    public void gettime() {
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recLen--;
-                        getcode.setText(recLen + "后再获取");
-                        if (recLen < 0) {
-                            getcode.setText("获取验证码");
-                            recLen = 60;
-                            task.cancel();
-                            getcode.setClickable(true);
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(task, 1000, 1000);
-    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -166,21 +144,19 @@ public class UpPassword extends Activity implements OnClickListener {
 //                if (name.getText().toString().length()==0){
 //                    Toast.makeText(UpPassword.this,"请输入原密码",Toast.LENGTH_SHORT).show();
 //                }else
-                if (password.getText().toString().length() == 0) {
+                if (number.getText().toString().length() == 0) {
                     Toast.makeText(UpPassword.this, "请输入新密码", Toast.LENGTH_SHORT).show();
-                } else if (number.getText().toString().trim().length() == 0) {
+                } else if (password.getText().toString().trim().length() == 0) {
                     Toast.makeText(UpPassword.this,"请输入验证码",Toast.LENGTH_SHORT).show();
-                } else {
-                    smyurl = GlobalVariables.urlstr+"User.smsVerify&mobile=" + mobile + "&code=" + number.getText().toString();
+                } else if (!password.getText().toString().trim().equals(surepassword.getText().toString().trim())){
+                    Toast.makeText(UpPassword.this,"两次密码不一致",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    url = GlobalVariables.urlstr + "User.updatePass2&mobile=" + mobile + "&oldpass=" + number.getText().toString()+"&newpass="+password.getText().toString();
 //                    String username = PreferencesUtils.getString(UpPassword.this, "username");
 //
-                    getuser(2);
+                    getuser(0);
                 }
-                break;
-            case R.id.getcode:
-                gettime();
-                smurl = GlobalVariables.urlstr + "User.smsSend&mobile=" + mobile + "&type=2";
-                getuser(1);
                 break;
         }
     }

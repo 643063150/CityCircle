@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -23,105 +25,89 @@
             android:textColor="@color/white"
             android:textSize="17sp" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="@color/linecolor"></LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/number"
-        android:layout_width="wrap_content"
-        android:background="@color/white"
-       android:layout_weight="1"
-        android:layout_margin="10dp"
-        android:lines="1"
-        android:drawableLeft="@mipmap/phone_no_icon"
-        android:hint="手机号"
 
-        android:phoneNumber="true"
-        android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/getcode"
-            android:background="@drawable/button_bg"
-            android:layout_width="80dp"
-            android:text="获取验证码"
-            android:textSize="12sp"
-            android:textColor="@color/graly"
-            android:layout_marginRight="10dp"
-            android:layout_height="30dp" />
-    </LinearLayout>
-    <EditText
-        android:id="@+id/code"
-        android:layout_width="fill_parent"
-        android:background="@color/white"
-        android:layout_margin="10dp"
-        android:drawableLeft="@mipmap/ver_code_icon"
-        android:hint="验证码"
-        android:padding="10dp"
-        android:lines="1"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="fill_parent"
-        android:background="@color/white"
-        android:layout_margin="10dp"
-        android:lines="1"
-        android:drawableLeft="@mipmap/password_icon"
-        android:hint="密码"
-        android:padding="10dp"
-        android:password="true"
-        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/name"
         android:layout_width="fill_parent"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@color/white"
         android:drawableLeft="@mipmap/user_name_icon"
-        android:hint="昵称"
+        android:hint="填写用户名（一经填写，不得修改）"
+        android:lines="1"
+        android:textSize="16sp"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/password_icon"
+        android:hint="填写密码"
+        android:textSize="16sp"
         android:lines="1"
         android:padding="10dp"
-        android:layout_height="wrap_content" />
+        android:password="true" />
+
+    <EditText
+        android:id="@+id/surepassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/my_test_pass3x"
+        android:hint="确认密码"
+        android:lines="1"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:password="true" />
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <CheckBox
             android:id="@+id/xieyi"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/checkbox"
             android:button="@null"
-            android:checked="true"
-            android:layout_height="wrap_content" />
+            android:checked="true" />
+
         <TextView
             android:layout_width="wrap_content"
-            android:text="我已同意并阅读"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="我已同意并阅读" />
+
         <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="《注册协议》"
-            android:textColor="@color/worldblue"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/worldblue" />
     </LinearLayout>
+
     <Button
         android:id="@+id/submit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:background="@mipmap/btn_bg"
         android:text="立即注册"
         android:textColor="@color/white"
-        android:layout_marginBottom="10dp"
         android:textSize="15sp" />
 </LinearLayout>

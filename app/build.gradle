@@ -69,4 +69,5 @@ dependencies {
     compile 'com.android.support:palette-v7:23.3.0'
     compile 'com.zhy:okhttputils:2.3.9'
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.bigkoo:pickerview:2.0.8'
 }

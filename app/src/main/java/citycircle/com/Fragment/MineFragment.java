@@ -61,7 +61,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     SimpleAdapter adapter;
     LinearLayout set;
     String opid;
-
+    String tel;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,23 +154,28 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     if(opid==null){
                         opid="";
                     }
-                    String tel=PreferencesUtils.getString(getActivity(),"mobile");
+                    tel =PreferencesUtils.getString(getActivity(),"mobile");
                     name.setText("账号:" + names);
-                    if (opid.length() == 0||!(tel.length()==0)) {
+                    int a = PreferencesUtils.getInt(getActivity(), "land");
+
+                        if (tel.length()!=0) {
 //                        list.clear();
 //                        item = new String[]{"收藏", "怀府圈", "修改密码"};
-                        password.setText("修改密码");
-                    } else {
+                            password.setText("修改密码");
+                        } else {
 //                        list.clear();
 //                        item = new String[]{"收藏", "怀府圈", "绑定手机号"};
 //                        setMyListView();
 //                        name.setText("账号:" + names);
-                        password.setText("绑定手机号");
-                    }
+                            password.setText("绑定手机号");
+                        }
+
+                    set.setVisibility(View.VISIBLE);
                     break;
                 case 2:
                     name.setText("请登录");
                     vip.setText("请登录");
+                    set.setVisibility(View.GONE);
                     head.setImageResource(R.mipmap.my_face_icon);
                     break;
                 case 3:
@@ -207,7 +212,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.set:
-                if (opid.length() == 0) {
+                if (tel.length()!=0 ) {
                     intent.setClass(getActivity(), UpPassword.class);
                     getActivity().startActivity(intent);
 

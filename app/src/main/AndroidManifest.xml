@@ -250,6 +250,12 @@
         <activity
             android:name=".Activity.CityList"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.MyMessageList"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.MessageContent"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="UMENG_APPKEY"

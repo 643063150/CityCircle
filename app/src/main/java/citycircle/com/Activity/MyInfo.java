@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bigkoo.pickerview.TimePickerView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -39,9 +40,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
 
 import citycircle.com.MyViews.MyDialog;
-import citycircle.com.Property.AddHome;
 import citycircle.com.R;
 import citycircle.com.Utils.GetPhotos;
 import citycircle.com.Utils.GlobalVariables;
@@ -49,13 +51,14 @@ import citycircle.com.Utils.HttpRequest;
 import citycircle.com.Utils.ImageUtils;
 import citycircle.com.Utils.PreferencesUtils;
 import citycircle.com.Utils.UpUserHead;
+import citycircle.com.Utils.mDateUtil;
 import util.FileUtils;
 
 /**
  * Created by admins on 2015/11/21.
  */
 public class MyInfo extends Activity implements View.OnClickListener {
-    TextView name, sex, tell_phone, truename;
+    TextView name, sex, tell_phone, truename,birthday,address;
     ImageView uesrhead, back;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
@@ -68,18 +71,19 @@ public class MyInfo extends Activity implements View.OnClickListener {
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
     String url, urlstr, upinfourl, upinfostr;
     int sexs;
-    String username, nickname, headimage, true_name;
+    String username, nickname, headimage, true_name,birth_day,addr_ess;
     UpUserHead upUserHead;
     Dialog dialog;
     View popView;
     PopupWindow popupWindow;
-    LinearLayout namelay, sexlay, truenamelay;
+    LinearLayout namelay, sexlay, truenamelay,birthdaylay,addresslay;
     View CheckView = null;
     private LayoutInflater inflater = null;
     PopupWindow menuWindow;
     String mobile;
     int type = 0;
     int types=0;
+    TimePickerView pvTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,12 +110,17 @@ public class MyInfo extends Activity implements View.OnClickListener {
     }
 
     public void intview() {
+        pvTime = new TimePickerView(MyInfo.this, TimePickerView.Type.YEAR_MONTH_DAY);
         truename = (TextView) findViewById(R.id.truename);
         truenamelay = (LinearLayout) findViewById(R.id.truenamelay);
         truenamelay.setOnClickListener(this);
         inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         namelay = (LinearLayout) findViewById(R.id.namelay);
         namelay.setOnClickListener(this);
+        birthdaylay = (LinearLayout) findViewById(R.id.birthdaylay);
+        birthdaylay.setOnClickListener(this);
+        addresslay = (LinearLayout) findViewById(R.id.addresslay);
+        addresslay.setOnClickListener(this);
         sexlay = (LinearLayout) findViewById(R.id.sexlay);
         sexlay.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.back);
@@ -119,6 +128,8 @@ public class MyInfo extends Activity implements View.OnClickListener {
         uesrhead = (ImageView) findViewById(R.id.uesrhead);
         uesrhead.setOnClickListener(this);
         name = (TextView) findViewById(R.id.name);
+        birthday = (TextView) findViewById(R.id.birthday);
+        address = (TextView) findViewById(R.id.address);
 //        name.setOnClickListener(this);
         sex = (TextView) findViewById(R.id.sex);
 //        sex.setOnClickListener(this);
@@ -129,6 +140,24 @@ public class MyInfo extends Activity implements View.OnClickListener {
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(MyInfo.this));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
+        Calendar calendar = Calendar.getInstance();
+        pvTime.setRange(calendar.get(Calendar.YEAR) - 70, calendar.get(Calendar.YEAR));
+        pvTime.setTime(new Date());
+        pvTime.setCyclic(false);
+        pvTime.setCancelable(true);
+        pvTime.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date) {
+                birthday.setText(mDateUtil.getTime(date));
+                birth_day=birthday.getText().toString();
+                try {
+                    upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8")+"&birthday="+birth_day+"&address="+addr_ess;
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                getuserinfo(1);
+            }
+        });
     }
 
     public void getuserinfo(final int type) {
@@ -171,6 +200,10 @@ public class MyInfo extends Activity implements View.OnClickListener {
                     headimage = PreferencesUtils.getString(MyInfo.this, "headimage");
                     sexs = PreferencesUtils.getInt(MyInfo.this, "sex");
                     headimage = PreferencesUtils.getString(MyInfo.this, "headimage");
+                    birth_day=PreferencesUtils.getString(MyInfo.this, "birthday");
+                    addr_ess=PreferencesUtils.getString(MyInfo.this, "address");
+                    birthday.setText(birth_day);
+                    address.setText(addr_ess);
                     name.setText(nickname);
                     tell_phone.setText(mobile);
                     truename.setText(true_name);
@@ -216,6 +249,8 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         PreferencesUtils.putString(MyInfo.this, "nickname", nickname);
                         PreferencesUtils.putInt(MyInfo.this, "sex", sexs);
                         PreferencesUtils.putString(MyInfo.this, "truename", true_name);
+                        PreferencesUtils.putString(MyInfo.this, "birthday", birth_day);
+                        PreferencesUtils.putString(MyInfo.this, "address", addr_ess);
                         Intent intent = new Intent();
                         intent.setAction("com.servicedemo4");
                         intent.putExtra("getmeeage", "0");
@@ -325,6 +360,12 @@ public class MyInfo extends Activity implements View.OnClickListener {
                     showpop("请输入姓名", R.id.truenamelay);
                 }
                 break;
+            case R.id.birthdaylay:
+                pvTime.show();
+                break;
+            case R.id.addresslay:
+                showpop("请输入地址", R.id.addresslay);
+                break;
         }
 
     }
@@ -373,7 +414,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         } else {
                             nickname = myviptxt.getText().toString();
                             try {
-                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8");
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8")+"&birthday="+birth_day+"&address="+addr_ess;
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -386,7 +427,21 @@ public class MyInfo extends Activity implements View.OnClickListener {
                         } else {
                             true_name = myviptxt.getText().toString();
                             try {
-                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8");
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8")+"&birthday="+birth_day+"&address="+addr_ess;
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            type = 1;
+                            getuserinfo(1);
+                        }
+                        break;
+                    case R.id.addresslay:
+                        if (myviptxt.getText().toString().trim().length() == 0) {
+                            popupWindow.dismiss();
+                        } else {
+                            addr_ess = myviptxt.getText().toString();
+                            try {
+                                upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8")+"&birthday="+birth_day+"&address="+addr_ess;
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -424,7 +479,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                     case R.id.man:
                         sexs = 1;
                         try {
-                            upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs;
+                            upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8")+"&birthday="+birth_day+"&address="+addr_ess;
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -433,7 +488,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
                     case R.id.woman:
                         sexs = 0;
                         try {
-                            upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs;
+                            upinfourl = GlobalVariables.urlstr + "User.userEdit&username=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sexs + "&truename=" + URLEncoder.encode(true_name, "UTF-8")+"&birthday="+birth_day+"&address="+addr_ess;
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }

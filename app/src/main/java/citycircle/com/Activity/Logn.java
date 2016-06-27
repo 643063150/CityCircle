@@ -33,6 +33,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
 
 //import static cn.smssdk.SMSSDK.getVerificationCode;
 
@@ -40,7 +41,7 @@ import cn.sharesdk.tencent.qzone.QZone;
  * Created by admins on 2015/11/24.
  */
 public class Logn extends Activity implements View.OnClickListener, Handler.Callback, PlatformActionListener {
-    ImageView back, qq_login_icon, sina_login_icon;
+    ImageView back, qq_login_icon, sina_login_icon,my_login_wx3x;
     EditText name, password;
     Button submit;
     String url, urlstr, urldate, thredurls, therdstr, openRegister;
@@ -83,6 +84,8 @@ Object openRegisterstr;
         qq_login_icon.setOnClickListener(this);
         sina_login_icon = (ImageView) findViewById(R.id.sina_login_icon);
         sina_login_icon.setOnClickListener(this);
+        my_login_wx3x = (ImageView) findViewById(R.id.my_login_wx3x);
+        my_login_wx3x.setOnClickListener(this);
     }
 
     private void getUser(final int type) {
@@ -148,6 +151,8 @@ Object openRegisterstr;
                             PreferencesUtils.putString(Logn.this, "houseids", jsonObject2.getString("houseid"));
                             PreferencesUtils.putString(Logn.this, "fanghaoid", jsonObject2.getString("fanghaoid"));
                             PreferencesUtils.putString(Logn.this, "truename", jsonObject2.getString("truename"));
+                            PreferencesUtils.putString(Logn.this, "birthday", jsonObject2.getString("birthday"));
+                            PreferencesUtils.putString(Logn.this, "address", jsonObject2.getString("address"));
                         }
                         PreferencesUtils.putInt(Logn.this, "land", 1);
                         Intent intent = new Intent();
@@ -205,6 +210,8 @@ Object openRegisterstr;
                             PreferencesUtils.putString(Logn.this, "houseids", jsonObject6.getString("houseid"));
                             PreferencesUtils.putString(Logn.this, "fanghaoid", jsonObject6.getString("fanghaoid"));
                             PreferencesUtils.putString(Logn.this, "truename", jsonObject6.getString("truename"));
+                            PreferencesUtils.putString(Logn.this, "birthday", jsonObject6.getString("birthday"));
+                            PreferencesUtils.putString(Logn.this, "address", jsonObject6.getString("address"));
                         }
                         PreferencesUtils.putInt(Logn.this, "land", 1);
                         Intent intent = new Intent();
@@ -243,11 +250,12 @@ Object openRegisterstr;
                 }
                 break;
             case R.id.newpa:
-                intent.setClass(Logn.this,ForgetPass.class);
+                intent.setClass(Logn.this,UpPasswords.class);
                 Logn.this.startActivity(intent);
                 break;
             case R.id.reg:
-                intent.setClass(Logn.this, Register.class);
+                intent.putExtra("type",1);
+                intent.setClass(Logn.this, ForgetPass.class);
                 Logn.this.startActivity(intent);
                 finish();
                 break;
@@ -264,6 +272,12 @@ Object openRegisterstr;
 //                authorize(qzone);
                 qzone.setPlatformActionListener(this);
                 qzone.showUser(null);//执行登录，登录后在回调里面获取用户资料
+                break;
+            case R.id.my_login_wx3x:
+                Platform wx = ShareSDK.getPlatform(Wechat.NAME);
+//                authorize(qzone);
+                wx.setPlatformActionListener(this);
+                wx.showUser(null);//执行登录，登录后在回调里面获取用户资料
                 break;
         }
     }

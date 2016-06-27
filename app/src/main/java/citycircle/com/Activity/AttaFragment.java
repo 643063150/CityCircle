@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -77,7 +78,7 @@ public class AttaFragment extends Fragment {
             username = PreferencesUtils.getString(getActivity(), "username");
             url = GlobalVariables.urlstr + "News.getListGZ&username=" + username + "&page=" + page + "&perNumber=20";
             setCamadapter();
-            getJson();
+            getJson(0);
         }
         getbannerjson();
         return view;
@@ -94,6 +95,18 @@ public class AttaFragment extends Fragment {
         mylist.addHeaderView(headview);
         nostr.setVisibility(View.GONE);
         loadmore.loadmore(mylist);
+        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.putExtra("id", arrayList.get(position ).get("id"));
+                intent.putExtra("title", arrayList.get(position ).get("title"));
+                intent.putExtra("description", arrayList.get(position ).get("description"));
+                intent.putExtra("url", arrayList.get(position).get("url"));
+                intent.setClass(getActivity(), NewsInfoActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,21 +119,34 @@ public class AttaFragment extends Fragment {
             @Override
             public void loadmore() {
                 page++;
-                url = GlobalVariables.urlstr + "News.getListGZ&username=cheng&page=" + page + "&perNumber=20";
-                getJson();
+                url = GlobalVariables.urlstr + "News.getListGZ&username=" + username + "&page=" + page + "&perNumber=20";
+                getJson(0);
+            }
+        });
+        Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+                url = GlobalVariables.urlstr + "News.getListGZ&username=" + username + "&page=" + page + "&perNumber=20";
+                getJson(1);
             }
         });
     }
 
-    private void getJson() {
+    private void getJson(final int type) {
         OkHttpUtils.get().url(url).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
+                Refresh.setRefreshing(false);
                 Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(String response) {
+                Refresh.setRefreshing(false);
+                if (type==1){
+                    arrayList.clear();
+                }
                 setarray(response);
                 camadapter.notifyDataSetChanged();
             }
@@ -204,7 +230,7 @@ public class AttaFragment extends Fragment {
                 username = PreferencesUtils.getString(getActivity(), "username");
                 url = GlobalVariables.urlstr + "News.getListGZ&username=" + username + "&page=" + page + "&perNumber=20";
                 setCamadapter();
-                getJson();
+                getJson(1);
 
             }
 

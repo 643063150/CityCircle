@@ -35,12 +35,14 @@ public class ForgetPass extends Activity implements View.OnClickListener {
     private int recLen = 60;
     Timer timer = new Timer();
     TimerTask task;
+    int type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forpass);
         emtest = new Emailtest();
         intview();
+        type=getIntent().getIntExtra("type",0);
     }
 
     public void intview() {
@@ -126,11 +128,20 @@ public class ForgetPass extends Activity implements View.OnClickListener {
                     if (c == 0) {
                         Toast.makeText(ForgetPass.this, "验证成功", Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent();
-                        intent.putExtra("number",numbers);
-                        intent.putExtra("code",code.getText().toString());
-                        intent.setClass(ForgetPass.this,UpPasswords.class);
-                        ForgetPass.this.startActivity(intent);
-                        finish();
+                        if (type==1){
+                            intent.putExtra("number",numbers);
+                            intent.putExtra("code",code.getText().toString());
+                            intent.setClass(ForgetPass.this,Register.class);
+                            ForgetPass.this.startActivity(intent);
+                            finish();
+                        }else {
+                            intent.putExtra("number",numbers);
+                            intent.putExtra("code",code.getText().toString());
+                            intent.setClass(ForgetPass.this,UpPasswords.class);
+                            ForgetPass.this.startActivity(intent);
+                            finish();
+                        }
+
                     } else {
                         Toast.makeText(ForgetPass.this, "验证失败", Toast.LENGTH_SHORT).show();
                     }

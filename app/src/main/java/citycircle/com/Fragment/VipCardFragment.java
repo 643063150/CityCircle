@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
     ArrayList<HashMap<String, Object>> poparrayList = new ArrayList<>();
     ArrayList<HashMap<String, String>> classarrayList = new ArrayList<HashMap<String, String>>();
     int a;
-
+    SwipeRefreshLayout Refresh;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
     private void intview() {
         loadmore = new Loadmore();
         myClassPopwd = new MyClassPopwd();
+        Refresh=(SwipeRefreshLayout)view.findViewById(R.id.Refresh) ;
         classlay = (LinearLayout) view.findViewById(R.id.classlay);
         allclass = (TextView) view.findViewById(R.id.allclass);
         allclass.setOnClickListener(this);
@@ -102,6 +104,18 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
                     url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
                 }
                 getjson(0);
+            }
+        });
+        Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+                if (a == 0) {
+                    url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page;
+                } else {
+                    url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
+                }
+                getjson(1);
             }
         });
     }
@@ -143,11 +157,13 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
         OkHttpUtils.get().url(url).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
+                Refresh.setRefreshing(false);
                 Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(String response) {
+                Refresh.setRefreshing(false);
                 if (type == 1) {
                     arrayList.clear();
                 }

@@ -1,5 +1,6 @@
 package citycircle.com.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -49,20 +51,40 @@ public class CamFragment extends Fragment {
         url= GlobalVariables.urlstr+"News.getList&category_id=98&perNumber=10&page="+page;
         intview();
         setAdapter();
-        getJson();
+        getJson(0);
         return view;
     }
     private void intview(){
         loadmore = new Loadmore();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
         listView = (ListView) view.findViewById(R.id.mylist);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.putExtra("id", arrayList.get(position ).get("id"));
+                intent.putExtra("title", arrayList.get(position ).get("title"));
+                intent.putExtra("description", arrayList.get(position ).get("description"));
+                intent.putExtra("url", arrayList.get(position).get("url"));
+                intent.setClass(getActivity(), NewsInfoActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         loadmore.loadmore(listView);
         loadmore.setMyPopwindowswListener(new Loadmore.LoadmoreList() {
             @Override
             public void loadmore() {
                 page++;
                 url= GlobalVariables.urlstr+"News.getList&category_id=98&perNumber=10&page="+page;
-                getJson();
+                getJson(0);
+            }
+        });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page=1;
+                url= GlobalVariables.urlstr+"News.getList&category_id=98&perNumber=10&page="+page;
+                getJson(1);
             }
         });
     }
@@ -92,15 +114,20 @@ public class CamFragment extends Fragment {
             Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
         }
     }
-    private void getJson() {
+    private void getJson(final int type) {
         OkHttpUtils.get().url(url).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(String response) {
+                swipeRefreshLayout.setRefreshing(false);
+                if (type==1){
+                    arrayList.clear();
+                }
                 setArray(response);
                 adapter.notifyDataSetChanged();
             }

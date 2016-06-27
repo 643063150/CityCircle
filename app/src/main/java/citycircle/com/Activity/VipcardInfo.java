@@ -38,7 +38,7 @@ import okhttp3.Call;
  */
 public class VipcardInfo extends Activity implements View.OnClickListener {
     CardView cardView;
-    TextView shopinfo, cardtype, titile, callphone, adress, shengyu, info, shiy;
+    TextView shopinfo, cardtype, titile, callphone, adress, shengyu, info, shiy,content;
     ImageView back, logo;
     VipInfo vipInfo;
     String url, username, id, shopid, addurl;
@@ -68,6 +68,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
+        content=(TextView)findViewById(R.id.content) ;
         btn_lq = (Button) findViewById(R.id.btn_lq);
         info = (TextView) findViewById(R.id.info);
         shiy = (TextView) findViewById(R.id.shiy);
@@ -108,6 +109,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
                         titile.setText(list.get(i).getShopname());
                         callphone.setText("电话:" + list.get(i).getTel());
                         adress.setText("地址:" + list.get(i).getAddress());
+                        content.setText(list.get(i).getInfo());
                         cardView.setCardBackgroundColor(Color.parseColor(list.get(i).getColor()));
                         options = ImageUtils.setCirclelmageOptions();
                         ImageLoader.displayImage(list.get(i).getLogo(), logo, options, animateFirstListener);

@@ -34,20 +34,22 @@ import citycircle.com.Utils.PreferencesUtils;
 public class Register extends Activity implements View.OnClickListener {
     Button submit, getcode;
     ImageView back;
-    EditText code, number, password, name;
+    EditText surepassword, password, name;
     String numbesr, datastr, url, urlstr;
     private int recLen = 60;
     Timer timer = new Timer();
     CheckBox xieyi;
     Emailtest emtest;
     TimerTask task;
-    String smurl, smurlstr;
+    String smurl, smurlstr, codes, username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         emtest = new Emailtest();
+        codes = getIntent().getStringExtra("code");
+        username = getIntent().getStringExtra("number");
 //        SMSSDK.initSDK(this, "c895006654f8", "412eba357f218ab8cdaf9f58d85937dd");
 //        SMSSDK.registerEventHandler(eh);
         intview();
@@ -60,11 +62,8 @@ public class Register extends Activity implements View.OnClickListener {
         submit.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-        code = (EditText) findViewById(R.id.code);
-        getcode = (Button) findViewById(R.id.getcode);
-        getcode.setOnClickListener(this);
-        number = (EditText) findViewById(R.id.number);
         password = (EditText) findViewById(R.id.password);
+        surepassword = (EditText) findViewById(R.id.surepassword);
         name = (EditText) findViewById(R.id.name);
         xieyi = (CheckBox) findViewById(R.id.xieyi);
     }
@@ -126,12 +125,12 @@ public class Register extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    JSONObject jsonObject3=JSON.parseObject(smurlstr);
-                    JSONObject jsonObject1=jsonObject3.getJSONObject("data");
-                    int b=jsonObject1.getIntValue("code");
-                    if (b==0){
+                    JSONObject jsonObject3 = JSON.parseObject(smurlstr);
+                    JSONObject jsonObject1 = jsonObject3.getJSONObject("data");
+                    int b = jsonObject1.getIntValue("code");
+                    if (b == 0) {
                         Toast.makeText(Register.this, "验证码已发送", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(Register.this, jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -212,45 +211,24 @@ public class Register extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.submit:
-                String codes = code.getText().toString();
-                if (!(number.getText().toString().equals(numbesr))) {
-                    Toast.makeText(Register.this, "手机号码与验证手机不符", Toast.LENGTH_SHORT).show();
-                } else if (codes.length() == 0) {
-                    Toast.makeText(Register.this, "请输入验证码！", Toast.LENGTH_SHORT).show();
-                }
                 if (name.getText().toString().trim().length() == 0) {
                     Toast.makeText(Register.this, "请输入昵称！", Toast.LENGTH_SHORT).show();
                 } else if (password.getText().toString().trim().length() == 0) {
                     Toast.makeText(Register.this, "请输入密码！", Toast.LENGTH_SHORT).show();
-                } else if (!xieyi.isChecked()) {
-                    Toast.makeText(Register.this, "请勾选用户协议！", Toast.LENGTH_SHORT).show();
+                } else if (!password.getText().toString().trim().equals(surepassword.getText().toString().trim())) {
+                    Toast.makeText(Register.this, "密码与缺人密码不一致！", Toast.LENGTH_SHORT).show();
                 } else {
-                    //短信验证
-//                    submitVerificationCode("86", numbesr, codes);
-                    String username = number.getText().toString();
                     String nickname = name.getText().toString();
                     String passwords = password.getText().toString();
                     try {
-                        datastr = "mobile=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&password=" + passwords+"&code="+codes;
+                        datastr = "mobile=" + username + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&password=" + passwords + "&code=" + codes;
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                     getStr(0);
                 }
-                break;
-            case R.id.getcode:
-                numbesr = number.getText().toString();
-                if (numbesr.length() == 0) {
-                    Toast.makeText(Register.this, "请输入手机号", Toast.LENGTH_SHORT).show();
-                } else if (!emtest.checkphone(numbesr)) {
-                    Toast.makeText(Register.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-                } else {
-//                    getVerificationCode("86", numbesr);
-                    smurl = GlobalVariables.urlstr + "User.smsSend&mobile=" + numbesr + "&type=1";
-                    getStr(1);
-                    gettime();
-                    getcode.setClickable(false);
-                }
+                //短信验证
+//                    submitVerificationCode("86", numbesr, codes);
                 break;
         }
     }

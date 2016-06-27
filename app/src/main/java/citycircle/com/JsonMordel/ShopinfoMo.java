@@ -90,7 +90,7 @@ public class ShopinfoMo {
             private String shopname;
             private String tel;
             private String address;
-            private Object info;
+            private String info;
             private String id;
 
             public String getLogo() {
@@ -125,11 +125,11 @@ public class ShopinfoMo {
                 this.address = address;
             }
 
-            public Object getInfo() {
+            public String getInfo() {
                 return info;
             }
 
-            public void setInfo(Object info) {
+            public void setInfo(String info) {
                 this.info = info;
             }
 

@@ -34,6 +34,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -59,9 +60,9 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
     WebView myview;
     String url, urlinfo, id;
     String webtxt, description, path, addurl, addstr, imgurl, adoutnews, aboutstr;
-    ImageView share, back, collect, addimg, collects;
+    ImageView share, back, collect, addimg, collects,comment;
     Button collected;
-    Button submit;
+//    Button submit;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
@@ -94,9 +95,11 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         addimg.setOnClickListener(this);
         collected = (Button) findViewById(R.id.collected);
         collect = (ImageView) findViewById(R.id.collect);
+        comment=(ImageView)findViewById(R.id.comment) ;
+        comment.setOnClickListener(this);
         collect.setOnClickListener(this);
-        submit = (Button) findViewById(R.id.submit);
-        submit.setOnClickListener(this);
+//        submit = (Button) findViewById(R.id.submit);
+//        submit.setOnClickListener(this);
         myview = (WebView) findViewById(R.id.webview);
         share = (ImageView) findViewById(R.id.share);
         share.setOnClickListener(this);
@@ -119,7 +122,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         addurl = GlobalVariables.urlstr + "News.getArticle&id=" + id;
         myview.loadUrl(url);
         getcollext();
-        submit.setText("看评论");
+//        submit.setText("看评论");
         getWEbciew(1);
         myview.setWebChromeClient(new WebChromeClient() {
             //
@@ -311,7 +314,12 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                     } else {
 
                     }
-                    submit.setText(imgurl + "评");
+                    BadgeView badge = new BadgeView(NewsInfoActivity.this, comment);
+                    badge.setText(imgurl);
+                    badge.setTextSize(10);
+                    badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+                    badge.show();
+//                    submit.setText(imgurl + "评");
 //                    add.setVisibility(View.VISIBLE);
 //                    options = ImageUtils.setnoOptions();
 //                    ImageLoader.displayImage(imgurl, addimg, options,
@@ -323,7 +331,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                     JSONObject jsonObject2 = JSON.parseObject(aboutstr);
                     JSONObject jsonObject5 = jsonObject2.getJSONObject("data");
                     if (jsonObject5.getIntValue("code") == 0) {
-                        collects.setImageResource(R.mipmap.colle_icons02);
+//                        collects.setImageResource(R.mipmap.colle_icons02);
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("id", id);
                         collarray.add(hashMap);
@@ -492,7 +500,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
             case R.id.back:
                 finish();
                 break;
-            case R.id.submit:
+            case R.id.comment:
                 Intent intent = new Intent();
                 intent.setClass(NewsInfoActivity.this, CommentList.class);
                 intent.putExtra("id", id);

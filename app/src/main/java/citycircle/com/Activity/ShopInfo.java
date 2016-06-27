@@ -29,7 +29,7 @@ import okhttp3.Call;
  */
 public class ShopInfo extends Activity implements View.OnClickListener {
     ImageView back, shopimg;
-    TextView tell_phone, adress, title, vipcard, shophd;
+    TextView tell_phone, adress, title, vipcard, shophd,content;
     String url, id, shopname;
     ShopinfoMo shopinfoMo;
     List<ShopinfoMo.DataBean.InfoBean> list = new ArrayList<>();
@@ -50,6 +50,7 @@ public class ShopInfo extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
+        content=(TextView)findViewById(R.id.content) ;
         vipcard = (TextView) findViewById(R.id.vipcard);
         vipcard.setOnClickListener(this);
         shophd = (TextView) findViewById(R.id.shophd);
@@ -82,6 +83,7 @@ public class ShopInfo extends Activity implements View.OnClickListener {
                     for (int i = 0; i < list.size(); i++) {
                         tell_phone.setText("电话:" + list.get(i).getTel());
                         adress.setText("地址:" + list.get(i).getAddress());
+                        content.setText(list.get(i).getInfo());
                         options = ImageUtils.setcenterOptions();
                         ImageLoader.displayImage(list.get(i).getLogo(), shopimg, options, animateFirstListener);
                     }
