@@ -77,7 +77,7 @@ public class HotTelAdapter extends BaseAdapter {
                 handler.sendEmptyMessage(4);
             }
         });
-        options = ImageUtils.setnoOptions();
+        options = ImageUtils.setCirclelmageOptions();
         int a = PreferencesUtils.getInt(context, "photo");
 //        if (a==1){
         ImageLoader.displayImage(url, getItemView.lehuiimg, options,

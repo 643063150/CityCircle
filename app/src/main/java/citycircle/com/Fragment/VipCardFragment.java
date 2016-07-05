@@ -28,6 +28,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citycircle.com.Activity.SearchVip;
 import citycircle.com.Activity.VipcardInfo;
 import citycircle.com.Adapter.VipAdapter;
 import citycircle.com.MyAppService.CityServices;
@@ -44,7 +45,7 @@ import okhttp3.Call;
 public class VipCardFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
     View view;
     TextView allclass, vipclass;
-    ImageView back;
+    ImageView search;
     ListView listView;
     String url, allclassurl;
     String category_id = "0", typeid = "0", username;
@@ -85,6 +86,9 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
     private void intview() {
         loadmore = new Loadmore();
         myClassPopwd = new MyClassPopwd();
+        search=(ImageView)view.findViewById(R.id.search);
+        search.setOnClickListener(this);
+        search.setVisibility(View.VISIBLE);
         Refresh=(SwipeRefreshLayout)view.findViewById(R.id.Refresh) ;
         classlay = (LinearLayout) view.findViewById(R.id.classlay);
         allclass = (TextView) view.findViewById(R.id.allclass);
@@ -187,6 +191,7 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
                 hashMap.put("shopname", jsonObject2.getString("shopname") == null ? "" : jsonObject2.getString("shopname"));
                 hashMap.put("type", jsonObject2.getString("type") == null ? "" : jsonObject2.getString("type"));
                 hashMap.put("orlq", jsonObject2.getString("orlq") == null ? "" : jsonObject2.getString("orlq"));
+                hashMap.put("hcmid", jsonObject2.getString("hcmid") == null ? "" : jsonObject2.getString("hcmid"));
                 arrayList.add(hashMap);
             }
 
@@ -216,6 +221,11 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
                 allclass.setTextColor(Color.parseColor("#333333"));
                 setpop();
                 break;
+            case R.id.search:
+                Intent intent=new Intent();
+                intent.setClass(getActivity(), SearchVip.class);
+                getActivity().startActivity(intent);
+                break;
         }
     }
 
@@ -224,8 +234,15 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
         switch (parent.getId()) {
             case R.id.viplist:
                 Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position).get("id"));
-                intent.setClass(getActivity(), VipcardInfo.class);
+                if (Integer.parseInt(arrayList.get(position).get("orlq"))==0){
+                    intent.putExtra("id", arrayList.get(position).get("id"));
+                    intent.putExtra("orlq", Integer.parseInt(arrayList.get(position).get("orlq")));
+                    intent.setClass(getActivity(), VipcardInfo.class);
+                }else {
+                    intent.putExtra("id", arrayList.get(position).get("hcmid"));
+                    intent.putExtra("orlq", Integer.parseInt(arrayList.get(position).get("orlq")));
+                    intent.setClass(getActivity(), VipcardInfo.class);
+                }
                 getActivity().startActivity(intent);
                 break;
 
@@ -287,10 +304,12 @@ public class VipCardFragment extends Fragment implements View.OnClickListener, A
         public void onReceive(Context context, Intent intent) {
             a = PreferencesUtils.getInt(getActivity(), "land");
             if (a == 0) {
+                page=1;
                 url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page;
             } else {
+                page=1;
                 username = PreferencesUtils.getString(getActivity(), "username");
-                url = GlobalVariables.urlstr + "Hyk.getList&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
+                url = GlobalVariables.urlstr + "Hyk.getlist&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
             }
             getjson(1);
         }

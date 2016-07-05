@@ -54,7 +54,7 @@ public class MyMessageAdapter extends BaseAdapter {
         getItem.drable=(ImageView)convertView.findViewById(R.id.drable);
         getItem.item.setText(arrayList.get(position).get("item").toString());
         getItem.look.setText(arrayList.get(position).get("items").toString());
-        Drawable image =context.getDrawable(Integer.parseInt(arrayList.get(position).get("drable").toString()));
+        Drawable image =context.getResources().getDrawable(Integer.parseInt(arrayList.get(position).get("drable").toString()));
         getItem.drable.setImageDrawable(image);
         BadgeView badge = new BadgeView(context, getItem.drable);
         badge.setText(arrayList.get(position).get("count").toString());

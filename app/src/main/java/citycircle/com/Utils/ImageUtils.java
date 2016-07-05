@@ -70,7 +70,7 @@ public class ImageUtils {
                 .showImageForEmptyUri(R.mipmap.my_face_icon) // 设置图片Uri为空或是错误的时候显示的图片
                 .showImageOnFail(R.mipmap.my_face_icon) // 设置图片加载或解码过程中发生错误显示的图片
                 .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
-                .cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
+                .cacheOnDisc(true) .bitmapConfig(Bitmap.Config.RGB_565)// // 设置下载的图片是否缓存在SD卡中
                 .displayer(new CircleBitmapDisplayer()) // 设置成圆角图片
                 .build(); // 创建配置过得DisplayImageOption对象
         return DisplayImageOptions;

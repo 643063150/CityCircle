@@ -1,5 +1,6 @@
 package citycircle.com.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.umeng.message.PushAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -20,6 +22,7 @@ import citycircle.com.Activity.AttaFragment;
 import citycircle.com.Activity.CamFragment;
 import citycircle.com.Activity.LocalFragment;
 import citycircle.com.Activity.RecommFragment;
+import citycircle.com.Activity.SearchNews;
 import citycircle.com.R;
 
 /**
@@ -35,6 +38,7 @@ public class HomeFragment extends Fragment {
     LocalFragment localFragment;
     RecommFragment recommFragment;
     CamFragment camFragment;
+    ImageView search;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
     private void setView(){
+        search=(ImageView)view.findViewById(R.id.search) ;
         viewPager=(ViewPager)view.findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(4);
         adapter=new SectionsPagerAdapter(getChildFragmentManager());
@@ -53,6 +58,14 @@ public class HomeFragment extends Fragment {
         tabLayout = (TabLayout)view. findViewById(R.id.mytabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(getActivity(), SearchNews.class);
+                getActivity().startActivity(intent);
+            }
+        });
     }
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 //        ArrayList<Fragment> arrayList=new ArrayList<>();

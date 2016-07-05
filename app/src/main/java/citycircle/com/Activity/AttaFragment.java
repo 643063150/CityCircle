@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import citycircle.com.Adapter.Camadapter;
 import citycircle.com.Adapter.NetworkImageHolderView;
-import citycircle.com.Adapter.ShopCamadapter;
 import citycircle.com.MyAppService.CityServices;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
@@ -51,7 +51,7 @@ public class AttaFragment extends Fragment {
     String url, username, bannerurl;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
-    ShopCamadapter camadapter;
+    Camadapter camadapter;
     Loadmore loadmore;
     ConvenientBanner fristbannerbanner;
     private List<String> networkImages;
@@ -99,11 +99,9 @@ public class AttaFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position ).get("id"));
-                intent.putExtra("title", arrayList.get(position ).get("title"));
-                intent.putExtra("description", arrayList.get(position ).get("description"));
-                intent.putExtra("url", arrayList.get(position).get("url"));
-                intent.setClass(getActivity(), NewsInfoActivity.class);
+                intent.putExtra("id", arrayList.get(position-mylist.getHeaderViewsCount() ).get("id"));
+                intent.putExtra("type", 1);
+                intent.setClass(getActivity(), DiscountInfo.class);
                 getActivity().startActivity(intent);
             }
         });
@@ -129,6 +127,7 @@ public class AttaFragment extends Fragment {
                 page=1;
                 url = GlobalVariables.urlstr + "News.getListGZ&username=" + username + "&page=" + page + "&perNumber=20";
                 getJson(1);
+                getbannerjson();
             }
         });
     }
@@ -183,7 +182,7 @@ public class AttaFragment extends Fragment {
         OkHttpUtils.get().url(bannerurl).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                mylist.removeHeaderView(headview);
+                headview.setVisibility(View.GONE);
             }
 
             @Override
@@ -203,15 +202,16 @@ public class AttaFragment extends Fragment {
                             return new NetworkImageHolderView();
                         }
                     }, networkImages);
+                    headview.setVisibility(View.VISIBLE);
                 } else {
-                    mylist.removeHeaderView(headview);
+                    headview.setVisibility(View.GONE);
                 }
             }
         });
     }
 
     private void setCamadapter() {
-        camadapter = new ShopCamadapter(arrayList, getActivity());
+        camadapter = new Camadapter(arrayList, getActivity());
         mylist.setAdapter(camadapter);
     }
 

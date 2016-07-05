@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_marginRight="@dimen/ui_10_dip"
@@ -64,5 +64,6 @@
         android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
         android:src="@mipmap/ic_launcher" />
 </LinearLayout>

@@ -9,7 +9,7 @@ public class VipInfo {
 
     /**
      * ret : 200
-     * data : {"code":0,"msg":"","info":[{"id":"1","color":"#49403f","logo":"http://7xoljw.com1.z0.glb.clouddn.com/2015-11-25_56556403b25ac.jpg","shopname":"怀府网","type":"计次卡","tel":"123456","address":"aaaa","info":null,"shopid":"1","orlq":1,"values":"100"}]}
+     * data : {"code":0,"msg":"","info":[{"id":"12","values":"9","cardnumber":"1466578118761","color":"#e62129","logo":"http://7xoljw.com1.z0.glb.clouddn.com/2015-11-25_56556403b25ac.jpg","shopname":"怀府网","type":"计次卡","tel":"123456","address":"aaaa","info":null,"shopid":"1"}]}
      * msg :
      */
 
@@ -17,7 +17,7 @@ public class VipInfo {
     /**
      * code : 0
      * msg :
-     * info : [{"id":"1","color":"#49403f","logo":"http://7xoljw.com1.z0.glb.clouddn.com/2015-11-25_56556403b25ac.jpg","shopname":"怀府网","type":"计次卡","tel":"123456","address":"aaaa","info":null,"shopid":"1","orlq":1,"values":"100"}]
+     * info : [{"id":"12","values":"9","cardnumber":"1466578118761","color":"#e62129","logo":"http://7xoljw.com1.z0.glb.clouddn.com/2015-11-25_56556403b25ac.jpg","shopname":"怀府网","type":"计次卡","tel":"123456","address":"aaaa","info":null,"shopid":"1"}]
      */
 
     private DataBean data;
@@ -51,8 +51,10 @@ public class VipInfo {
         private int code;
         private String msg;
         /**
-         * id : 1
-         * color : #49403f
+         * id : 12
+         * values : 9
+         * cardnumber : 1466578118761
+         * color : #e62129
          * logo : http://7xoljw.com1.z0.glb.clouddn.com/2015-11-25_56556403b25ac.jpg
          * shopname : 怀府网
          * type : 计次卡
@@ -60,8 +62,6 @@ public class VipInfo {
          * address : aaaa
          * info : null
          * shopid : 1
-         * orlq : 1
-         * values : 100
          */
 
         private List<InfoBean> info;
@@ -92,6 +92,8 @@ public class VipInfo {
 
         public static class InfoBean {
             private String id;
+            private String values;
+            private String cardnumber;
             private String color;
             private String logo;
             private String shopname;
@@ -100,8 +102,6 @@ public class VipInfo {
             private String address;
             private String info;
             private String shopid;
-            private int orlq;
-            private String values;
 
             public String getId() {
                 return id;
@@ -109,6 +109,22 @@ public class VipInfo {
 
             public void setId(String id) {
                 this.id = id;
+            }
+
+            public String getValues() {
+                return values;
+            }
+
+            public void setValues(String values) {
+                this.values = values;
+            }
+
+            public String getCardnumber() {
+                return cardnumber;
+            }
+
+            public void setCardnumber(String cardnumber) {
+                this.cardnumber = cardnumber;
             }
 
             public String getColor() {
@@ -173,22 +189,6 @@ public class VipInfo {
 
             public void setShopid(String shopid) {
                 this.shopid = shopid;
-            }
-
-            public int getOrlq() {
-                return orlq;
-            }
-
-            public void setOrlq(int orlq) {
-                this.orlq = orlq;
-            }
-
-            public String getValues() {
-                return values;
-            }
-
-            public void setValues(String values) {
-                this.values = values;
             }
         }
     }

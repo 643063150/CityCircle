@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -59,6 +60,10 @@ public class RecomAdapter extends BaseAdapter {
             convertView= LayoutInflater.from(context).inflate(R.layout.cam_item,null);
             getitem.title=(TextView)convertView.findViewById(R.id.title);
             getitem.banner=(ImageView) convertView.findViewById(R.id.banner);
+            getitem.statimg=(ImageView) convertView.findViewById(R.id.statimg);
+            getitem.timelay=(LinearLayout) convertView.findViewById(R.id.timelay);
+            getitem.statimg.setVisibility(View.GONE);
+            getitem.timelay.setVisibility(View.GONE);
             getitem.title.setText(arrayList.get(position).get("title"));
             options=ImageUtils.setcenterOptions();
             String url=arrayList.get(position).get("url");
@@ -79,6 +84,7 @@ public class RecomAdapter extends BaseAdapter {
     }
     private class getitem{
         TextView title,name,views;
-        ImageView shopimg,banner;
+        ImageView shopimg,banner,statimg;
+        LinearLayout timelay;
     }
 }

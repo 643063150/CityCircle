@@ -256,6 +256,15 @@
         <activity
             android:name=".Activity.MessageContent"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.SearchNews"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.SearchVip"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activity.VipCardConInfo"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="UMENG_APPKEY"

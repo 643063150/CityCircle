@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -24,31 +25,34 @@ import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Created by admins on 2016/6/2.
+ * Created by admins on 2016/6/30.
  */
-public class MyWallet extends Activity {
+public class VipCardConInfo extends Activity {
     SwipeRefreshLayout swipeRefreshLayout;
     ListView walletlist;
     ImageView back;
     WallJsonMo wallJsonMo;
     List<WallJsonMo.DataBean.InfoBean> list = new ArrayList<>();
-    String url, username;
+    String url, username,id;
     MyWallAdapter adapter;
     int page=1;
     Loadmore loadmore;
+    TextView titile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mywallet);
-        username = PreferencesUtils.getString(MyWallet.this, "username");
-        url = GlobalVariables.urlstr + "Hyk.getUserMoneys&username=" + username+"&page="+page;
+        username = PreferencesUtils.getString(VipCardConInfo.this, "username");
+        id=getIntent().getStringExtra("id");
+        url = GlobalVariables.urlstr + "Hyk.getUserMoneys&username=" + username+"&page="+page+"&id="+id;
         intview();
         setWalletlist();
         getJson(0);
     }
-
     private void intview() {
         loadmore=new Loadmore();
+        titile=(TextView)findViewById(R.id.titile);
+        titile.setText("消费明细");
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.Refresh);
         walletlist = (ListView) findViewById(R.id.walletlist);
         back = (ImageView) findViewById(R.id.back);
@@ -57,7 +61,7 @@ public class MyWallet extends Activity {
             @Override
             public void loadmore() {
                 page++;
-                url = GlobalVariables.urlstr + "Hyk.getUserMoneys&username=" + username+"&page="+page;
+                url = GlobalVariables.urlstr + "Hyk.getUserMoneys&username=" + username+"&page="+page+"&id="+id;
                 getJson(0);
             }
         });
@@ -65,7 +69,7 @@ public class MyWallet extends Activity {
             @Override
             public void onRefresh() {
                 page=1;
-                url = GlobalVariables.urlstr + "Hyk.getUserMoneys&username=" + username+"&page="+page;
+                url = GlobalVariables.urlstr + "Hyk.getUserMoneys&username=" + username+"&page="+page+"&id="+id;
                 getJson(1);
             }
         });
@@ -82,7 +86,7 @@ public class MyWallet extends Activity {
             @Override
             public void onError(Call call, Exception e) {
                 swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(MyWallet.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VipCardConInfo.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -99,13 +103,13 @@ public class MyWallet extends Activity {
                     if (page!=1){
                         page--;
                     }
-                 Toast.makeText(MyWallet.this,R.string.nomore,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VipCardConInfo.this,R.string.nomore,Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
     private void setWalletlist(){
-        adapter=new MyWallAdapter(list,MyWallet.this);
+        adapter=new MyWallAdapter(list,VipCardConInfo.this);
         walletlist.setAdapter(adapter);
     }
 }

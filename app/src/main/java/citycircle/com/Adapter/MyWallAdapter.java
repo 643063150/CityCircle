@@ -20,11 +20,13 @@ import citycircle.com.Utils.DateUtils;
 public class MyWallAdapter extends BaseAdapter {
     List<WallJsonMo.DataBean.InfoBean> list;
     Context context;
-    public MyWallAdapter(List<WallJsonMo.DataBean.InfoBean> list, Context context){
-        this.context=context;
-        this.list=list;
+
+    public MyWallAdapter(List<WallJsonMo.DataBean.InfoBean> list, Context context) {
+        this.context = context;
+        this.list = list;
 
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -42,25 +44,66 @@ public class MyWallAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView= LayoutInflater.from(context).inflate(R.layout.wall_item,null);
-        getItem getItem=new getItem();
-        getItem.jifen=(TextView)convertView.findViewById(R.id.jifen);
-        getItem.time=(TextView)convertView.findViewById(R.id.time);
-        getItem.money=(TextView)convertView.findViewById(R.id.money);
-        getItem.shopname=(TextView)convertView.findViewById(R.id.shopname);
-        if (list.get(position).getType()==1){
-            getItem.money.setTextColor(Color.parseColor("#239400"));
-            getItem.money.setText("充值:"+list.get(position).getMoney()+"元");
-        }else {
-            getItem.money.setTextColor(Color.parseColor("#BD0000"));
-            getItem.money.setText("消费:"+list.get(position).getMoney()+"元");
+        convertView = LayoutInflater.from(context).inflate(R.layout.wall_item, null);
+        getItem getItem = new getItem();
+        getItem.jifen = (TextView) convertView.findViewById(R.id.jifen);
+        getItem.time = (TextView) convertView.findViewById(R.id.time);
+        getItem.money = (TextView) convertView.findViewById(R.id.money);
+        getItem.shopname = (TextView) convertView.findViewById(R.id.shopname);
+        switch (list.get(position).getCardtype()) {
+            case 1:
+                if (list.get(position).getXftype() == 1) {
+                    getItem.money.setTextColor(Color.parseColor("#239400"));
+                    getItem.money.setText("充次:+" + list.get(position).getValue() + "次");
+                    getItem.jifen.setText("现金:"+list.get(position).getMoney()+"元");
+                } else {
+                    getItem.money.setTextColor(Color.parseColor("#BD0000"));
+                    getItem.money.setText("消费: -" + list.get(position).getValue() + "次");
+                    getItem.jifen.setVisibility(View.GONE);
+                }
+
+                break;
+            case 2:
+                if (list.get(position).getXftype() == 1) {
+                    getItem.money.setTextColor(Color.parseColor("#239400"));
+                    getItem.money.setText("充值:+" + list.get(position).getValue() + "元");
+                    getItem.jifen.setText("现金:"+list.get(position).getMoney()+"元");
+                } else {
+                    getItem.money.setTextColor(Color.parseColor("#BD0000"));
+                    getItem.money.setText("消费: -" + list.get(position).getValue() + "元");
+                    getItem.jifen.setVisibility(View.GONE);
+                }
+
+                break;
+            case 3:
+//               if (list.get(position).getXftype()==1){
+//                   getItem.money.setTextColor(Color.parseColor("#239400"));
+//                   getItem.money.setText("充值:"+list.get(position).getMoney()+"元");
+//               }else {
+                getItem.money.setTextColor(Color.parseColor("#BD0000"));
+                getItem.money.setText("消费:" + list.get(position).getMoney() + "元");
+                getItem.jifen.setText("折扣后金额:" + list.get(position).getValue()+"元");
+//               }
+                break;
+            case 4:
+//                if (list.get(position).getXftype() == 1) {
+//                    getItem.money.setTextColor(Color.parseColor("#239400"));
+//                    getItem.money.setText("充值:" + list.get(position).getMoney() + "元");
+//                } else {
+                getItem.money.setTextColor(Color.parseColor("#BD0000"));
+                getItem.money.setText("消费:" + list.get(position).getMoney() + "元");
+                getItem.jifen.setText("获得积分:" + list.get(position).getValue());
+//                }
+                break;
         }
-        getItem.shopname.setText("店铺名称:"+list.get(position).getShopname());
-        getItem.jifen.setText("获得积分:"+list.get(position).getValue());
+
+        getItem.shopname.setText("店铺名称:" + list.get(position).getShopname());
+//        getItem.jifen.setText("获得积分:"+list.get(position).getValue());
         getItem.time.setText(DateUtils.getDateToStringss(list.get(position).getCreate_time()));
         return convertView;
     }
-    public class getItem{
-        TextView time,money,jifen,shopname;
+
+    public class getItem {
+        TextView time, money, jifen, shopname;
     }
 }

@@ -35,21 +35,23 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 public class DiscountInfo extends Activity implements View.OnClickListener {
 
     String url, urlinfo, id;
-    String imgurl, name, time, tel, adress, addurl, addinfo, username,view;
+    String imgurl, name, time, tel, adress, addurl, addinfo, username,view,content;
     DateUtils dateUtils;
     ImageView back, saimg, shares, collect;
-    TextView names, times, tels, adresss,views;
+    TextView names, times, tels, adresss,views,titile,hd,hd2;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
    WebView webview;
+    int type;
     @Override
     @SuppressLint({"SetJavaScriptEnabled", "InlinedApi"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.discount);
         id = getIntent().getStringExtra("id");
+        type=getIntent().getIntExtra("type",0);
         username = PreferencesUtils.getString(DiscountInfo.this, "username");
         dateUtils = new DateUtils();
         url = GlobalVariables.urlstr + "Discount.getArticle&id=" + id;
@@ -59,6 +61,10 @@ public class DiscountInfo extends Activity implements View.OnClickListener {
     }
 
     public void intview() {
+        titile=(TextView)findViewById(R.id.titile);
+        if (type!=0){
+            titile.setText("活动详情");
+        }
         webview=(WebView)findViewById(R.id.webview);
         webview.setVerticalScrollBarEnabled(false); //垂直不显示
         webview.getSettings().setJavaScriptEnabled(true);
@@ -70,6 +76,8 @@ public class DiscountInfo extends Activity implements View.OnClickListener {
         collect = (ImageView) findViewById(R.id.collects);
         collect.setOnClickListener(this);
         names = (TextView) findViewById(R.id.name);
+        hd = (TextView) findViewById(R.id.hd);
+        hd2 = (TextView) findViewById(R.id.hd2);
         times = (TextView) findViewById(R.id.time);
         tels = (TextView) findViewById(R.id.tel);
         adresss = (TextView) findViewById(R.id.adress);
@@ -115,15 +123,38 @@ public class DiscountInfo extends Activity implements View.OnClickListener {
             switch (msg.what) {
                 case 1:
                     setUrlinfo(urlinfo);
-                    names.setText(" " +name);
-                    times.setText("报名时间: " + time);
-                    tels.setText("联系电话: " + tel);
-                    adresss.setText("联系地址: " + adress);
+                    if (type!=0){
+                        hd.setText("活动:");
+                        hd2.setText("活动信息");
+                        times.setText("时间: " + time);
+                        tels.setText("电话: " + tel);
+                        adresss.setText("地址: " + adress);
+                    }else {
+                        names.setText(" " +name);
+                        times.setText("报名时间: " + time);
+                        tels.setText("联系电话: " + tel);
+                        adresss.setText("联系地址: " + adress);
+                    }
                     views.setText("浏览量: "+view);
                     options = ImageUtils.setnoOptions();
                     ImageLoader.displayImage(imgurl, saimg, options,
                             animateFirstListener);
-                    webview.loadUrl("http://101.201.169.38/city/dis_info_info.php?id=" + id);
+                    if (type!=0){
+                        String info = "<html>\r\n\t"
+                                + "<head>\r\n"
+                                + "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\"/>"
+                                + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0\" />"
+                                + "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />"
+                                + "<style>\r\n\t "
+                                + "table {border-right:1px dashed #D2D2D2;border-bottom:1px dashed #D2D2D2} \r\n\t "
+                                + "table td{border-left:1px dashed #D2D2D2;border-top:1px dashed #D2D2D2} \r\n\t"
+                                + "img {width:100%}\r\n" + "</style>\r\n\t"
+                                + "</head>\r\n" + "<body style=\"width:[width]\">\r\n"
+                                + content + "\r\n</body>" + "</html>";
+                        webview.loadDataWithBaseURL(null,info , "text/html", "utf-8", null);
+                    }else {
+                        webview.loadUrl("http://101.201.169.38/city/dis_info_info.php?id=" + id);
+                    }
                     break;
                 case 2:
                     Toast.makeText(DiscountInfo.this, "网络超时", Toast.LENGTH_SHORT).show();
@@ -158,6 +189,7 @@ public class DiscountInfo extends Activity implements View.OnClickListener {
                 tel = jsonObject2.getString("tel");
                 adress = jsonObject2.getString("address");
                 view=jsonObject2.getString("view");
+                content=jsonObject2.getString("content");
                 String start = dateUtils.getDateToStrings(jsonObject2.getLongValue("s_time"));
                 String end = dateUtils.getDateToStrings(jsonObject2.getLongValue("e_time"));
                 time = start + "至" + end;

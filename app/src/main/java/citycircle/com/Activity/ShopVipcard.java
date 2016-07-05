@@ -25,6 +25,7 @@ import citycircle.com.Adapter.MyVipcardAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.Loadmore;
+import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -34,10 +35,10 @@ public class ShopVipcard extends Activity implements AdapterView.OnItemClickList
     ImageView back;
     SwipeRefreshLayout Refresh;
     ListView viplist;
-    String url, shopid;
+    String url, shopid,username;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
-    int page = 1;
+    int page = 1,a;
     MyVipcardAdapter adapter;
     Loadmore loadmore;
 
@@ -46,7 +47,14 @@ public class ShopVipcard extends Activity implements AdapterView.OnItemClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopvipcard);
         shopid = getIntent().getStringExtra("id");
-        url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid;
+        a = PreferencesUtils.getInt(ShopVipcard.this, "land");
+        if (a==0){
+            url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid;
+        }else {
+            username = PreferencesUtils.getString(ShopVipcard.this, "username");
+            url = GlobalVariables.urlstr + "Hyk.getShopCard&id=" + shopid+"&username="+username;
+        }
+
         intview();
         setAdapter();
         getjson();
@@ -98,6 +106,8 @@ public class ShopVipcard extends Activity implements AdapterView.OnItemClickList
                 hashMap.put("logo", jsonObject2.getString("logo") == null ? "" : jsonObject2.getString("logo"));
                 hashMap.put("shopname", jsonObject2.getString("shopname") == null ? "" : jsonObject2.getString("shopname"));
                 hashMap.put("type", jsonObject2.getString("type") == null ? "" : jsonObject2.getString("type"));
+                hashMap.put("orlq", jsonObject2.getString("orlq") == null ? "" : jsonObject2.getString("orlq"));
+                hashMap.put("hcmid", jsonObject2.getString("hcmid") == null ? "" : jsonObject2.getString("hcmid"));
                 arrayList.add(hashMap);
             }
 
@@ -114,8 +124,15 @@ public class ShopVipcard extends Activity implements AdapterView.OnItemClickList
         switch (parent.getId()) {
             case R.id.viplist:
                 Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position).get("id"));
-                intent.setClass(ShopVipcard.this, VipcardInfo.class);
+                if (Integer.parseInt(arrayList.get(position).get("orlq"))==0){
+                    intent.putExtra("id", arrayList.get(position).get("id"));
+                    intent.putExtra("orlq", Integer.parseInt(arrayList.get(position).get("orlq")));
+                    intent.setClass(ShopVipcard.this, VipcardInfo.class);
+                }else {
+                    intent.putExtra("id", arrayList.get(position).get("hcmid"));
+                    intent.putExtra("orlq", Integer.parseInt(arrayList.get(position).get("orlq")));
+                    intent.setClass(ShopVipcard.this, VipcardInfo.class);
+                }
                 ShopVipcard.this.startActivity(intent);
                 break;
         }

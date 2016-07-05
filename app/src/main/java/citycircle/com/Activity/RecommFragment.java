@@ -75,12 +75,20 @@ public class RecommFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position ).get("id"));
-                intent.putExtra("title", arrayList.get(position ).get("title"));
-                intent.putExtra("description", arrayList.get(position ).get("description"));
-                intent.putExtra("url", arrayList.get(position).get("url"));
-                intent.setClass(getActivity(), NewsInfoActivity.class);
-                getActivity().startActivity(intent);
+                if (Integer.parseInt(arrayList.get(position-listView.getHeaderViewsCount()).get("category_id"))==98){
+                    intent.putExtra("id", arrayList.get(position -listView.getHeaderViewsCount()).get("id"));
+                    intent.putExtra("type", 1);
+                    intent.setClass(getActivity(), DiscountInfo.class);
+                    getActivity().startActivity(intent);
+                }else {
+                    intent.putExtra("id", arrayList.get(position -listView.getHeaderViewsCount()).get("id"));
+                    intent.putExtra("title", arrayList.get(position-listView.getHeaderViewsCount() ).get("title"));
+                    intent.putExtra("description", arrayList.get(position-listView.getHeaderViewsCount() ).get("description"));
+                    intent.putExtra("url", arrayList.get(position-listView.getHeaderViewsCount()).get("url"));
+                    intent.setClass(getActivity(), NewsInfoActivity.class);
+                    getActivity().startActivity(intent);
+                }
+
             }
         });
         listView.addHeaderView(headview);
@@ -99,6 +107,7 @@ public class RecommFragment extends Fragment {
                 page=1;
                 url = GlobalVariables.urlstr + "News.getListTJ&perNumber=10&page=" + page;
                 getJson(1);
+                getbannerjson();
             }
         });
     }
@@ -153,7 +162,7 @@ public class RecommFragment extends Fragment {
         OkHttpUtils.get().url(bannerurl).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                listView.removeHeaderView(headview);
+                headview.setVisibility(View.GONE);
             }
 
             @Override
@@ -173,8 +182,9 @@ public class RecommFragment extends Fragment {
                             return new NetworkImageHolderView();
                         }
                     }, networkImages);
+                    headview.setVisibility(View.VISIBLE);
                 } else {
-                    listView.removeHeaderView(headview);
+                    headview.setVisibility(View.GONE);
                 }
             }
         });

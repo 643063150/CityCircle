@@ -2,6 +2,7 @@ package citycircle.com.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -44,6 +45,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import citycircle.com.Adapter.AboutAdapter;
+import citycircle.com.MyViews.MyDialog;
 import citycircle.com.MyViews.MyListView;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
@@ -78,13 +80,15 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
     EditText myviptxt;
     Handler handlers = new Handler();
     String username;
-
+    Dialog dialog;
     @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newsinfo);
+        dialog= MyDialog.createLoadingDialog(NewsInfoActivity.this, "正在登陆...");
+        dialog.show();
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         add = (LinearLayout) findViewById(R.id.add);
@@ -117,7 +121,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         description = getIntent().getStringExtra("description");
         path = getIntent().getStringExtra("url");
 //        url = GlobalVariables.urlstr + "News.getArticle&id=71";
-        url = "http://101.201.169.38/city/news_info.php?id=" + id + "&type=1";
+        url = "http://123.57.162.97/city/news_info.php?id=" + id + "&type=1";
 //        url="http://123.57.28.170/zxd/city/android.html";
         addurl = GlobalVariables.urlstr + "News.getArticle&id=" + id;
         myview.loadUrl(url);
@@ -130,6 +134,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
 
                 if (progress == 100) {
 //                    getWEbciew(1);
+                    dialog.dismiss();
                 }
             }
         });
@@ -331,7 +336,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                     JSONObject jsonObject2 = JSON.parseObject(aboutstr);
                     JSONObject jsonObject5 = jsonObject2.getJSONObject("data");
                     if (jsonObject5.getIntValue("code") == 0) {
-//                        collects.setImageResource(R.mipmap.colle_icons02);
+                        collects.setImageResource(R.mipmap.news_collect_s12x);
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("id", id);
                         collarray.add(hashMap);
@@ -459,7 +464,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                 View.OnClickListener listener = new View.OnClickListener() {
                     public void onClick(View v) {
                         ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        clip.setText("http://101.201.169.38/city/news_info.php?id=" + id);
+                        clip.setText("http://123.57.162.97/city/news_info.php?id=" + id);
                         Toast.makeText(NewsInfoActivity.this, "已经复制到粘贴板", Toast.LENGTH_SHORT).show();
                     }
                 };
@@ -479,20 +484,20 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                 }
                 oks.setTitle(webtxt);
                 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-                oks.setTitleUrl("http://101.201.169.38/city/news_info.php?id=" + id + "&type=0");
+                oks.setTitleUrl("http://123.57.162.97/city/news_info.php?id=" + id + "&type=0");
                 // text是分享文本，所有平台都需要这个字段
                 oks.setText(description);
                 oks.setImageUrl(path);
                 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
                 // url仅在微信（包括好友和朋友圈）中使用
-                oks.setUrl("http://101.201.169.38/city/news_info.php?id=" + id + "&type=0");
+                oks.setUrl("http://123.57.162.97/city/news_info.php?id=" + id + "&type=0");
                 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 //        oks.setComment("我是测试评论文本");
                 // site是分享此内容的网站名称，仅在QQ空间使用
                 oks.setSite(getString(R.string.app_name));
                 // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-                oks.setSiteUrl("http://101.201.169.38/city/news_info.php?id=" + id + "&type=0");
+                oks.setSiteUrl("http://123.57.162.97/city/news_info.php?id=" + id + "&type=0");
 
 // 启动分享GUI
                 oks.show(this);
@@ -533,7 +538,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                 String ID=jsonObject1.getString("id") == null ? "" : jsonObject1.getString("id");
                     if (ID.equals(id)) {
-                        collects.setImageResource(R.mipmap.colle_icons02);
+                        collects.setImageResource(R.mipmap.news_collect_s12x);
                     } else {
                 }
                 hashMap.put("id", jsonObject1.getString("id")== null ? "" : jsonObject1.getString("id"));

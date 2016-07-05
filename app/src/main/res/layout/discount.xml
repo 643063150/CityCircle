@@ -15,6 +15,7 @@
             android:src="@mipmap/news_info_back_arrow01" />
 
         <TextView
+            android:id="@+id/titile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -100,6 +101,7 @@
            android:orientation="horizontal"
             android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/hd"
             android:text="培训机构:"
             android:layout_marginLeft="@dimen/ui_10_dip"
             android:layout_width="wrap_content"
@@ -134,6 +136,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <TextView
+        android:id="@+id/hd2"
         android:padding="10dp"
         android:text="报名信息"
         android:layout_width="fill_parent"

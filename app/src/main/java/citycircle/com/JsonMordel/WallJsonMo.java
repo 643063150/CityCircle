@@ -9,7 +9,7 @@ public class WallJsonMo {
 
     /**
      * ret : 200
-     * data : {"code":0,"msg":"","info":[{"money":"100","value":"100","create_time":"1466415609","shopname":"怀府网","type":"1"},{"money":"0","value":"10","create_time":"1463737248","shopname":"怀府网","type":"2"}]}
+     * data : {"code":0,"msg":"","info":[{"money":"10","value":"9","create_time":"1467169957","shopname":"怀府网","xftype":"2","cardtype":"3"},{"money":"10","value":"10","create_time":"1467169957","shopname":"怀府网","xftype":"1","cardtype":"2"},{"money":"100","value":"150","create_time":"1467169957","shopname":"怀府网","xftype":"2","cardtype":"2"},{"money":"0","value":"1","create_time":"1467169957","shopname":"怀府网","xftype":"1","cardtype":"1"},{"money":"100","value":"10","create_time":"1467169957","shopname":"怀府网","xftype":"2","cardtype":"1"}]}
      * msg :
      */
 
@@ -17,7 +17,7 @@ public class WallJsonMo {
     /**
      * code : 0
      * msg :
-     * info : [{"money":"100","value":"100","create_time":"1466415609","shopname":"怀府网","type":"1"},{"money":"0","value":"10","create_time":"1463737248","shopname":"怀府网","type":"2"}]
+     * info : [{"money":"10","value":"9","create_time":"1467169957","shopname":"怀府网","xftype":"2","cardtype":"3"},{"money":"10","value":"10","create_time":"1467169957","shopname":"怀府网","xftype":"1","cardtype":"2"},{"money":"100","value":"150","create_time":"1467169957","shopname":"怀府网","xftype":"2","cardtype":"2"},{"money":"0","value":"1","create_time":"1467169957","shopname":"怀府网","xftype":"1","cardtype":"1"},{"money":"100","value":"10","create_time":"1467169957","shopname":"怀府网","xftype":"2","cardtype":"1"}]
      */
 
     private DataBean data;
@@ -51,11 +51,12 @@ public class WallJsonMo {
         private int code;
         private String msg;
         /**
-         * money : 100
-         * value : 100
-         * create_time : 1466415609
+         * money : 10
+         * value : 9
+         * create_time : 1467169957
          * shopname : 怀府网
-         * type : 1
+         * xftype : 2
+         * cardtype : 3
          */
 
         private List<InfoBean> info;
@@ -89,7 +90,8 @@ public class WallJsonMo {
             private String value;
             private long create_time;
             private String shopname;
-            private int type;
+            private int xftype;
+            private int cardtype;
 
             public String getMoney() {
                 return money;
@@ -123,12 +125,20 @@ public class WallJsonMo {
                 this.shopname = shopname;
             }
 
-            public int getType() {
-                return type;
+            public int getXftype() {
+                return xftype;
             }
 
-            public void setType(int type) {
-                this.type = type;
+            public void setXftype(int xftype) {
+                this.xftype = xftype;
+            }
+
+            public int getCardtype() {
+                return cardtype;
+            }
+
+            public void setCardtype(int cardtype) {
+                this.cardtype = cardtype;
             }
         }
     }
