@@ -42,7 +42,7 @@ public class SearchNews extends Activity implements View.OnClickListener {
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     Loadmore loadmore;
-
+    private ArrayList<HashMap<String, String>> newsid=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +134,7 @@ public class SearchNews extends Activity implements View.OnClickListener {
     }
 
     private void setAdapter() {
-        adapter = new RecomAdapter(arrayList, SearchNews.this);
+        adapter = new RecomAdapter(arrayList, SearchNews.this,newsid);
         list.setAdapter(adapter);
     }
 

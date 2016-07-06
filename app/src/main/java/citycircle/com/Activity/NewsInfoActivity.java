@@ -87,7 +87,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newsinfo);
-        dialog= MyDialog.createLoadingDialog(NewsInfoActivity.this, "正在登陆...");
+        dialog= MyDialog.createLoadingDialog(NewsInfoActivity.this, "加载中...");
         dialog.show();
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();

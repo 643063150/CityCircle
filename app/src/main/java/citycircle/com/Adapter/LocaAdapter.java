@@ -1,6 +1,7 @@
 package citycircle.com.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +29,11 @@ public class LocaAdapter extends BaseAdapter {
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    public LocaAdapter(ArrayList<HashMap<String, String>> arrayList, Context context) {
+    ArrayList<HashMap<String, String>> list;
+    public LocaAdapter(ArrayList<HashMap<String, String>> arrayList, Context context,ArrayList<HashMap<String, String>> list) {
         this.arrayList = arrayList;
         this.context = context;
+        this.list=list;
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -59,6 +62,9 @@ public class LocaAdapter extends BaseAdapter {
         getitem.title=(TextView)convertView.findViewById(R.id.title);
         getitem.views=(TextView)convertView.findViewById(R.id.views);
         getitem.shopimg=(ImageView) convertView.findViewById(R.id.shopimg);
+        if (!setlist(position)){
+            getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
+        }
         getitem.title.setText(arrayList.get(position).get("title"));
         getitem.views.setText(arrayList.get(position).get("view")+"阅读");
         String url=arrayList.get(position).get("url");
@@ -69,5 +75,15 @@ public class LocaAdapter extends BaseAdapter {
     private class getitem{
         TextView title,name,views;
         ImageView shopimg;
+    }
+    private boolean setlist(int position ){
+        boolean a = true;
+        for (int i=0;i<list.size();i++){
+            if (list.get(i).get("id").equals(arrayList.get(position).get("id"))){
+                a = false;
+                return a;
+            }
+        }
+        return a;
     }
 }

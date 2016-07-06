@@ -29,13 +29,14 @@ import citycircle.com.Adapter.NetworkImageHolderView;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.Loadmore;
+import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
  * Created by admins on 2016/5/31.
  */
 public class LocalFragment extends Fragment {
-    View view,headview;
+    View view, headview;
     SwipeRefreshLayout swipeRefreshLayout;
     ListView listView;
     String url, bannerurl;
@@ -43,26 +44,32 @@ public class LocalFragment extends Fragment {
     LocaAdapter adapter;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
+    HashMap<String, Object> hashMaps;
     int page = 1;
     ConvenientBanner fristbannerbanner;
     private List<String> networkImages;
+    private ArrayList<HashMap<String, String>> newsid;
+
     public static LocalFragment instance() {
         LocalFragment view = new LocalFragment();
         return view;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.newhomelist,null);
+        view = inflater.inflate(R.layout.newhomelist, null);
         bannerurl = GlobalVariables.urlstr + "News.getGuanggao&typeid=104";
-        url= GlobalVariables.urlstr+"News.getList&category_id=97&perNumber=10&page="+page;
+        url = GlobalVariables.urlstr + "News.getList&category_id=97&perNumber=10&page=" + page;
         intview();
         setAdapter();
         getJson(0);
         getbannerjson();
         return view;
     }
-    private void intview(){
+
+    private void intview() {
+        getnewsid();
         loadmore = new Loadmore();
         headview = LayoutInflater.from(getActivity()).inflate(R.layout.headbanner, null);
         fristbannerbanner = (ConvenientBanner) headview.findViewById(R.id.fristbannerbanner);
@@ -73,11 +80,21 @@ public class LocalFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (setidlist(arrayList.get(position - listView.getHeaderViewsCount()).get("id"))) {
+                    hashMap = new HashMap<String, String>();
+                    hashMap.put("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
+                    newsid.add(hashMap);
+                    hashMaps=new HashMap<String, Object>();
+                    hashMaps.put("idlist",newsid);
+                    String string=JSON.toJSONString(hashMaps);
+                    PreferencesUtils.putString(getActivity(),"idstr",string);
+                    adapter.notifyDataSetChanged();
+                }
                 Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position-listView.getHeaderViewsCount() ).get("id"));
-                intent.putExtra("title", arrayList.get(position-listView.getHeaderViewsCount() ).get("title"));
-                intent.putExtra("description", arrayList.get(position-listView.getHeaderViewsCount() ).get("description"));
-                intent.putExtra("url", arrayList.get(position-listView.getHeaderViewsCount()).get("url"));
+                intent.putExtra("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
+                intent.putExtra("title", arrayList.get(position - listView.getHeaderViewsCount()).get("title"));
+                intent.putExtra("description", arrayList.get(position - listView.getHeaderViewsCount()).get("description"));
+                intent.putExtra("url", arrayList.get(position - listView.getHeaderViewsCount()).get("url"));
                 intent.setClass(getActivity(), NewsInfoActivity.class);
                 getActivity().startActivity(intent);
             }
@@ -86,20 +103,21 @@ public class LocalFragment extends Fragment {
             @Override
             public void loadmore() {
                 page++;
-                url= GlobalVariables.urlstr+"News.getList&category_id=97&perNumber=10&page="+page;
+                url = GlobalVariables.urlstr + "News.getList&category_id=97&perNumber=10&page=" + page;
                 getJson(0);
             }
         });
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page=1;
-                url= GlobalVariables.urlstr+"News.getList&category_id=97&perNumber=10&page="+page;
+                page = 1;
+                url = GlobalVariables.urlstr + "News.getList&category_id=97&perNumber=10&page=" + page;
                 getJson(1);
                 getbannerjson();
             }
         });
     }
+
     private void setArray(String str) {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -125,6 +143,7 @@ public class LocalFragment extends Fragment {
             Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
         }
     }
+
     private void getJson(final int type) {
         OkHttpUtils.get().url(url).build().execute(new StringCallback() {
             @Override
@@ -136,7 +155,7 @@ public class LocalFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 swipeRefreshLayout.setRefreshing(false);
-                if (type==1){
+                if (type == 1) {
                     arrayList.clear();
                 }
                 setArray(response);
@@ -144,10 +163,12 @@ public class LocalFragment extends Fragment {
             }
         });
     }
+
     private void setAdapter() {
-        adapter = new LocaAdapter(arrayList, getActivity());
+        adapter = new LocaAdapter(arrayList, getActivity(),newsid);
         listView.setAdapter(adapter);
     }
+
     private void getbannerjson() {
         OkHttpUtils.get().url(bannerurl).build().execute(new StringCallback() {
             @Override
@@ -162,8 +183,8 @@ public class LocalFragment extends Fragment {
                 if (jsonObject1.getIntValue("code") == 0) {
                     networkImages = new ArrayList<String>();
                     JSONArray jsonArray = jsonObject1.getJSONArray("info");
-                    for (int i=0;i<jsonArray.size();i++){
-                        JSONObject jsonObject2=jsonArray.getJSONObject(i);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                         networkImages.add(jsonObject2.getString("picurl"));
                     }
                     fristbannerbanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
@@ -178,5 +199,31 @@ public class LocalFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void getnewsid() {
+        newsid = new ArrayList<>();
+        String idstr = PreferencesUtils.getString(getActivity(), "idstr");
+        if (idstr != null) {
+            JSONObject jsonObject = JSON.parseObject(idstr);
+            JSONArray jsonArray = jsonObject.getJSONArray("idlist");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                hashMap = new HashMap<>();
+                hashMap.put("id", jsonObject1.getString("id"));
+                newsid.add(hashMap);
+            }
+        }
+    }
+
+    private boolean setidlist(String id) {
+        boolean a = true;
+        for (int i = 0; i < newsid.size(); i++) {
+            if (newsid.get(i).get("id").equals(id)) {
+                a = false;
+                return a;
+            }
+        }
+        return a;
     }
 }

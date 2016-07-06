@@ -29,6 +29,7 @@ import citycircle.com.Adapter.RecomAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.Loadmore;
+import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -46,7 +47,8 @@ public class RecommFragment extends Fragment {
     RecomAdapter adapter;
     Loadmore loadmore;
     private List<String> networkImages;
-
+    private ArrayList<HashMap<String, String>> newsid;
+    HashMap<String, Object> hashMaps;
     public static RecommFragment instance() {
         RecommFragment view = new RecommFragment();
         return view;
@@ -66,6 +68,7 @@ public class RecommFragment extends Fragment {
     }
 
     private void intview() {
+        getnewsid();
         loadmore = new Loadmore();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
         headview = LayoutInflater.from(getActivity()).inflate(R.layout.headbanner, null);
@@ -81,6 +84,16 @@ public class RecommFragment extends Fragment {
                     intent.setClass(getActivity(), DiscountInfo.class);
                     getActivity().startActivity(intent);
                 }else {
+                    if (setidlist(arrayList.get(position - listView.getHeaderViewsCount()).get("id"))) {
+                        hashMap = new HashMap<String, String>();
+                        hashMap.put("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
+                        newsid.add(hashMap);
+                        hashMaps=new HashMap<String, Object>();
+                        hashMaps.put("idlist",newsid);
+                        String string=JSON.toJSONString(hashMaps);
+                        PreferencesUtils.putString(getActivity(),"idstr",string);
+                       adapter.notifyDataSetChanged();
+                    }
                     intent.putExtra("id", arrayList.get(position -listView.getHeaderViewsCount()).get("id"));
                     intent.putExtra("title", arrayList.get(position-listView.getHeaderViewsCount() ).get("title"));
                     intent.putExtra("description", arrayList.get(position-listView.getHeaderViewsCount() ).get("description"));
@@ -191,7 +204,32 @@ public class RecommFragment extends Fragment {
     }
 
     private void setAdapter() {
-        adapter = new RecomAdapter(arrayList, getActivity());
+        adapter = new RecomAdapter(arrayList, getActivity(),newsid);
         listView.setAdapter(adapter);
+    }
+    private void getnewsid() {
+        newsid = new ArrayList<>();
+        String idstr = PreferencesUtils.getString(getActivity(), "idstr");
+        if (idstr != null) {
+            JSONObject jsonObject = JSON.parseObject(idstr);
+            JSONArray jsonArray = jsonObject.getJSONArray("idlist");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                hashMap = new HashMap<>();
+                hashMap.put("id", jsonObject1.getString("id"));
+                newsid.add(hashMap);
+            }
+        }
+    }
+
+    private boolean setidlist(String id) {
+        boolean a = true;
+        for (int i = 0; i < newsid.size(); i++) {
+            if (newsid.get(i).get("id").equals(id)) {
+                a = false;
+                return a;
+            }
+        }
+        return a;
     }
 }
