@@ -40,6 +40,7 @@
             android:layout_width="wrap_content"
             android:background="@color/white"
             android:layout_weight="1"
+            android:drawablePadding="5dp"
             android:layout_margin="10dp"
             android:drawableLeft="@mipmap/phone_no_icon"
             android:hint="手机号"
@@ -64,6 +65,7 @@
         android:drawableLeft="@mipmap/ver_code_icon"
         android:hint="验证码"
         android:padding="10dp"
+        android:drawablePadding="10dp"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/submit"

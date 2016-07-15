@@ -133,7 +133,7 @@
                 android:layout_marginLeft="@dimen/ui_10_dip"
                 android:layout_marginRight="@dimen/ui_10_dip"
                 android:layout_weight="1"
-                android:drawableRight="@mipmap/card_down"
+                android:drawableRight="@mipmap/card_go"
                 android:gravity="center_vertical"
                 android:text="商家信息"
                 android:textSize="16dp" />
@@ -148,6 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/ui_10_dip"
+                android:layout_marginRight="@dimen/ui_10_dip"
                 android:layout_weight="1"
                 android:drawableLeft="@mipmap/card_phone"
                 android:drawablePadding="5dp"

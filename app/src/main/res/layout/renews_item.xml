@@ -59,8 +59,8 @@
     <ImageView
         android:id="@+id/shopimg"
         android:scaleType="centerCrop"
-        android:layout_width="83dp"
-        android:layout_height="63dp"
+        android:layout_width="103dp"
+        android:layout_height="83dp"
         android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"

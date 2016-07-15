@@ -70,15 +70,15 @@ public class CityCircleFragment extends Fragment implements View.OnClickListener
             public void onPageSelected(int position) {
                 int color = getResources().getColor(R.color.butbg);
                 if (position == 1) {
-                    hot.setBackgroundResource(R.mipmap.top_hot_bg);
-                    hot.setTextColor(color);
-                    news.setBackgroundResource(R.mipmap.top_new_bg);
-                    news.setTextColor(Color.WHITE);
-                } else {
                     hot.setBackgroundResource(R.mipmap.top_hot_bg2);
                     hot.setTextColor(Color.WHITE);
                     news.setBackgroundResource(R.mipmap.top_new_bg2);
                     news.setTextColor(color);
+                } else {
+                    hot.setBackgroundResource(R.mipmap.top_hot_bg);
+                    hot.setTextColor(color);
+                    news.setBackgroundResource(R.mipmap.top_new_bg);
+                    news.setTextColor(Color.WHITE);
                 }
             }
 

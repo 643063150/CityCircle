@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="电话黄页"
+            android:text="常用电话"
             android:textColor="@color/white"
             android:textSize="17sp" />
     </RelativeLayout>

@@ -35,6 +35,7 @@
         android:layout_margin="10dp"
         android:drawableLeft="@mipmap/phone_no_icon"
         android:hint="手机号"
+        android:drawablePadding="5dp"
         android:lines="1"
         android:padding="10dp"
         android:layout_height="wrap_content" />
@@ -44,6 +45,7 @@
         android:background="@color/white"
         android:layout_margin="10dp"
         android:lines="1"
+        android:drawablePadding="10dp"
         android:drawableLeft="@mipmap/password_icon"
         android:hint="密码"
         android:padding="10dp"

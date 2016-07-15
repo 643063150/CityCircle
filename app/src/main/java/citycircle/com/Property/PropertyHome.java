@@ -44,7 +44,7 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
  */
 public class PropertyHome extends Activity implements View.OnClickListener {
     ImageView back;
-    TextView messages, DOC, meeting, phonenumber, number, usermessages, prophonenumber, prcitcle;
+    TextView messages, DOC, meeting, phonenumber, number, prophonenumber, prcitcle;
     private MenuDrawer mDrawer;
     ImageView head;
     com.nostra13.universalimageloader.core.ImageLoader ImageLoader;
@@ -90,18 +90,18 @@ public class PropertyHome extends Activity implements View.OnClickListener {
         wuyu=(TextView)findViewById(R.id.wuyu);
         prophonenumber = (TextView) findViewById(R.id.prophonenumber);
         prophonenumber.setOnClickListener(this);
-        usermessages = (TextView) findViewById(R.id.usermessages);
-        badge = new BadgeView(this, usermessages);
-        usermessages.post(new Runnable() {
-            @Override
-            public void run() {
-                badge.setBadgeMargin(0, (usermessages.getHeight() / 5));
-            }
-        });
+//        usermessages = (TextView) findViewById(R.id.usermessages);
+//        badge = new BadgeView(this, usermessages);
+//        usermessages.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                badge.setBadgeMargin(0, (usermessages.getHeight() / 5));
+//            }
+//        });
 
 //        badge.setBadgePosition(BadgeView.POSITION_CENTER);
         wuyu.setText(PreferencesUtils.getString(PropertyHome.this,"xiaoqu"));
-        usermessages.setOnClickListener(this);
+//        usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
         hviewpage = (AutoScrollViewPager) findViewById(R.id.view_pager);
         hviewpage.startAutoScroll();
@@ -208,12 +208,12 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                 gethousestate();
 //                PropertyHome.this.startActivity(intent);
                 break;
-            case R.id.usermessages:
-
-                intent.setClass(PropertyHome.this, MessageList.class);
-                gethousestate();
-//                PropertyHome.this.startActivity(intent);
-                break;
+//            case R.id.usermessages:
+//
+//                intent.setClass(PropertyHome.this, MessageList.class);
+//                gethousestate();
+////                PropertyHome.this.startActivity(intent);
+//                break;
             case R.id.prophonenumber:
 
                 intent.setClass(PropertyHome.this, Pronumber.class);
@@ -284,12 +284,12 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                         }
                     }
 //                    setHouselist();
-                    if (message != 0) {
-                        badge.setText(message + "");
-                        badge.show();
-                    } else {
-                        badge.hide();
-                    }
+//                    if (message != 0) {
+//                        badge.setText(message + "");
+//                        badge.show();
+//                    } else {
+//                        badge.hide();
+//                    }
                     setAddarray(addurlstr);
                     setheadadd();
                     initIndicator();

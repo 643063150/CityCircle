@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -17,6 +20,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citycircle.com.MyViews.MyGridView;
 import citycircle.com.R;
 import citycircle.com.Utils.ImageUtils;
 
@@ -31,6 +35,7 @@ public class RecomAdapter extends BaseAdapter {
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
     ArrayList<HashMap<String, String>> list;
+    ArrayList<String> imgList=new ArrayList<String>();
     public RecomAdapter(ArrayList<HashMap<String, String>> arrayList, Context context,ArrayList<HashMap<String, String>> list) {
         this.arrayList = arrayList;
         this.context = context;
@@ -69,22 +74,52 @@ public class RecomAdapter extends BaseAdapter {
             getitem.timelay.setVisibility(View.GONE);
             getitem.title.setText(arrayList.get(position).get("title"));
             options=ImageUtils.setcenterOptions();
-            String url=arrayList.get(position).get("url");
+            JSONArray jsonArray= JSON.parseArray(arrayList.get(position).get("picList"));
+            String url = null;
+            for (int i=0;i<jsonArray.size();i++){
+                JSONObject jsonObject=jsonArray.getJSONObject(i);
+                url=jsonObject.getString("url");
+            }
             ImageLoader.displayImage(url,getitem.banner,options,animateFirstListener);
         }else {
-            convertView= LayoutInflater.from(context).inflate(R.layout.renews_item,null);
-            getitem.name=(TextView)convertView.findViewById(R.id.name);
-            getitem.title=(TextView)convertView.findViewById(R.id.title);
-            getitem.views=(TextView)convertView.findViewById(R.id.views);
-            getitem.shopimg=(ImageView) convertView.findViewById(R.id.shopimg);
-            if (!setlist(position)){
-                getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
-            }
-            getitem.title.setText(arrayList.get(position).get("title"));
-            getitem.views.setText(arrayList.get(position).get("view")+"阅读");
-            String url=arrayList.get(position).get("url");
-            getitem.name.setText(arrayList.get(position).get("name"));
-            ImageLoader.displayImage(url,getitem.shopimg,options,animateFirstListener);
+
+            String url = null;
+            JSONArray jsonArray= JSON.parseArray(arrayList.get(position).get("picList"));
+           if (jsonArray.size()<3){
+               convertView= LayoutInflater.from(context).inflate(R.layout.renews_item,null);
+               for (int i=0;i<jsonArray.size();i++){
+                   JSONObject jsonObject=jsonArray.getJSONObject(i);
+                   url=jsonObject.getString("url");
+               }
+               getitem.name=(TextView)convertView.findViewById(R.id.name);
+               getitem.title=(TextView)convertView.findViewById(R.id.title);
+               getitem.views=(TextView)convertView.findViewById(R.id.views);
+               getitem.shopimg=(ImageView) convertView.findViewById(R.id.shopimg);
+               if (!setlist(position)){
+                   getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
+               }
+               getitem.title.setText(arrayList.get(position).get("title"));
+               getitem.views.setText(arrayList.get(position).get("view")+"阅读");
+               getitem.name.setText(arrayList.get(position).get("name"));
+               ImageLoader.displayImage(url,getitem.shopimg,options,animateFirstListener);
+           }else {
+               imgList=new ArrayList<>();
+               convertView= LayoutInflater.from(context).inflate(R.layout.news_titem,null);
+               getitem.title=(TextView)convertView.findViewById(R.id.title);
+               getitem.nwsgrid=(MyGridView) convertView.findViewById(R.id.nwsgrid);
+               getitem.views=(TextView)convertView.findViewById(R.id.views);
+               getitem.name=(TextView)convertView.findViewById(R.id.name);
+               getitem.views.setText(arrayList.get(position).get("view")+"阅读");
+               getitem.name.setText(arrayList.get(position).get("name"));
+               getitem.title.setText(arrayList.get(position).get("title"));
+               for (int i=0;i<jsonArray.size();i++){
+                   JSONObject jsonObject=jsonArray.getJSONObject(i);
+                   imgList.add(jsonObject.getString("url"));
+               }
+               ImgAdapter newPhotoAdapter=new ImgAdapter(imgList,context);
+               getitem.nwsgrid.setAdapter(newPhotoAdapter);
+           }
+
         }
         return convertView;
     }
@@ -92,6 +127,7 @@ public class RecomAdapter extends BaseAdapter {
         TextView title,name,views;
         ImageView shopimg,banner,statimg;
         LinearLayout timelay;
+        MyGridView nwsgrid;
     }
     private boolean setlist(int position ){
         boolean a = true;

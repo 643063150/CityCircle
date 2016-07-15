@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@color/white"
+        android:drawablePadding="10dp"
         android:drawableLeft="@mipmap/user_name_icon"
         android:hint="填写用户名（一经填写，不得修改）"
         android:lines="1"
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@color/white"
+        android:drawablePadding="10dp"
         android:drawableLeft="@mipmap/password_icon"
         android:hint="填写密码"
         android:textSize="16sp"
@@ -66,6 +68,7 @@
         android:drawableLeft="@mipmap/my_test_pass3x"
         android:hint="确认密码"
         android:lines="1"
+        android:drawablePadding="10dp"
         android:padding="10dp"
         android:textSize="16sp"
         android:password="true" />

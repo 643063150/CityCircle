@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="怀府网新闻"
+            android:text="详情"
             android:textColor="@color/white"
             android:textSize="17sp" />
 

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import citycircle.com.JsonMordel.VipInfo;
+import citycircle.com.MyViews.CallPhonePop;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.ImageUtils;
@@ -53,6 +54,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
     Button btn_lq;
     ScrollView slay;
     int orlq;
+    CallPhonePop callPhonePop;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +74,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
+        callPhonePop = new CallPhonePop();
         slay=(ScrollView)findViewById(R.id.slay);
         content = (TextView) findViewById(R.id.content);
         btn_lq = (Button) findViewById(R.id.btn_lq);
@@ -84,6 +87,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
         cardtype = (TextView) findViewById(R.id.cardtype);
         titile = (TextView) findViewById(R.id.titile);
         callphone = (TextView) findViewById(R.id.callphone);
+        callphone.setOnClickListener(this);
         adress = (TextView) findViewById(R.id.adress);
         back = (ImageView) findViewById(R.id.back);
         logo = (ImageView) findViewById(R.id.logo);
@@ -107,6 +111,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
             @Override
             public void onResponse(String response) {
                 vipInfo = JSON.parseObject(response, VipInfo.class);
+                list.clear();
                 if (vipInfo.getData().getCode() == 0) {
                     list.addAll(vipInfo.getData().getInfo());
                     for (int i = 0; i < list.size(); i++) {
@@ -176,6 +181,11 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
                 JSONObject jsonObject = JSON.parseObject(response);
                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                 if (jsonObject1.getIntValue("code") == 0) {
+                    JSONObject jsonObject2=jsonObject1.getJSONObject("info");
+                    id=jsonObject2.getString("id");
+                    username=jsonObject2.getString("uid");
+                    orlq=1;
+                    url = GlobalVariables.urlstr + "Hyk.getArticleYLQ&id=" + id + "&uid=" + username;
                     getjson();
                     Toast.makeText(VipcardInfo.this, "领取成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
@@ -222,6 +232,9 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
                 intent1.putExtra("id",id);
                 intent1.setClass(VipcardInfo.this, VipCardConInfo.class);
                 VipcardInfo.this.startActivity(intent1);
+                break;
+            case R.id.callphone:
+                callPhonePop.showpop(VipcardInfo.this, list.get(0).getTel());
                 break;
         }
     }

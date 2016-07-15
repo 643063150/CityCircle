@@ -79,14 +79,14 @@
                 android:text="房屋信息" />
 
             <TextView
-                android:id="@+id/usermessages"
+                android:id="@+id/prophonenumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@mipmap/email"
+                android:drawableTop="@mipmap/index_icon111"
                 android:gravity="center"
                 android:paddingTop="20dp"
-                android:text="收件箱" />
+                android:text="电话黄页" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,14 +116,15 @@
                 android:text="小区公告" />
 
             <TextView
-                android:id="@+id/prophonenumber"
+                android:id="@+id/prcitcle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:drawableTop="@mipmap/index_icon111"
+                android:drawableTop="@mipmap/index_icon1111"
                 android:gravity="center"
+                android:visibility="gone"
                 android:paddingTop="20dp"
-                android:text="电话黄页" />
+                android:text="小区朋友圈" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,15 +142,7 @@
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="物业缴费" />
-            <TextView
-                android:id="@+id/prcitcle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:drawableTop="@mipmap/index_icon1111"
-                android:gravity="center"
-                android:paddingTop="20dp"
-                android:text="小区朋友圈" />
+
 
         </LinearLayout>
 

@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             android:text="发现"
             android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:textSize="18sp" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="fill_parent"

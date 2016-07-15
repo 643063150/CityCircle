@@ -13,7 +13,7 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="6dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:src="@mipmap/class_icon" />
@@ -32,8 +32,8 @@
                 android:layout_height="wrap_content"
                 android:text="最新"
                 android:gravity="center"
-                android:background="@mipmap/top_hot_bg2"
-                android:textColor="@color/white"
+                android:background="@mipmap/top_hot_bg"
+                android:textColor="@color/buttonbule"
                 android:textSize="15sp" />
 
             <TextView
@@ -42,8 +42,8 @@
                 android:layout_height="wrap_content"
                 android:text="最热"
                 android:gravity="center"
-                android:background="@mipmap/top_new_bg2"
-                android:textColor="@color/butbg"
+                android:background="@mipmap/top_new_bg"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="12dp"
+            android:padding="10dp"
             android:src="@mipmap/camera_icon" />
     </RelativeLayout>
     <android.support.v4.view.ViewPager
