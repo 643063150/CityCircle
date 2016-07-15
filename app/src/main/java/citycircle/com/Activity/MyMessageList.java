@@ -93,6 +93,8 @@ public class MyMessageList extends Activity {
                     list.addAll(messageList.getData().getInfo());
                 }
                 myMessageItem.notifyDataSetChanged();
+                String json=JSON.toJSONString(list);
+                System.out.println(json);
             }
         });
     }

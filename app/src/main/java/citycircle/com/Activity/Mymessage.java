@@ -102,6 +102,12 @@ public class Mymessage extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        getJsom();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
