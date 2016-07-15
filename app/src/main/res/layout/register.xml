@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@color/white"
-        android:drawableLeft="@mipmap/my_test_pass3x"
+        android:drawableLeft="@mipmap/password_icon"
         android:hint="确认密码"
         android:lines="1"
         android:drawablePadding="10dp"
