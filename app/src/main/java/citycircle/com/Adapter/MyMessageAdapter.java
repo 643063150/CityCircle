@@ -62,6 +62,9 @@ public class MyMessageAdapter extends BaseAdapter {
         badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
         badge.setBadgeMargin(getItem.drable.getWidth()/5);
         badge.show();
+        if (arrayList.get(position).get("count").toString().equals("0")){
+            badge.hide();
+        }
         return convertView;
     }
     public class getItem{

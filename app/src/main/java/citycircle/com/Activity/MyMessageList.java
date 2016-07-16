@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -35,6 +37,7 @@ public class MyMessageList extends Activity {
     List<MessageList.DataBean.InfoBean> list = new ArrayList<>();
     String url;
     MyMessageItem myMessageItem;
+    MessageList.DataBean.InfoBean infoBean=new MessageList.DataBean.InfoBean();
     int type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class MyMessageList extends Activity {
         String uid = PreferencesUtils.getString(MyMessageList.this, "userid");
         url= GlobalVariables.urlstr+"user.getMessageslist&uid="+uid+"&username="+username+"&type="+type;
         setViplist();
+        getjson();
         getJson();
     }
 
@@ -94,9 +98,25 @@ public class MyMessageList extends Activity {
                 }
                 myMessageItem.notifyDataSetChanged();
                 String json=JSON.toJSONString(list);
-                System.out.println(json);
+                PreferencesUtils.putString(MyMessageList.this,"messagelist"+type,json);
             }
         });
+    }
+    private void getjson(){
+        String json=PreferencesUtils.getString(MyMessageList.this,"messagelist"+type);
+        if (json!=null){
+            JSONArray jsonArray=JSON.parseArray(json);
+            for (int i=0;i<jsonArray.size();i++){
+                JSONObject jsonObject=jsonArray.getJSONObject(i);
+                infoBean.setContent(jsonObject.getString("content"));
+                infoBean.setCreate_time(jsonObject.getString("create_time"));
+                infoBean.setId(jsonObject.getString("id"));
+                infoBean.setShopname(jsonObject.getString("shopname"));
+                infoBean.setTitle(jsonObject.getString("title"));
+                list.add(infoBean);
+            }
+        }
+
     }
     private void setViplist(){
         myMessageItem=new MyMessageItem(list,MyMessageList.this);

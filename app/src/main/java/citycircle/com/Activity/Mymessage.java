@@ -90,12 +90,13 @@ public class Mymessage extends Activity implements View.OnClickListener {
                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                 if (jsonObject1.getIntValue("code") == 0) {
                     JSONObject jsonObject2 = jsonObject1.getJSONObject("info");
-
+                    message.clear();
                     message.add(jsonObject2.getString("count1"));
                     message.add(jsonObject2.getString("count2"));
                     message.add(jsonObject2.getString("count3"));
 
                 }
+                list.clear();
                 setMyListView();
             }
         });
