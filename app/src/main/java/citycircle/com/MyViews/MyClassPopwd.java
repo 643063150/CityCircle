@@ -25,8 +25,8 @@ public class MyClassPopwd {
     PopupWindow popupWindow;
     int positions,getPositions;
     private MyPopwindowsListener mListViewListener;
-
-    public void showpop(Context context, final ArrayList<HashMap<String, String>> arrayList, View view) {
+    LinearLayout back;
+    public void showpop(final Context context, final ArrayList<HashMap<String, String>> arrayList, View view) {
         popView = LayoutInflater.from(context).inflate(R.layout.classpop, null);
         popupWindow = new PopupWindow(popView, LinearLayout.LayoutParams.FILL_PARENT,
                 LinearLayout.LayoutParams.FILL_PARENT);
@@ -37,6 +37,7 @@ public class MyClassPopwd {
         popupWindow.update();
         popupWindow.showAsDropDown(view);
         ListView listView = (ListView) popView.findViewById(R.id.classlleft);
+        back = (LinearLayout) popView.findViewById(R.id.back);
         final AllClassdadpter allClassdadpter=new AllClassdadpter(arrayList,context);
         listView.setAdapter(allClassdadpter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,6 +48,12 @@ public class MyClassPopwd {
                 arrayList.get(position).put("check", "true");
                 allClassdadpter.notifyDataSetChanged();
                 startUrlLoadMore();
+                popupWindow.dismiss();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 popupWindow.dismiss();
             }
         });
@@ -62,6 +69,7 @@ public class MyClassPopwd {
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.update();
         ListView listViewleft = (ListView) popView.findViewById(R.id.classlist);
+        back = (LinearLayout) popView.findViewById(R.id.back);
         final ClassDadpter classDadpter = new ClassDadpter(arrayList, context);
         listViewleft.setAdapter(classDadpter);
         popupWindow.showAsDropDown(view);
@@ -73,6 +81,12 @@ public class MyClassPopwd {
                 arrayList.get(position).put("check", true);
                 classDadpter.notifyDataSetChanged();
                 startLoadMore();
+                popupWindow.dismiss();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 popupWindow.dismiss();
             }
         });

@@ -55,6 +55,9 @@ public class AttaFragment extends Fragment {
     Loadmore loadmore;
     ConvenientBanner fristbannerbanner;
     private List<String> networkImages;
+    private ArrayList<HashMap<String, String>> newsid;
+    HashMap<String, Object> hashMaps;
+    String addview;
 
     public static AttaFragment instance() {
         AttaFragment view = new AttaFragment();
@@ -85,6 +88,7 @@ public class AttaFragment extends Fragment {
     }
 
     private void intview() {
+        getnewsid();
         loadmore = new Loadmore();
         headview = LayoutInflater.from(getActivity()).inflate(R.layout.headbanner, null);
         fristbannerbanner = (ConvenientBanner) headview.findViewById(R.id.fristbannerbanner);
@@ -98,8 +102,20 @@ public class AttaFragment extends Fragment {
         mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (setidlist(arrayList.get(position - mylist.getHeaderViewsCount()).get("id"))) {
+                    addview = GlobalVariables.urlstr + "News.addView&id=" +arrayList.get(position - mylist.getHeaderViewsCount()).get("id");
+                    hashMap = new HashMap<String, String>();
+                    hashMap.put("id", arrayList.get(position - mylist.getHeaderViewsCount()).get("id"));
+                    newsid.add(hashMap);
+                    hashMaps = new HashMap<String, Object>();
+                    hashMaps.put("idlist", newsid);
+                    String string = JSON.toJSONString(hashMaps);
+                    PreferencesUtils.putString(getActivity(), "idstr", string);
+                    camadapter.notifyDataSetChanged();
+                    addview();
+                }
                 Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position-mylist.getHeaderViewsCount() ).get("id"));
+                intent.putExtra("id", arrayList.get(position - mylist.getHeaderViewsCount()).get("id"));
                 intent.putExtra("type", 1);
                 intent.setClass(getActivity(), DiscountInfo.class);
                 getActivity().startActivity(intent);
@@ -124,7 +140,7 @@ public class AttaFragment extends Fragment {
         Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page=1;
+                page = 1;
                 url = GlobalVariables.urlstr + "News.getListGZ&username=" + username + "&page=" + page + "&perNumber=20";
                 getJson(1);
                 getbannerjson();
@@ -143,7 +159,7 @@ public class AttaFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 Refresh.setRefreshing(false);
-                if (type==1){
+                if (type == 1) {
                     arrayList.clear();
                 }
                 setarray(response);
@@ -210,8 +226,22 @@ public class AttaFragment extends Fragment {
         });
     }
 
+    private void addview() {
+        OkHttpUtils.get().url(addview).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+            }
+        });
+    }
+
     private void setCamadapter() {
-        camadapter = new Camadapter(arrayList, getActivity());
+        camadapter = new Camadapter(arrayList, getActivity(), newsid);
         mylist.setAdapter(camadapter);
     }
 
@@ -236,6 +266,32 @@ public class AttaFragment extends Fragment {
 
         }
     };
+
+    private void getnewsid() {
+        newsid = new ArrayList<>();
+        String idstr = PreferencesUtils.getString(getActivity(), "idstr");
+        if (idstr != null) {
+            JSONObject jsonObject = JSON.parseObject(idstr);
+            JSONArray jsonArray = jsonObject.getJSONArray("idlist");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                hashMap = new HashMap<>();
+                hashMap.put("id", jsonObject1.getString("id"));
+                newsid.add(hashMap);
+            }
+        }
+    }
+
+    private boolean setidlist(String id) {
+        boolean a = true;
+        for (int i = 0; i < newsid.size(); i++) {
+            if (newsid.get(i).get("id").equals(id)) {
+                a = false;
+                return a;
+            }
+        }
+        return a;
+    }
 
     @Override
     public void onDestroy() {

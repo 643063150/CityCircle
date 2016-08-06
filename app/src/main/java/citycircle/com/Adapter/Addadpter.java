@@ -71,7 +71,7 @@ public class Addadpter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(final ViewGroup container, final int position) {
-        options=ImageUtils.setnoOptions();
+        options=ImageUtils.setcenterOptions();
         final View view = mList.get(position);
         image = (ImageView) view.findViewById(R.id.viewimage);
         String url = null;

@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,6 +22,7 @@ import citycircle.com.Fragment.MineFragment;
 import citycircle.com.Fragment.VipCardFragment;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
+import citycircle.com.Utils.MyEventBus;
 import citycircle.com.Utils.PreferencesUtils;
 
 public class MainActivity extends FragmentActivity implements CompoundButton.OnCheckedChangeListener {
@@ -133,6 +136,8 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
                     transaction.show(MallFragment);
                     break;
                 case R.id.rb_mall:
+                    EventBus.getDefault().post(
+                            new MyEventBus("FirstEvent btn clicked"));
                     if (MemberFragment == null) {
                         MemberFragment = new MineFragment();
                         transaction.add(R.id.all_content, MemberFragment);

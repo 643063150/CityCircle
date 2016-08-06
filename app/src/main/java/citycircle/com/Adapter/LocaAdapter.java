@@ -1,10 +1,12 @@
 package citycircle.com.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citycircle.com.Activity.NewsInfoActivity;
 import citycircle.com.MyViews.MyGridView;
 import citycircle.com.R;
 import citycircle.com.Utils.ImageUtils;
@@ -61,10 +64,10 @@ public class LocaAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         getitem getitem = new getitem();
         String url = null;
-
+        options=ImageUtils.setcenterOptions();
         JSONArray jsonArray = JSON.parseArray(arrayList.get(position).get("picList"));
         if (jsonArray.size() < 3) {
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -90,6 +93,9 @@ public class LocaAdapter extends BaseAdapter {
             getitem.nwsgrid=(MyGridView) convertView.findViewById(R.id.nwsgrid);
             getitem.views=(TextView)convertView.findViewById(R.id.views);
             getitem.name=(TextView)convertView.findViewById(R.id.name);
+            if (!setlist(position)) {
+                getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
+            }
             getitem.views.setText(arrayList.get(position).get("view")+"阅读");
             getitem.name.setText(arrayList.get(position).get("name"));
             getitem.title.setText(arrayList.get(position).get("title"));
@@ -99,6 +105,18 @@ public class LocaAdapter extends BaseAdapter {
             }
             ImgAdapter newPhotoAdapter=new ImgAdapter(imgList,context);
             getitem.nwsgrid.setAdapter(newPhotoAdapter);
+            getitem.nwsgrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int positions, long id) {
+                    Intent intent=new Intent();
+                    intent.putExtra("id", arrayList.get(position).get("id"));
+                    intent.putExtra("title", arrayList.get(position).get("title"));
+                    intent.putExtra("description", arrayList.get(position).get("description"));
+                    intent.putExtra("url", arrayList.get(position).get("url"));
+                    intent.setClass(context, NewsInfoActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
         return convertView;
     }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -36,6 +37,7 @@ public class ForgetPass extends Activity implements View.OnClickListener {
     Timer timer = new Timer();
     TimerTask task;
     int type;
+    TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +45,13 @@ public class ForgetPass extends Activity implements View.OnClickListener {
         emtest = new Emailtest();
         intview();
         type=getIntent().getIntExtra("type",0);
+        if (type==1){
+            title.setText("注册");
+        }
     }
 
     public void intview() {
+        title=(TextView)findViewById(R.id.title);
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.back);

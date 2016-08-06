@@ -47,7 +47,7 @@ public class MyMessageItem extends BaseAdapter {
         getItem.title=(TextView)convertView.findViewById(R.id.title);
         getItem.content.setText(list.get(position).getContent());
         getItem.title.setText(list.get(position).getTitle());
-        getItem.time.setText(DateUtils.getDateToStrings(Long.parseLong(list.get(position).getCreate_time())));
+        getItem.time.setText(DateUtils.getDateToStringss(Long.parseLong(list.get(position).getCreate_time())));
         return convertView;
     }
     public class getItem{

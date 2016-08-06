@@ -49,7 +49,7 @@ public class LocalFragment extends Fragment {
     ConvenientBanner fristbannerbanner;
     private List<String> networkImages;
     private ArrayList<HashMap<String, String>> newsid;
-
+    String addview;
     public static LocalFragment instance() {
         LocalFragment view = new LocalFragment();
         return view;
@@ -80,7 +80,15 @@ public class LocalFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.putExtra("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
+                intent.putExtra("title", arrayList.get(position - listView.getHeaderViewsCount()).get("title"));
+                intent.putExtra("description", arrayList.get(position - listView.getHeaderViewsCount()).get("description"));
+                intent.putExtra("url", arrayList.get(position - listView.getHeaderViewsCount()).get("url"));
+                intent.setClass(getActivity(), NewsInfoActivity.class);
+                getActivity().startActivity(intent);
                 if (setidlist(arrayList.get(position - listView.getHeaderViewsCount()).get("id"))) {
+                    addview = GlobalVariables.urlstr + "News.addView&id=" +arrayList.get(position - listView.getHeaderViewsCount()).get("id");
                     hashMap = new HashMap<String, String>();
                     hashMap.put("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
                     newsid.add(hashMap);
@@ -89,14 +97,8 @@ public class LocalFragment extends Fragment {
                     String string=JSON.toJSONString(hashMaps);
                     PreferencesUtils.putString(getActivity(),"idstr",string);
                     adapter.notifyDataSetChanged();
+                    addview();
                 }
-                Intent intent = new Intent();
-                intent.putExtra("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
-                intent.putExtra("title", arrayList.get(position - listView.getHeaderViewsCount()).get("title"));
-                intent.putExtra("description", arrayList.get(position - listView.getHeaderViewsCount()).get("description"));
-                intent.putExtra("url", arrayList.get(position - listView.getHeaderViewsCount()).get("url"));
-                intent.setClass(getActivity(), NewsInfoActivity.class);
-                getActivity().startActivity(intent);
             }
         });
         loadmore.setMyPopwindowswListener(new Loadmore.LoadmoreList() {
@@ -200,7 +202,19 @@ public class LocalFragment extends Fragment {
             }
         });
     }
+    private void addview() {
+        OkHttpUtils.get().url(addview).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
 
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+            }
+        });
+    }
     private void getnewsid() {
         newsid = new ArrayList<>();
         String idstr = PreferencesUtils.getString(getActivity(), "idstr");

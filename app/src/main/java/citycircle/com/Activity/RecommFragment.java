@@ -49,6 +49,7 @@ public class RecommFragment extends Fragment {
     private List<String> networkImages;
     private ArrayList<HashMap<String, String>> newsid;
     HashMap<String, Object> hashMaps;
+    String addview;
     public static RecommFragment instance() {
         RecommFragment view = new RecommFragment();
         return view;
@@ -78,22 +79,24 @@ public class RecommFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
+                if (setidlist(arrayList.get(position - listView.getHeaderViewsCount()).get("id"))) {
+                    addview = GlobalVariables.urlstr + "News.addView&id=" +arrayList.get(position - listView.getHeaderViewsCount()).get("id");
+                    hashMap = new HashMap<String, String>();
+                    hashMap.put("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
+                    newsid.add(hashMap);
+                    hashMaps=new HashMap<String, Object>();
+                    hashMaps.put("idlist",newsid);
+                    String string=JSON.toJSONString(hashMaps);
+                    PreferencesUtils.putString(getActivity(),"idstr",string);
+                    adapter.notifyDataSetChanged();
+                    addview();
+                }
                 if (Integer.parseInt(arrayList.get(position-listView.getHeaderViewsCount()).get("category_id"))==98){
                     intent.putExtra("id", arrayList.get(position -listView.getHeaderViewsCount()).get("id"));
                     intent.putExtra("type", 1);
                     intent.setClass(getActivity(), DiscountInfo.class);
                     getActivity().startActivity(intent);
                 }else {
-                    if (setidlist(arrayList.get(position - listView.getHeaderViewsCount()).get("id"))) {
-                        hashMap = new HashMap<String, String>();
-                        hashMap.put("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
-                        newsid.add(hashMap);
-                        hashMaps=new HashMap<String, Object>();
-                        hashMaps.put("idlist",newsid);
-                        String string=JSON.toJSONString(hashMaps);
-                        PreferencesUtils.putString(getActivity(),"idstr",string);
-                       adapter.notifyDataSetChanged();
-                    }
                     intent.putExtra("id", arrayList.get(position -listView.getHeaderViewsCount()).get("id"));
                     intent.putExtra("title", arrayList.get(position-listView.getHeaderViewsCount() ).get("title"));
                     intent.putExtra("description", arrayList.get(position-listView.getHeaderViewsCount() ).get("description"));
@@ -202,7 +205,19 @@ public class RecommFragment extends Fragment {
             }
         });
     }
+    private void addview() {
+        OkHttpUtils.get().url(addview).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
 
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+            }
+        });
+    }
     private void setAdapter() {
         adapter = new RecomAdapter(arrayList, getActivity(),newsid);
         listView.setAdapter(adapter);

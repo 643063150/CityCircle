@@ -13,6 +13,7 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnDismissListener;
 import com.bigkoo.alertview.OnItemClickListener;
 
+import citycircle.com.Activity.GetPhone;
 import citycircle.com.Activity.Logn;
 import citycircle.com.Activity.MyInfo;
 import citycircle.com.Activity.SaleActivity;
@@ -31,7 +32,7 @@ public class FoundFragment extends Fragment implements View.OnClickListener, OnI
     View view;
     LinearLayout tYellowPages, sale, sales, Property;
     private AlertView mAlertView;
-
+    int type=0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,10 +93,17 @@ public class FoundFragment extends Fragment implements View.OnClickListener, OnI
                         houseid = "0";
                     }
                     String truename = PreferencesUtils.getString(getActivity(), "truename");
+                   String tel =PreferencesUtils.getString(getActivity(),"mobile");
                     if (truename == null) {
+                         type=0;
                         mAlertView = new AlertView("提示", "您未添加真实姓名，是否前往个人中心添加真实姓名？", "取消", new String[]{"确定"}, null, getActivity(), AlertView.Style.Alert, this).setCancelable(true).setOnDismissListener(this);
                         mAlertView.show();
-                    } else {
+                    } else if (tel.length()==0){
+                         type=1;
+                        mAlertView = new AlertView("提示", "您未绑定手机号，是否前往绑定手机号？", "取消", new String[]{"确定"}, null, getActivity(), AlertView.Style.Alert, this).setCancelable(true).setOnDismissListener(this);
+                        mAlertView.show();
+                    }
+                    else {
                         if (houseid == null || houseid.equals("0")) {
                             intent.putExtra("types", 1);
                             intent.setClass(getActivity(), AddHome.class);
@@ -117,10 +125,17 @@ public class FoundFragment extends Fragment implements View.OnClickListener, OnI
     @Override
     public void onItemClick(Object o, int i) {
        if (i!=-1){
-           Intent intent = new Intent();
-           intent.setClass(getActivity(), MyInfo.class);
+           if(type==0){
+               Intent intent = new Intent();
+               intent.setClass(getActivity(), MyInfo.class);
 //           intent.putExtra("type",1);
-           getActivity().startActivity(intent);
+               getActivity().startActivity(intent);
+           }else {
+               Intent intent = new Intent();
+               intent.setClass(getActivity(), GetPhone.class);
+               getActivity().startActivity(intent);
+           }
+
        }
 
     }

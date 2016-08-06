@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -36,6 +38,9 @@ public class Loading extends Activity {
     ImageLoadingListener animateFirstListener;
     ImageView welimg;
     CountdownView countdownView;
+    TextView breaks;
+    Thread thread;
+    boolean a=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,27 +49,12 @@ public class Loading extends Activity {
         frist = PreferencesUtils.getInt(Loading.this, "frist");
         newimg = PreferencesUtils.getInt(Loading.this, "ornew");
         countdownView=(CountdownView)findViewById(R.id.cv_countdownViewTest1);
+        breaks=(TextView)findViewById(R.id.breaks);
         url = GlobalVariables.urlstr + "News.getGuanggao&typeid=94";
-        getImg();
-        mytherd.start();
-        try {
-            GoApp();
-            countdownView.start(3000);
-        } catch (Exception e) {
-            PreferencesUtils.putInt(Loading.this, "land", 0);
-            Intent Intent = new Intent();
-            Intent.setClass(Loading.this, NavigationActivity.class);
-            Loading.this.startActivity(Intent);
-            finish();
-        }
-
-    }
-
-    public void GoApp() {
-        new Handler().postDelayed(new Thread() {
+        breaks.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                super.run();
+            public void onClick(View v) {
+                a=false;
                 Intent Intent = new Intent();
                 if (frist == -1) {
 //                    PreferencesUtils.putInt(Loading.this, "frist", 0);
@@ -82,6 +72,62 @@ public class Loading extends Activity {
                     Loading.this.startActivity(Intent);
                     finish();
                 }
+            }
+        });
+        getImg();
+        mytherd.start();
+        try {
+            GoApp();
+            countdownView.start(3000);
+        } catch (Exception e) {
+            Intent Intent = new Intent();
+            if (frist == -1) {
+//                    PreferencesUtils.putInt(Loading.this, "frist", 0);
+                PreferencesUtils.putInt(Loading.this, "land", 0);
+                PreferencesUtils.putInt(Loading.this, "photo", 1);
+                Intent.setClass(Loading.this, NavigationActivity.class);
+                Loading.this.startActivity(Intent);
+                finish();
+            } else if (newimg == 1) {
+                Intent.setClass(Loading.this, NavigationActivity.class);
+                Loading.this.startActivity(Intent);
+                finish();
+            } else {
+                Intent.setClass(Loading.this, MainActivity.class);
+                Loading.this.startActivity(Intent);
+                finish();
+            }
+        }
+
+    }
+
+    public void GoApp() {
+        new Handler().postDelayed(thread=new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Intent Intent = new Intent();
+                if (a){
+                    if (frist == -1) {
+//                    PreferencesUtils.putInt(Loading.this, "frist", 0);
+                        PreferencesUtils.putInt(Loading.this, "land", 0);
+                        PreferencesUtils.putInt(Loading.this, "photo", 1);
+                        Intent.setClass(Loading.this, NavigationActivity.class);
+                        Loading.this.startActivity(Intent);
+                        finish();
+                    } else if (newimg == 1) {
+                        Intent.setClass(Loading.this, NavigationActivity.class);
+                        Loading.this.startActivity(Intent);
+                        finish();
+                    } else {
+                        Intent.setClass(Loading.this, MainActivity.class);
+                        Loading.this.startActivity(Intent);
+                        finish();
+                    }
+                }else {
+                    thread.interrupt();
+                }
+
 
             }
         }, 3000);

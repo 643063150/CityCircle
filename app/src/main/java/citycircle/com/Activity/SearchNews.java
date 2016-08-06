@@ -119,7 +119,7 @@ public class SearchNews extends Activity implements View.OnClickListener {
                 hashMap.put("title", jsonObject2.getString("title") == null ? "" : jsonObject2.getString("title"));
                 hashMap.put("description", jsonObject2.getString("description") == null ? "" : jsonObject2.getString("description"));
                 hashMap.put("view", jsonObject2.getString("view") == null ? "" : jsonObject2.getString("view"));
-                hashMap.put("url", jsonObject2.getString("url") == null ? "" : jsonObject2.getString("url"));
+                hashMap.put("picList", jsonObject2.getString("picList") == null ? "" : jsonObject2.getString("picList"));
                 hashMap.put("name", jsonObject2.getString("name") == null ? "" : jsonObject2.getString("name"));
                 hashMap.put("category_id", jsonObject2.getString("category_id") == null ? "" : jsonObject2.getString("category_id"));
                 arrayList.add(hashMap);

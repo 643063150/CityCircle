@@ -152,7 +152,6 @@
                 android:layout_weight="1"
                 android:drawableLeft="@mipmap/card_phone"
                 android:drawablePadding="5dp"
-                android:drawableRight="@mipmap/card_go"
                 android:gravity="center_vertical"
                 android:textSize="16dp" />
 
@@ -179,13 +178,12 @@
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/ui_10_dip"
             android:background="@color/white"
-            android:drawableRight="@mipmap/card_down"
             android:gravity="center_vertical"
             android:padding="@dimen/ui_10_dip"
             android:text="用户需知"
             android:textSize="16dp" />
 
-        <TextView
+        <WebView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

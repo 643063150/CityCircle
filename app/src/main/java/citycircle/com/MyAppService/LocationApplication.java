@@ -37,7 +37,7 @@ public class LocationApplication extends Application {
         File diskCache = StorageUtils.getOwnCacheDirectory(this.getApplicationContext(),
                 "citycircle/Cache");
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
-                this.getApplicationContext()).memoryCacheExtraOptions(400, 800).discCacheFileCount(200)
+                this.getApplicationContext()).memoryCacheExtraOptions(720, 1980).discCacheFileCount(200)
                 .discCache(new UnlimitedDiskCache(diskCache)).build();
         ImageLoader.getInstance().init(configuration);
         mMyLocationListener = new MyLocationListener();

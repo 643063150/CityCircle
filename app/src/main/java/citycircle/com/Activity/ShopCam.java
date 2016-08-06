@@ -1,10 +1,12 @@
 package citycircle.com.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,7 +20,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import citycircle.com.Adapter.ShopCamadapter;
+import citycircle.com.Adapter.Camadapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import okhttp3.Call;
@@ -34,8 +36,8 @@ public class ShopCam extends Activity {
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     int page = 1;
-    ShopCamadapter camadapter;
-
+    Camadapter camadapter;
+    ArrayList<HashMap<String, String>> list=new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,16 @@ public class ShopCam extends Activity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        viplist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.putExtra("id", arrayList.get(position).get("id"));
+                intent.putExtra("type", 1);
+                intent.setClass(ShopCam.this, DiscountInfo.class);
+                ShopCam.this.startActivity(intent);
             }
         });
     }
@@ -101,7 +113,7 @@ public class ShopCam extends Activity {
     }
 
     private void setCamadapter() {
-        camadapter = new ShopCamadapter(arrayList, ShopCam.this);
+        camadapter = new Camadapter(arrayList, ShopCam.this,list);
         viplist.setAdapter(camadapter);
     }
 }

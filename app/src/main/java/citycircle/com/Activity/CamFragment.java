@@ -29,6 +29,7 @@ import citycircle.com.Adapter.NetworkImageHolderView;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.Loadmore;
+import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
@@ -46,6 +47,9 @@ public class CamFragment extends Fragment {
     int page = 1;
     ConvenientBanner fristbannerbanner;
     private List<String> networkImages;
+    private ArrayList<HashMap<String, String>> newsid;
+    HashMap<String, Object> hashMaps;
+    String addview;
     public static CamFragment instance() {
         CamFragment view = new CamFragment();
         return view;
@@ -63,6 +67,7 @@ public class CamFragment extends Fragment {
         return view;
     }
     private void intview(){
+        getnewsid();
         loadmore = new Loadmore();
         headview = LayoutInflater.from(getActivity()).inflate(R.layout.headbanner, null);
         fristbannerbanner = (ConvenientBanner) headview.findViewById(R.id.fristbannerbanner);
@@ -72,6 +77,18 @@ public class CamFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (setidlist(arrayList.get(position - listView.getHeaderViewsCount()).get("id"))) {
+                    addview = GlobalVariables.urlstr + "News.addView&id=" +arrayList.get(position - listView.getHeaderViewsCount()).get("id");
+                    hashMap = new HashMap<String, String>();
+                    hashMap.put("id", arrayList.get(position - listView.getHeaderViewsCount()).get("id"));
+                    newsid.add(hashMap);
+                    hashMaps=new HashMap<String, Object>();
+                    hashMaps.put("idlist",newsid);
+                    String string=JSON.toJSONString(hashMaps);
+                    PreferencesUtils.putString(getActivity(),"idstr",string);
+                    adapter.notifyDataSetChanged();
+                    addview();
+                }
                 Intent intent = new Intent();
                 intent.putExtra("id", arrayList.get(position-listView.getHeaderViewsCount() ).get("id"));
                 intent.putExtra("type", 1);
@@ -174,8 +191,45 @@ public class CamFragment extends Fragment {
             }
         });
     }
+    private void addview() {
+        OkHttpUtils.get().url(addview).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+            }
+        });
+    }
     private void setAdapter() {
-        adapter = new Camadapter(arrayList, getActivity());
+        adapter = new Camadapter(arrayList, getActivity(),newsid);
         listView.setAdapter(adapter);
+    }
+    private void getnewsid() {
+        newsid = new ArrayList<>();
+        String idstr = PreferencesUtils.getString(getActivity(), "idstr");
+        if (idstr != null) {
+            JSONObject jsonObject = JSON.parseObject(idstr);
+            JSONArray jsonArray = jsonObject.getJSONArray("idlist");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                hashMap = new HashMap<>();
+                hashMap.put("id", jsonObject1.getString("id"));
+                newsid.add(hashMap);
+            }
+        }
+    }
+    private boolean setidlist(String id) {
+        boolean a = true;
+        for (int i = 0; i < newsid.size(); i++) {
+            if (newsid.get(i).get("id").equals(id)) {
+                a = false;
+                return a;
+            }
+        }
+        return a;
     }
 }

@@ -23,6 +23,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,6 +43,7 @@ import citycircle.com.MyAppService.CityServices;
 import citycircle.com.MyViews.MyListView;
 import citycircle.com.R;
 import citycircle.com.Utils.ImageUtils;
+import citycircle.com.Utils.MyEventBus;
 import citycircle.com.Utils.PreferencesUtils;
 
 /**
@@ -57,7 +61,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
     ImageView head;
-    String[] item = new String[]{"我的发布", "我的消息", "我的会员卡","我的收藏","我的钱包"};
+    String[] item = new String[]{"我的发布", "我的消息", "我的会员卡","我的收藏"};
     SimpleAdapter adapter;
     LinearLayout set;
     String opid;
@@ -71,6 +75,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         IntentFilter filter = new IntentFilter(CityServices.action);
         getActivity().registerReceiver(broadcastReceiver, filter);
         intview();
+        EventBus.getDefault().register(this);
         int a = PreferencesUtils.getInt(getActivity(), "land");
         if (a == 0) {
             handler.sendEmptyMessage(2);
@@ -185,7 +190,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     };
 
     public void setMyListView() {
-        int[] drable = new int[]{R.mipmap.my_icon0, R.mipmap.my_icon1x, R.mipmap.my_iconx,R.mipmap.my_icon3x,R.mipmap.my_icon4x};
+        int[] drable = new int[]{R.mipmap.my_icon0, R.mipmap.my_icon1x, R.mipmap.my_iconx,R.mipmap.my_icon3x};
 
         for (int i = 0; i < drable.length; i++) {
             map = new HashMap<String, Object>();
@@ -239,10 +244,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             }
         }
     };
-
+    @Subscribe
+    public void getEventmsg(MyEventBus myEventBus){
+//        Toast.makeText(getActivity(),myEventBus.getMsg(),Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(broadcastReceiver);
+        EventBus.getDefault().unregister(this);//反注册EventBus
     }
 }

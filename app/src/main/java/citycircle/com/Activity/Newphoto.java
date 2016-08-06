@@ -89,6 +89,8 @@ public class Newphoto extends Fragment {
     final Handler handlers = new Handler();
      EditText myviptxt;
     int type=0;
+    View footview;
+    TextView mestst;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,12 +126,16 @@ public class Newphoto extends Fragment {
     }
 
     public void intview() {
+        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footview,null);
+        mestst=(TextView)footview.findViewById(R.id.mestst) ;
+        mestst.setText("正在加载更多...");
         inflater = LayoutInflater.from(getActivity());
         hviewpage = (ViewPager) adddview.findViewById(R.id.hviewpage);
         head = (ImageView) headview.findViewById(R.id.head);
         message = (TextView) headview.findViewById(R.id.message);
         lehuirefresh = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
         newlist = (ListView) view.findViewById(R.id.city_news);
+        newlist.addFooterView(footview,null,false);
         newlist.addHeaderView(adddview);
         newlist.addHeaderView(headview);
         headview.setVisibility(View.GONE);

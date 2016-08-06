@@ -1,6 +1,7 @@
 package citycircle.com.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,11 @@ public class Camadapter extends BaseAdapter {
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    public Camadapter(ArrayList<HashMap<String, String>> arrayList, Context context) {
+    ArrayList<HashMap<String, String>> list;
+    public Camadapter(ArrayList<HashMap<String, String>> arrayList, Context context,ArrayList<HashMap<String, String>> list) {
         this.arrayList = arrayList;
         this.context = context;
+        this.list = list;
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         ImageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -60,6 +63,9 @@ public class Camadapter extends BaseAdapter {
         getitem.time=(TextView)convertView.findViewById(R.id.time);
         getitem.banner=(ImageView) convertView.findViewById(R.id.banner);
         getitem.statimg=(ImageView) convertView.findViewById(R.id.statimg);
+        if (!setlist(position)) {
+            getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
+        }
         getitem.title.setText(arrayList.get(position).get("title"));
         String sTime=DateUtils.getDateToString(Long.parseLong(arrayList.get(position).get("s_time")));
         String eTime=DateUtils.getDateToString(Long.parseLong(arrayList.get(position).get("e_time")));
@@ -78,5 +84,15 @@ public class Camadapter extends BaseAdapter {
     private class getitem{
         TextView title,time;
         ImageView banner,statimg;
+    }
+    private boolean setlist(int position) {
+        boolean a = true;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get("id").equals(arrayList.get(position).get("id"))) {
+                a = false;
+                return a;
+            }
+        }
+        return a;
     }
 }

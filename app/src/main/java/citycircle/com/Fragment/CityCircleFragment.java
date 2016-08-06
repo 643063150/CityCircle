@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import citycircle.com.Activity.ReplyPhoto;
 import citycircle.com.Adapter.MyFragmentPagerAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.PreferencesUtils;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
  * Created by admins on 2015/11/14.
@@ -34,7 +37,8 @@ public class CityCircleFragment extends Fragment implements View.OnClickListener
     private ViewPager mPager;
     ImageView back,newsphoto;
     TextView hot, news;
-
+    SegmentedGroup segmentedGroup;
+    RadioButton button1, button2;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +48,9 @@ public class CityCircleFragment extends Fragment implements View.OnClickListener
     }
 
     public void intview() {
+        segmentedGroup = (SegmentedGroup) view.findViewById(R.id.segmented2);
+        button1 = (RadioButton) view.findViewById(R.id.button1);
+        button2 = (RadioButton) view.findViewById(R.id.button2);
         newsphoto=(ImageView)view.findViewById(R.id.newsphoto);
         newsphoto.setOnClickListener(this);
         back=(ImageView)view.findViewById(R.id.back);
@@ -70,11 +77,13 @@ public class CityCircleFragment extends Fragment implements View.OnClickListener
             public void onPageSelected(int position) {
                 int color = getResources().getColor(R.color.butbg);
                 if (position == 1) {
+                    button2.setChecked(true);
                     hot.setBackgroundResource(R.mipmap.top_hot_bg2);
                     hot.setTextColor(Color.WHITE);
                     news.setBackgroundResource(R.mipmap.top_new_bg2);
                     news.setTextColor(color);
                 } else {
+                    button1.setChecked(true);
                     hot.setBackgroundResource(R.mipmap.top_hot_bg);
                     hot.setTextColor(color);
                     news.setBackgroundResource(R.mipmap.top_new_bg);
@@ -85,6 +94,19 @@ public class CityCircleFragment extends Fragment implements View.OnClickListener
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+        segmentedGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.button1:
+                        mPager.setCurrentItem(0);
+                        break;
+                    case R.id.button2:
+                        mPager.setCurrentItem(1);
+                        break;
+                }
             }
         });
     }

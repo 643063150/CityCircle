@@ -39,6 +39,7 @@ public class MyMessageList extends Activity {
     MyMessageItem myMessageItem;
     MessageList.DataBean.InfoBean infoBean=new MessageList.DataBean.InfoBean();
     int type;
+    String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class MyMessageList extends Activity {
         type=getIntent().getIntExtra("type",1);
         intview();
         String username = PreferencesUtils.getString(MyMessageList.this, "username");
-        String uid = PreferencesUtils.getString(MyMessageList.this, "userid");
+        uid = PreferencesUtils.getString(MyMessageList.this, "userid");
         url= GlobalVariables.urlstr+"user.getMessageslist&uid="+uid+"&username="+username+"&type="+type;
         setViplist();
         getjson();
@@ -98,12 +99,13 @@ public class MyMessageList extends Activity {
                 }
                 myMessageItem.notifyDataSetChanged();
                 String json=JSON.toJSONString(list);
-                PreferencesUtils.putString(MyMessageList.this,"messagelist"+type,json);
+                PreferencesUtils.putString(MyMessageList.this,"messagelist"+type+uid,json);
             }
         });
     }
+
     private void getjson(){
-        String json=PreferencesUtils.getString(MyMessageList.this,"messagelist"+type);
+        String json=PreferencesUtils.getString(MyMessageList.this,"messagelist"+type+uid);
         if (json!=null){
             JSONArray jsonArray=JSON.parseArray(json);
             for (int i=0;i<jsonArray.size();i++){

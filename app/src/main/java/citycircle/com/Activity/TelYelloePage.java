@@ -75,7 +75,12 @@ public class TelYelloePage extends Activity {
             @Override
             public void loadmore() {
                 page++;
-                hoturl = GlobalVariables.urlstr + "Tel.getList&category_id=" + id + "&page=" + page;
+                if (mytab.getSelectedTabPosition()==0){
+                    hoturl = GlobalVariables.urlstr + "Tel.getHot&page=" + page;
+                }else {
+                    id=classarray.get(mytab.getSelectedTabPosition()).get("id");
+                    hoturl = GlobalVariables.urlstr + "Tel.getList&category_id=" + id + "&page=" + page;
+                }
                 gettelstr(0);
             }
         });
@@ -154,15 +159,19 @@ private void gettelstr(final int type){
                 case 1:
                     setClasshashMap(calssurlstr);
 //                    telclassAdapter.notifyDataSetChanged();
-                    id=classarray.get(0).get("id");
-                    hoturl = GlobalVariables.urlstr + "Tel.getList&category_id=" + id + "&page=" + page;
+
+                    hoturl = GlobalVariables.urlstr + "Tel.getHot&page=" + page;
                     gettelstr(0);
                     mytab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                             page=1;
-                            id=classarray.get(mytab.getSelectedTabPosition()).get("id");
-                            hoturl = GlobalVariables.urlstr + "Tel.getList&category_id=" + id + "&page=" + page;
+                          if (mytab.getSelectedTabPosition()==0){
+                              hoturl = GlobalVariables.urlstr + "Tel.getHot&page=" + page;
+                          }else {
+                              id=classarray.get(mytab.getSelectedTabPosition()).get("id");
+                              hoturl = GlobalVariables.urlstr + "Tel.getList&category_id=" + id + "&page=" + page;
+                          }
                             gettelstr(1);
                         }
 
@@ -198,6 +207,12 @@ private void gettelstr(final int type){
         int a = jsonObject1.getIntValue("code");
         if (a == 0) {
             JSONArray jsonArray = jsonObject1.getJSONArray("info");
+            classhashMap = new HashMap<>();
+            classhashMap.put("id", "0");
+            classhashMap.put("title", "热门电话");
+            classhashMap.put("path", "");
+            mytab.addTab(mytab.newTab().setText("热门电话"));
+            classarray.add(classhashMap);
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                 classhashMap = new HashMap<>();

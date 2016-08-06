@@ -9,6 +9,8 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,7 +42,7 @@ import okhttp3.Call;
  */
 public class VipcardInfo extends Activity implements View.OnClickListener {
     CardView cardView;
-    TextView shopinfo, cardtype, titile, callphone, adress, shengyu, info, shiy, content;
+    TextView shopinfo, cardtype, titile, callphone, adress, shengyu, info, shiy;
     ImageView back, logo;
     VipInfo vipInfo;
     String url, username, id, shopid, addurl;
@@ -55,6 +57,7 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
     ScrollView slay;
     int orlq;
     CallPhonePop callPhonePop;
+    WebView content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,11 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
     private void intview() {
         callPhonePop = new CallPhonePop();
         slay=(ScrollView)findViewById(R.id.slay);
-        content = (TextView) findViewById(R.id.content);
+        content = (WebView) findViewById(R.id.content);
+        content.setVerticalScrollBarEnabled(false); //垂直不显示
+        content.getSettings().setJavaScriptEnabled(true);
+        content.getSettings().getJavaScriptEnabled();
+        content.setWebChromeClient(new WebChromeClient());
         btn_lq = (Button) findViewById(R.id.btn_lq);
         info = (TextView) findViewById(R.id.info);
         shiy = (TextView) findViewById(R.id.shiy);
@@ -118,9 +125,23 @@ public class VipcardInfo extends Activity implements View.OnClickListener {
                         shopid = list.get(i).getShopid();
                         cardtype.setText(list.get(i).getType());
                         titile.setText(list.get(i).getShopname());
-                        callphone.setText("电话:" + list.get(i).getTel());
+                        String strs="电话:" + list.get(i).getTel();
+                        SpannableStringBuilder stringBuilders = new SpannableStringBuilder(strs);
+                        stringBuilders.setSpan(new ForegroundColorSpan(Color.parseColor("#21adfd")), 3, strs.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        callphone.setText(stringBuilders);
                         adress.setText("地址:" + list.get(i).getAddress());
-                        content.setText(list.get(i).getInfo());
+                        String infos = "<html>\r\n\t"
+                                + "<head>\r\n"
+                                + "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\"/>"
+                                + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0\" />"
+                                + "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />"
+                                + "<style>\r\n\t "
+                                + "table {border-right:1px dashed #D2D2D2;border-bottom:1px dashed #D2D2D2} \r\n\t "
+                                + "table td{border-left:1px dashed #D2D2D2;border-top:1px dashed #D2D2D2} \r\n\t"
+                                + "img {width:100%}\r\n" + "</style>\r\n\t"
+                                + "</head>\r\n" + "<body style=\"width:[width]\">\r\n"
+                                + list.get(i).getInfo() + "\r\n</body>" + "</html>";
+                        content.loadDataWithBaseURL(null,infos , "text/html", "utf-8", null);
                         try {
                             cardView.setCardBackgroundColor(Color.parseColor(list.get(i).getColor()));
                         }catch (Exception e){

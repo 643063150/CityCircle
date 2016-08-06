@@ -104,8 +104,9 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 //        usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
         hviewpage = (AutoScrollViewPager) findViewById(R.id.view_pager);
+        hviewpage.setOffscreenPageLimit(3);
         hviewpage.startAutoScroll();
-        hviewpage.setInterval(2000);
+        hviewpage.setInterval(3000);
 //        houselist = (ListView) findViewById(R.id.houselist);
 //        head = (ImageView) findViewById(R.id.head);
 //        number=(TextView)findViewById(R.id.number);

@@ -23,6 +23,10 @@ import java.text.DecimalFormat;
 import citycircle.com.MyViews.CheckSwitchButton;
 import citycircle.com.R;
 import citycircle.com.Utils.PreferencesUtils;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
 
 /**
  * Created by admins on 2015/11/20.
@@ -39,6 +43,7 @@ public class SetActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setlayout);
+        ShareSDK.initSDK(this);
         File sd = Environment.getExternalStorageDirectory();
         String path = sd.getPath() + "/citycircle/Cache";
         cacheDir = new File(path);
@@ -184,6 +189,21 @@ public class SetActivity extends Activity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Platform QQ = ShareSDK.getPlatform(QZone.NAME);
+                QQ.SSOSetting(true);
+
+                if(QQ.isAuthValid() ){
+                    QQ.removeAccount();
+                    ShareSDK.removeCookieOnAuthorize(true);
+
+                }
+
+                Platform WX = ShareSDK.getPlatform(Wechat.NAME);
+                WX.SSOSetting(true);
+                if(WX.isAuthValid() ){
+                    WX.removeAccount();
+                    ShareSDK.removeCookieOnAuthorize(true);
+                }
                 PreferencesUtils.putInt(SetActivity.this, "land", 0);
                 PreferencesUtils.putString(SetActivity.this, "userid", null);
                 Intent intent = new Intent();

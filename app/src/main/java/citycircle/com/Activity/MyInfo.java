@@ -202,6 +202,9 @@ public class MyInfo extends Activity implements View.OnClickListener {
                     headimage = PreferencesUtils.getString(MyInfo.this, "headimage");
                     birth_day=PreferencesUtils.getString(MyInfo.this, "birthday");
                     addr_ess=PreferencesUtils.getString(MyInfo.this, "address");
+                    if (true_name==null){
+                        true_name="";
+                    }
                     birthday.setText(birth_day);
                     address.setText(addr_ess);
                     name.setText(nickname);
@@ -356,7 +359,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
 //                showpop("请输入昵称", R.id.namelay);
                 break;
             case R.id.truenamelay:
-                if (true_name == null) {
+                if (true_name == null||true_name.equals("")) {
                     showpop("请输入姓名", R.id.truenamelay);
                 }
                 break;

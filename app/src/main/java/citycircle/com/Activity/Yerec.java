@@ -1,13 +1,19 @@
 package citycircle.com.Activity;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,7 +28,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import citycircle.com.Adapter.MyVipcardAdapter;
+import citycircle.com.Adapter.VipAdapter;
+import citycircle.com.MyAppService.CityServices;
 import citycircle.com.MyViews.MyClassPopwd;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
@@ -31,54 +38,65 @@ import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
 /**
- * Created by admins on 2016/6/3.
+ * Created by admins on 2016/7/21.
  */
-public class MyVipcard extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class Yerec extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+    View view;
     TextView allclass, vipclass;
-    ImageView search,back;
     ListView listView;
     String url, allclassurl;
     String category_id = "0", typeid = "0", username;
     int page = 1;
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
-    MyVipcardAdapter adapter;
+    VipAdapter adapter;
     Loadmore loadmore;
     MyClassPopwd myClassPopwd;
-    LinearLayout classlay;
+    LinearLayout classlay,nostr;
     ArrayList<HashMap<String, Object>> poparrayList = new ArrayList<>();
     ArrayList<HashMap<String, String>> classarrayList = new ArrayList<HashMap<String, String>>();
     SwipeRefreshLayout Refresh;
-
+    int a;
+    Button logo;
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.myvipcard);
-        allclassurl = GlobalVariables.urlstr + "hyk.getCategory ";
-        username = PreferencesUtils.getString(MyVipcard.this, "username");
-        url = GlobalVariables.urlstr + "hyk.getuserlist&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.alrec, null);
+        a = PreferencesUtils.getInt(getActivity(), "land");
+        Intent intent = new Intent(getActivity(), CityServices.class);
+        getActivity().startService(intent);
+        IntentFilter filter = new IntentFilter(CityServices.action);
+        getActivity().registerReceiver(broadcastReceiver, filter);
         intview();
-        setadapter();
-        getjson(0);
-        getAllclass();
+        if (a == 0) {
+            classlay.setVisibility(View.GONE);
+            nostr.setVisibility(View.VISIBLE);
+        } else {
+            nostr.setVisibility(View.GONE);
+            allclassurl = GlobalVariables.urlstr + "hyk.getCategory ";
+            username = PreferencesUtils.getString(getActivity(), "username");
+            url = GlobalVariables.urlstr + "hyk.getuserlist&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
+            setadapter();
+            getjson(0);
+            getAllclass();
+        }
+
+        return view;
     }
 
     private void intview() {
         loadmore = new Loadmore();
         myClassPopwd = new MyClassPopwd();
-        search = (ImageView) findViewById(R.id.search);
-        back = (ImageView) findViewById(R.id.back);
-        search.setOnClickListener(this);
-        search.setVisibility(View.GONE);
-        back.setVisibility(View.VISIBLE);
-        back.setOnClickListener(this);
-        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
-        classlay = (LinearLayout) findViewById(R.id.classlay);
-        allclass = (TextView) findViewById(R.id.allclass);
+        logo = (Button) view.findViewById(R.id.logo);
+        logo.setOnClickListener(this);
+        Refresh = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
+        classlay = (LinearLayout) view.findViewById(R.id.classlay);
+        nostr = (LinearLayout) view.findViewById(R.id.nostr);
+        allclass = (TextView) view.findViewById(R.id.allclass);
         allclass.setOnClickListener(this);
-        vipclass = (TextView) findViewById(R.id.vipclass);
+        vipclass = (TextView) view.findViewById(R.id.vipclass);
         vipclass.setOnClickListener(this);
-        listView = (ListView) findViewById(R.id.viplist);
+        listView = (ListView) view.findViewById(R.id.viplist);
         listView.setOnItemClickListener(this);
         loadmore.loadmore(listView);
         loadmore.setMyPopwindowswListener(new Loadmore.LoadmoreList() {
@@ -137,7 +155,7 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
             @Override
             public void onError(Call call, Exception e) {
                 Refresh.setRefreshing(false);
-                Toast.makeText(MyVipcard.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -173,12 +191,12 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
             if (page != 1) {
                 page--;
             }
-            Toast.makeText(MyVipcard.this, R.string.nomore, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void setadapter() {
-        adapter = new MyVipcardAdapter (arrayList, MyVipcard.this);
+        adapter = new VipAdapter(arrayList, getActivity());
         listView.setAdapter(adapter);
     }
 
@@ -195,13 +213,10 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
                 allclass.setTextColor(Color.parseColor("#333333"));
                 setpop();
                 break;
-            case R.id.search:
+            case R.id.logo:
                 Intent intent = new Intent();
-                intent.setClass(MyVipcard.this, SearchVip.class);
-                MyVipcard.this.startActivity(intent);
-                break;
-            case R.id.back:
-                finish();
+                intent.setClass(getActivity(), Logn.class);
+                getActivity().startActivity(intent);
                 break;
         }
     }
@@ -213,8 +228,8 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
                 Intent intent = new Intent();
                 intent.putExtra("id", arrayList.get(position).get("id"));
                 intent.putExtra("orlq", 1);
-                intent.setClass(MyVipcard.this, VipcardInfo.class);
-                MyVipcard.this.startActivity(intent);
+                intent.setClass(getActivity(), VipcardInfo.class);
+                getActivity().startActivity(intent);
                 break;
 
         }
@@ -237,7 +252,7 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
             }
         }
 
-        myClassPopwd.showpopdrable(MyVipcard.this, poparrayList, classlay);
+        myClassPopwd.showpopdrable(getActivity(), poparrayList, classlay);
         myClassPopwd.setMyPopwindowswListener(new MyClassPopwd.MyPopwindowsListener() {
             @Override
             public void onRefresh(int position) {
@@ -251,7 +266,7 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
     }
 
     private void setrpop() {
-        myClassPopwd.showpop(MyVipcard.this, classarrayList, classlay);
+        myClassPopwd.showpop(getActivity(), classarrayList, classlay);
         myClassPopwd.setMyPopwindowswListener(new MyClassPopwd.MyPopwindowsListener() {
             @Override
             public void onRefresh(int position) {
@@ -262,5 +277,33 @@ public class MyVipcard extends Activity implements View.OnClickListener, Adapter
                 getjson(1);
             }
         });
+    }
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            a = PreferencesUtils.getInt(getActivity(), "land");
+            if (a == 0) {
+                listView.setVisibility(View.GONE);
+                classlay.setVisibility(View.GONE);
+                nostr.setVisibility(View.VISIBLE);
+            } else {
+                page=1;
+                classarrayList.clear();
+                nostr.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+                classlay.setVisibility(View.VISIBLE);
+                username = PreferencesUtils.getString(getActivity(), "username");
+                allclassurl = GlobalVariables.urlstr + "hyk.getCategory ";
+                url = GlobalVariables.urlstr + "hyk.getuserlist&category_id=" + category_id + "&typeid=" + typeid + "&page=" + page + "&username=" + username;
+                setadapter();
+                getjson(1);
+                getAllclass();
+            }
+        }
+    };
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 }

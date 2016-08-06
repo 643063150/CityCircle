@@ -8,8 +8,8 @@ android {
         applicationId "citycircle.com"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 7
-        versionName "2.2"
+        versionCode 8
+        versionName "3.2"
     }
     buildTypes {
         release {
@@ -70,4 +70,7 @@ dependencies {
     compile 'com.zhy:okhttputils:2.3.9'
     compile 'com.bigkoo:convenientbanner:2.0.5'
     compile 'com.bigkoo:pickerview:2.0.8'
+    compile 'info.hoang8f:android-segmented:1.0.6'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.baoyz.swipemenulistview:library:1.3.0'
 }

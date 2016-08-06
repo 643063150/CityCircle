@@ -1,10 +1,12 @@
 package citycircle.com.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +22,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citycircle.com.Activity.NewsInfoActivity;
 import citycircle.com.MyViews.MyGridView;
 import citycircle.com.R;
 import citycircle.com.Utils.ImageUtils;
@@ -62,8 +65,9 @@ public class RecomAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         getitem getitem=new getitem();
+        options=ImageUtils.setcenterOptions();
         if (Integer.parseInt(arrayList.get(position).get("category_id"))==98){
             convertView= LayoutInflater.from(context).inflate(R.layout.cam_item,null);
             getitem.title=(TextView)convertView.findViewById(R.id.title);
@@ -72,6 +76,9 @@ public class RecomAdapter extends BaseAdapter {
             getitem.timelay=(LinearLayout) convertView.findViewById(R.id.timelay);
             getitem.statimg.setVisibility(View.GONE);
             getitem.timelay.setVisibility(View.GONE);
+            if (!setlist(position)){
+                getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
+            }
             getitem.title.setText(arrayList.get(position).get("title"));
             options=ImageUtils.setcenterOptions();
             JSONArray jsonArray= JSON.parseArray(arrayList.get(position).get("picList"));
@@ -109,6 +116,9 @@ public class RecomAdapter extends BaseAdapter {
                getitem.nwsgrid=(MyGridView) convertView.findViewById(R.id.nwsgrid);
                getitem.views=(TextView)convertView.findViewById(R.id.views);
                getitem.name=(TextView)convertView.findViewById(R.id.name);
+               if (!setlist(position)){
+                   getitem.title.setTextColor(Color.parseColor("#8e8e8e"));
+               }
                getitem.views.setText(arrayList.get(position).get("view")+"阅读");
                getitem.name.setText(arrayList.get(position).get("name"));
                getitem.title.setText(arrayList.get(position).get("title"));
@@ -118,6 +128,18 @@ public class RecomAdapter extends BaseAdapter {
                }
                ImgAdapter newPhotoAdapter=new ImgAdapter(imgList,context);
                getitem.nwsgrid.setAdapter(newPhotoAdapter);
+               getitem.nwsgrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                   @Override
+                   public void onItemClick(AdapterView<?> parent, View view, int positions, long id) {
+                       Intent intent=new Intent();
+                       intent.putExtra("id", arrayList.get(position).get("id"));
+                       intent.putExtra("title", arrayList.get(position).get("title"));
+                       intent.putExtra("description", arrayList.get(position).get("description"));
+                       intent.putExtra("url", arrayList.get(position).get("url"));
+                       intent.setClass(context, NewsInfoActivity.class);
+                       context.startActivity(intent);
+                   }
+               });
            }
 
         }

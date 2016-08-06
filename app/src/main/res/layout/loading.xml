@@ -28,7 +28,21 @@
         app:suffixTextSize="20sp"
         app:timeTextColor="#FFFFFF"
         app:timeTextSize="20sp"
+        android:visibility="gone"
         app:isHideTimeBackground="false"
         app:timeBgColor="#0000"
         app:isShowTimeBgDivisionLine="false" />
+    <TextView
+        android:id="@+id/breaks"
+        android:text="跳过"
+        android:background="@drawable/message"
+        android:padding="5dp"
+        android:textColor="@color/white"
+        android:layout_marginRight="5dp"
+        android:textSize="12sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
