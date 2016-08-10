@@ -2,7 +2,13 @@ package citycircle.com.MyAppService;
 
 import android.app.Application;
 import android.app.Service;
+import android.content.Context;
 import android.os.Vibrator;
+import android.util.Log;
+
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -26,12 +32,13 @@ public class LocationApplication extends Application {
     LocationClientOption locationClientOption;
     public String adress,getStreet;
     public String city,District;
-
+    private static final String TAG = "Init";
     @Override
     public void onCreate() {
         super.onCreate();
+        initCloudChannel(this);
         // System.out.println("getApplicationContext()"+getApplicationContext());
-        SDKInitializer.initialize(this.getApplicationContext());
+        SDKInitializer.initialize(getApplicationContext());
         mLocationClient = new LocationClient(this.getApplicationContext());
         //初始化imgload
         File diskCache = StorageUtils.getOwnCacheDirectory(this.getApplicationContext(),
@@ -74,5 +81,18 @@ public class LocationApplication extends Application {
         super.onLowMemory();
         System.out.println("+++++++++++");
     }
-
+    private void initCloudChannel(Context applicationContext) {
+        PushServiceFactory.init(applicationContext);
+        CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(applicationContext, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Log.d(TAG, "init cloudchannel success");
+            }
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Log.d(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
+    }
 }

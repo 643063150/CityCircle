@@ -90,7 +90,7 @@ public class MessageList {
             private String content;
             private String create_time;
             private String shopname;
-
+            private String xqname;
             public String getId() {
                 return id;
             }
@@ -129,6 +129,14 @@ public class MessageList {
 
             public void setShopname(String shopname) {
                 this.shopname = shopname;
+            }
+
+            public String getXqname() {
+                return xqname;
+            }
+
+            public void setXqname(String xqname) {
+                this.xqname = xqname;
             }
         }
     }

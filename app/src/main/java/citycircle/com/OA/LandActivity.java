@@ -15,8 +15,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.umeng.message.PushAgent;
-import com.umeng.message.tag.TagManager;
 
 import citycircle.com.MyViews.MyDialog;
 import citycircle.com.R;
@@ -35,14 +33,14 @@ public class LandActivity extends Activity {
     String url, datastr;
     Dialog dialog;
     int type=0;
-    PushAgent mPushAgent;
+//    PushAgent mPushAgent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.land);
-        mPushAgent = PushAgent.getInstance(this);
-        mPushAgent.enable();
-        PushAgent.getInstance(this).onAppStart();
+//        mPushAgent = PushAgent.getInstance(this);
+//        mPushAgent.enable();
+//        PushAgent.getInstance(this).onAppStart();
         type=getIntent().getIntExtra("type",0);
         dialog = MyDialog.createLoadingDialog(LandActivity.this, "正在登陆...");
         url = GlobalVariables.oaurlstr + "User.login";
@@ -93,26 +91,26 @@ public class LandActivity extends Activity {
             }
         }.start();
     }
-    void settages(final String[] tags) {
-        new Thread() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                super.run();
-                TagManager.Result result = null;
-                try {
-                   String list= mPushAgent.getTagManager().reset().toString();
-                    result = mPushAgent.getTagManager().add(tags);
-                    System.out.println(result);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-            }
-        }.start();
-
-    }
+//    void settages(final String[] tags) {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                // TODO Auto-generated method stub
+//                super.run();
+//                TagManager.Result result = null;
+//                try {
+//                   String list= mPushAgent.getTagManager().reset().toString();
+//                    result = mPushAgent.getTagManager().add(tags);
+//                    System.out.println(result);
+//                } catch (Exception e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }.start();
+//
+//    }
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -145,7 +143,7 @@ public class LandActivity extends Activity {
                             final String[] tags;
                             tags = new String[] { jsonObject2.getString("jgid"), jsonObject2.getString("dwid"),
                                     jsonObject2.getString("bmid"),jsonObject2.getString("uid") };
-                            settages(tags);
+//                            settages(tags);
                             GlobalVariables.tags=tags;
                         }
                         PreferencesUtils.putInt(LandActivity.this, "oaland", 1);

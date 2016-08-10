@@ -50,7 +50,6 @@ public class MyMessageList extends Activity {
         uid = PreferencesUtils.getString(MyMessageList.this, "userid");
         url= GlobalVariables.urlstr+"user.getMessageslist&uid="+uid+"&username="+username+"&type="+type;
         setViplist();
-        getjson();
         getJson();
     }
 
@@ -97,9 +96,11 @@ public class MyMessageList extends Activity {
                 if (messageList.getData().getCode()==0){
                     list.addAll(messageList.getData().getInfo());
                 }
-                myMessageItem.notifyDataSetChanged();
+                getjson();
                 String json=JSON.toJSONString(list);
                 PreferencesUtils.putString(MyMessageList.this,"messagelist"+type+uid,json);
+                myMessageItem.notifyDataSetChanged();
+
             }
         });
     }
@@ -110,18 +111,20 @@ public class MyMessageList extends Activity {
             JSONArray jsonArray=JSON.parseArray(json);
             for (int i=0;i<jsonArray.size();i++){
                 JSONObject jsonObject=jsonArray.getJSONObject(i);
+                infoBean=new MessageList.DataBean.InfoBean();
                 infoBean.setContent(jsonObject.getString("content"));
                 infoBean.setCreate_time(jsonObject.getString("create_time"));
                 infoBean.setId(jsonObject.getString("id"));
                 infoBean.setShopname(jsonObject.getString("shopname"));
                 infoBean.setTitle(jsonObject.getString("title"));
+                infoBean.setXqname(jsonObject.getString("shopname"));
                 list.add(infoBean);
             }
         }
 
     }
     private void setViplist(){
-        myMessageItem=new MyMessageItem(list,MyMessageList.this);
+        myMessageItem=new MyMessageItem(list,MyMessageList.this,type);
         viplist.setAdapter(myMessageItem);
     }
 }

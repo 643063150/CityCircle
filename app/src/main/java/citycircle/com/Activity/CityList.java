@@ -14,6 +14,7 @@ import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
@@ -125,6 +126,11 @@ public class CityList extends Activity implements OnGetPoiSearchResultListener, 
             Toast.makeText(CityList.this, result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    @Override
+    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+
     }
 
     @Override

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.umeng.message.PushAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 import java.util.ArrayList;
@@ -44,8 +43,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_layout, container, false);
         UmengUpdateAgent.update(getActivity());
-        PushAgent mPushAgent = PushAgent.getInstance(getActivity());
-        mPushAgent.enable();
+//        PushAgent mPushAgent = PushAgent.getInstance(getActivity());
+//        mPushAgent.enable();
         setView();
         return view;
     }

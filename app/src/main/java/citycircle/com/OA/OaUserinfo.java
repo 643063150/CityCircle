@@ -9,9 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.umeng.message.PushAgent;
-import com.umeng.message.tag.TagManager;
-
 import citycircle.com.R;
 import citycircle.com.Utils.PreferencesUtils;
 
@@ -24,16 +21,16 @@ public class OaUserinfo extends Activity implements View.OnClickListener {
     int sexs;
     LinearLayout tellay,qqlay,emaillay,adresslay,uopass;
     Button logext;
-    PushAgent mPushAgent;
+//    PushAgent mPushAgent;
     ImageView messagetback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oauserinfo);
         intview();
-        mPushAgent = PushAgent.getInstance(this);
-        mPushAgent.enable();
-        PushAgent.getInstance(this).onAppStart();
+//        mPushAgent = PushAgent.getInstance(this);
+//        mPushAgent.enable();
+//        PushAgent.getInstance(this).onAppStart();
     }
 
     private void intview() {
@@ -94,7 +91,7 @@ public class OaUserinfo extends Activity implements View.OnClickListener {
                 String uid=PreferencesUtils.getString(OaUserinfo.this,"uid");
                 tags = new String[] { jgid, dwid,
                         bmid,uid };
-                settages(tags);
+//                settages(tags);
                 PreferencesUtils.putInt(OaUserinfo.this,"oaland",0);
                 intent.putExtra("type",0);
                 intent.setClass(OaUserinfo.this,LandActivity.class);
@@ -142,26 +139,26 @@ public class OaUserinfo extends Activity implements View.OnClickListener {
                 break;
         }
     }
-    void settages(final String[] tags) {
-        new Thread() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                super.run();
-                TagManager.Result result = null;
-                try {
-                    mPushAgent.getTagManager().reset().toString();
-//                    result = mPushAgent.getTagManager().reset();
-                    System.out.println(result);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-            }
-        }.start();
-
-    }
+//    void settages(final String[] tags) {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                // TODO Auto-generated method stub
+//                super.run();
+//                TagManager.Result result = null;
+//                try {
+//                    mPushAgent.getTagManager().reset().toString();
+////                    result = mPushAgent.getTagManager().reset();
+//                    System.out.println(result);
+//                } catch (Exception e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }.start();
+//
+//    }
 
     @Override
     protected void onRestart() {

@@ -19,9 +19,11 @@ import citycircle.com.Utils.DateUtils;
 public class MyMessageItem extends BaseAdapter {
     List<MessageList.DataBean.InfoBean> list;
     Context context;
-    public MyMessageItem( List<MessageList.DataBean.InfoBean> list,Context context){
+    int type;
+    public MyMessageItem( List<MessageList.DataBean.InfoBean> list,Context context,int type){
         this.list=list;
         this.context=context;
+        this.type=type;
     }
     @Override
     public int getCount() {
@@ -45,7 +47,18 @@ public class MyMessageItem extends BaseAdapter {
         getItem.content=(TextView)convertView.findViewById(R.id.content);
         getItem.time=(TextView)convertView.findViewById(R.id.time);
         getItem.title=(TextView)convertView.findViewById(R.id.title);
-        getItem.content.setText(list.get(position).getContent());
+        switch (type){
+            case 1:
+                getItem.content.setText("系统消息:"+list.get(position).getContent());
+                break;
+            case 2:
+                getItem.content.setText(list.get(position).getXqname()+":"+list.get(position).getContent());
+                break;
+            case 3:
+                getItem.content.setText(list.get(position).getShopname()+":"+list.get(position).getContent());
+                break;
+        }
+
         getItem.title.setText(list.get(position).getTitle());
         getItem.time.setText(DateUtils.getDateToStringss(Long.parseLong(list.get(position).getCreate_time())));
         return convertView;

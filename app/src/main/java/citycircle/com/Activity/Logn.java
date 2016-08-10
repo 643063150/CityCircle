@@ -2,11 +2,15 @@ package citycircle.com.Activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +20,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bigkoo.alertview.AlertView;
+import com.bigkoo.alertview.OnDismissListener;
+import com.bigkoo.alertview.OnItemClickListener;
 import com.mob.tools.utils.UIHandler;
 
 import java.io.UnsupportedEncodingException;
@@ -40,33 +47,38 @@ import cn.sharesdk.wechat.friends.Wechat;
 /**
  * Created by admins on 2015/11/24.
  */
-public class Logn extends Activity implements View.OnClickListener, Handler.Callback, PlatformActionListener {
-    ImageView back, qq_login_icon, sina_login_icon,my_login_wx3x;
+public class Logn extends Activity implements View.OnClickListener, Handler.Callback, PlatformActionListener, OnDismissListener, OnItemClickListener {
+    ImageView back, qq_login_icon, sina_login_icon, my_login_wx3x;
     EditText name, password;
     Button submit;
     String url, urlstr, urldate, thredurls, therdstr, openRegister;
     Object object;
     Dialog dialog;
     TextView reg, newpa;
-    String userid, nickname, sex, headimage,dastr;
+    String userid, nickname, sex, headimage, dastr;
     private static final int MSG_USERID_FOUND = 1;
     private static final int MSG_LOGIN = 2;
     private static final int MSG_AUTH_CANCEL = 3;
     private static final int MSG_AUTH_ERROR = 4;
     private static final int MSG_AUTH_COMPLETE = 5;
     int a = 1;
-Object openRegisterstr;
+    private AlertView mAlertViewExt;
+    Object openRegisterstr;
+    private EditText etName;//拓展View内容
+    private InputMethodManager imm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ShareSDK.initSDK(this);
         setContentView(R.layout.logn);
+        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         dialog = MyDialog.createLoadingDialog(Logn.this, "正在登陆...");
         url = GlobalVariables.urlstr + "User.login";
         thredurls = GlobalVariables.urlstr + "User.openLogin&openid=" + userid;
         openRegister = GlobalVariables.urlstr + "User.openRegister";
 //                + "&openid=" + userid + "&nickname=" + nickname + "&sex=" + sex + "&headimage=" + headimage;
         intview();
+        mAlertViewExt.show();
     }
 
     private void intview() {
@@ -86,6 +98,19 @@ Object openRegisterstr;
         sina_login_icon.setOnClickListener(this);
         my_login_wx3x = (ImageView) findViewById(R.id.my_login_wx3x);
         my_login_wx3x.setOnClickListener(this);
+        mAlertViewExt = new AlertView("提示", "请完善你的个人资料！", "取消", null, new String[]{"完成"}, this, AlertView.Style.Alert, this);
+        ViewGroup extView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.edlay, null);
+        etName = (EditText) extView.findViewById(R.id.etName);
+        etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focus) {
+                //输入框出来则往上移动
+                boolean isOpen=imm.isActive();
+                mAlertViewExt.setMarginBottom(isOpen&&focus ? 120 :0);
+                System.out.println(isOpen);
+            }
+        });
+        mAlertViewExt.addExtView(extView);
     }
 
     private void getUser(final int type) {
@@ -113,9 +138,9 @@ Object openRegisterstr;
                     }
 
                 } else {
-                   MyhttpRequest myhttpRequest=new MyhttpRequest();
-                    openRegisterstr = myhttpRequest.request(openRegister,dastr,"POST");
-                    if (openRegisterstr==null) {
+                    MyhttpRequest myhttpRequest = new MyhttpRequest();
+                    openRegisterstr = myhttpRequest.request(openRegister, dastr, "POST");
+                    if (openRegisterstr == null) {
                         handler.sendEmptyMessage(2);
                     } else {
                         handler.sendEmptyMessage(5);
@@ -177,21 +202,17 @@ Object openRegisterstr;
                     JSONObject jsonObject2 = JSON.parseObject(therdstr);
                     JSONObject jsonObject3 = jsonObject2.getJSONObject("data");
                     if (jsonObject3.getIntValue("code") == 0) {
-                        urlstr=  therdstr;
+                        urlstr = therdstr;
                         handler.sendEmptyMessage(1);
 
                     } else {
+                        mAlertViewExt.show();
 //                        openRegister = GlobalVariables.urlstr + "User.openRegister&openid=" + userid + "&nickname=" + nickname + "&sex=" + sex + "&headimage=" + headimage;
-                        try {
-                            dastr="&openid=" + userid + "&nickname=" +  URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sex + "&headimage=" + headimage;
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                        getUser(2);
+
                     }
                     break;
                 case 5:
-                    String str=openRegisterstr.toString();
+                    String str = openRegisterstr.toString();
                     JSONObject jsonObject4 = JSON.parseObject(str);
                     JSONObject jsonObject5 = jsonObject4.getJSONObject("data");
                     int b = jsonObject5.getIntValue("code");
@@ -220,7 +241,7 @@ Object openRegisterstr;
                         Logn.this.sendBroadcast(intent);
                         Toast.makeText(Logn.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         finish();
-                    }else {
+                    } else {
                         handler.sendEmptyMessage(3);
                     }
                     break;
@@ -250,11 +271,11 @@ Object openRegisterstr;
                 }
                 break;
             case R.id.newpa:
-                intent.setClass(Logn.this,UpPasswords.class);
+                intent.setClass(Logn.this, UpPasswords.class);
                 Logn.this.startActivity(intent);
                 break;
             case R.id.reg:
-                intent.putExtra("type",1);
+                intent.putExtra("type", 1);
                 intent.setClass(Logn.this, ForgetPass.class);
                 Logn.this.startActivity(intent);
                 finish();
@@ -372,5 +393,32 @@ Object openRegisterstr;
 //            handler.sendEmptyMessage(MSG_AUTH_CANCEL);
             UIHandler.sendEmptyMessage(MSG_AUTH_CANCEL, this);
         }
+    }
+
+    @Override
+    public void onItemClick(Object o, int position) {
+        if(o == mAlertViewExt && position != AlertView.CANCELPOSITION){
+            String name = etName.getText().toString();
+            if(name.isEmpty()){
+                Toast.makeText(this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                nickname=name;
+                try {
+                    dastr = "&openid=" + userid + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sex + "&headimage=" + headimage;
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                getUser(2);
+            }
+            return;
+        }
+
+    }
+
+    @Override
+    public void onDismiss(Object o) {
+        finish();
+//        Toast.makeText()
     }
 }
