@@ -27,6 +27,16 @@
             android:text="会员卡"
             android:textColor="@color/white"
             android:textSize="17sp" />
+        <TextView
+            android:id="@+id/delect"
+            android:text="清空"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textSize="17sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

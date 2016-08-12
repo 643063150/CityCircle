@@ -17,6 +17,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.melnykov.fab.FloatingActionButton;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -50,6 +52,8 @@ public class RecommFragment extends Fragment {
     private ArrayList<HashMap<String, String>> newsid;
     HashMap<String, Object> hashMaps;
     String addview;
+    private List<String> networkurl;
+    FloatingActionButton fab;
     public static RecommFragment instance() {
         RecommFragment view = new RecommFragment();
         return view;
@@ -71,10 +75,23 @@ public class RecommFragment extends Fragment {
     private void intview() {
         getnewsid();
         loadmore = new Loadmore();
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
         headview = LayoutInflater.from(getActivity()).inflate(R.layout.headbanner, null);
         fristbannerbanner = (ConvenientBanner) headview.findViewById(R.id.fristbannerbanner);
         listView = (ListView) view.findViewById(R.id.mylist);
+        fab.attachToListView(listView);
+        fristbannerbanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (networkurl.get(position).length() != 0) {
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(), WebViews.class);
+                    intent.putExtra("url", networkurl.get(position));
+                    getActivity().startActivity(intent);
+                }
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -187,10 +204,12 @@ public class RecommFragment extends Fragment {
                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                 if (jsonObject1.getIntValue("code") == 0) {
                     networkImages = new ArrayList<String>();
+                    networkurl= new ArrayList<String>();
                     JSONArray jsonArray = jsonObject1.getJSONArray("info");
                     for (int i=0;i<jsonArray.size();i++){
                         JSONObject jsonObject2=jsonArray.getJSONObject(i);
                         networkImages.add(jsonObject2.getString("picurl"));
+                        networkurl.add(jsonObject2.getString("url"));
                     }
                     fristbannerbanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                         @Override

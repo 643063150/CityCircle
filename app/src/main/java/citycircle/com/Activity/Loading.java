@@ -41,13 +41,25 @@ public class Loading extends Activity {
     TextView breaks;
     Thread thread;
     boolean a=true;
+    ImageView logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
+        logo=(ImageView)findViewById(R.id.logo) ;
         welimg = (ImageView) findViewById(R.id.welimg);
         frist = PreferencesUtils.getInt(Loading.this, "frist");
         newimg = PreferencesUtils.getInt(Loading.this, "ornew");
+        if (frist != -1){
+            logo.setVisibility(View.VISIBLE);
+            welimg.setVisibility(View.GONE);
+            getImg();
+            mytherd.start();
+        }else {
+
+            welimg.setImageResource(R.mipmap.appqd);
+            welimg.setVisibility(View.VISIBLE);
+        }
         countdownView=(CountdownView)findViewById(R.id.cv_countdownViewTest1);
         breaks=(TextView)findViewById(R.id.breaks);
         url = GlobalVariables.urlstr + "News.getGuanggao&typeid=94";
@@ -74,14 +86,16 @@ public class Loading extends Activity {
                 }
             }
         });
-        getImg();
-        mytherd.start();
+
+
         try {
             GoApp();
             countdownView.start(3000);
         } catch (Exception e) {
             Intent Intent = new Intent();
             if (frist == -1) {
+
+                logo.setVisibility(View.GONE);
 //                    PreferencesUtils.putInt(Loading.this, "frist", 0);
                 PreferencesUtils.putInt(Loading.this, "land", 0);
                 PreferencesUtils.putInt(Loading.this, "photo", 1);
@@ -89,10 +103,12 @@ public class Loading extends Activity {
                 Loading.this.startActivity(Intent);
                 finish();
             } else if (newimg == 1) {
+                logo.setVisibility(View.VISIBLE);
                 Intent.setClass(Loading.this, NavigationActivity.class);
                 Loading.this.startActivity(Intent);
                 finish();
             } else {
+                logo.setVisibility(View.VISIBLE);
                 Intent.setClass(Loading.this, MainActivity.class);
                 Loading.this.startActivity(Intent);
                 finish();
@@ -109,6 +125,8 @@ public class Loading extends Activity {
                 Intent Intent = new Intent();
                 if (a){
                     if (frist == -1) {
+
+                        logo.setVisibility(View.GONE);
 //                    PreferencesUtils.putInt(Loading.this, "frist", 0);
                         PreferencesUtils.putInt(Loading.this, "land", 0);
                         PreferencesUtils.putInt(Loading.this, "photo", 1);
@@ -116,10 +134,12 @@ public class Loading extends Activity {
                         Loading.this.startActivity(Intent);
                         finish();
                     } else if (newimg == 1) {
+                        logo.setVisibility(View.VISIBLE);
                         Intent.setClass(Loading.this, NavigationActivity.class);
                         Loading.this.startActivity(Intent);
                         finish();
                     } else {
+                        logo.setVisibility(View.VISIBLE);
                         Intent.setClass(Loading.this, MainActivity.class);
                         Loading.this.startActivity(Intent);
                         finish();
@@ -173,6 +193,7 @@ public class Loading extends Activity {
                     options = ImageUtils.setcenterOptions();
                     imageLoader.displayImage(url,welimg,options,
                             animateFirstListener);
+                    welimg.setVisibility(View.VISIBLE);
                     break;
                 case 2:
                     break;

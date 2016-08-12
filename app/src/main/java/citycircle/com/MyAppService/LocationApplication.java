@@ -27,7 +27,7 @@ public class LocationApplication extends Application {
     public MyLocationListener mMyLocationListener;
     public double longitude, latitude, a, conlongitude, conlatitude;
     public Vibrator mVibrator;
-    private LocationMode tempMode = LocationMode.Hight_Accuracy;
+    private LocationMode tempMode = LocationMode.Battery_Saving;
     private String tempcoor = "bd09ll";
     LocationClientOption locationClientOption;
     public String adress,getStreet;
@@ -72,6 +72,9 @@ public class LocationApplication extends Application {
             System.out.println("longitude:" + longitude + "latitude:"
                     + latitude);
             System.out.println("adressa:" + adress);
+            if (adress!=null){
+                mLocationClient.stop();
+            }
         }
 
     }

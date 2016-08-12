@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -39,6 +38,7 @@ import citycircle.com.Activity.MyWallet;
 import citycircle.com.Activity.Mymessage;
 import citycircle.com.Activity.SetActivity;
 import citycircle.com.Activity.UpPassword;
+import citycircle.com.Adapter.MineAdapter;
 import citycircle.com.MyAppService.CityServices;
 import citycircle.com.MyViews.MyListView;
 import citycircle.com.R;
@@ -62,7 +62,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     ImageLoadingListener animateFirstListener;
     ImageView head;
     String[] item = new String[]{"我的发布", "我的消息", "我的会员卡","我的收藏"};
-    SimpleAdapter adapter;
+    MineAdapter adapter;
     LinearLayout set;
     String opid;
     String tel;
@@ -113,6 +113,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     getActivity().startActivity(intent);
                 } else {
                     if (position == 1) {
+                        EventBus.getDefault().post(
+                                new MyEventBus("dis"));
                         intent.setClass(getActivity(), Mymessage.class);
                         getActivity().startActivity(intent);
                     } else if (position == 0) {
@@ -198,7 +200,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             map.put("item", item[i]);
             list.add(map);
         }
-        adapter = new SimpleAdapter(getActivity(), list, R.layout.myset_item_layout, new String[]{"drable", "item"}, new int[]{R.id.drable, R.id.item});
+        adapter = new MineAdapter(item,drable,getActivity());
         myListView.setAdapter(adapter);
     }
 

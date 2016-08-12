@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,11 +37,13 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
     public FoundFragment MallFragment;
     public MineFragment MemberFragment;
     public VipCardFragment vipCardFragment;
+    TextView badge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initComponents();
+        EventBus.getDefault().register(this);
         if (activityStyle == null) {
 
             if (HomeFragment == null) {
@@ -56,6 +61,8 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
     }
 
     public void initComponents() {
+        badge=(TextView)findViewById(R.id.bdage);
+        badge.setVisibility(View.GONE);
         home = (RadioButton) findViewById(R.id.rb_home);
         rb_lehui = (RadioButton) findViewById(R.id.rb_lehui);
         rb_vipcard = (RadioButton) findViewById(R.id.rb_vipcard);
@@ -136,8 +143,6 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
                     transaction.show(MallFragment);
                     break;
                 case R.id.rb_mall:
-                    EventBus.getDefault().post(
-                            new MyEventBus("FirstEvent btn clicked"));
                     if (MemberFragment == null) {
                         MemberFragment = new MineFragment();
                         transaction.add(R.id.all_content, MemberFragment);
@@ -226,5 +231,22 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
             finish();
             System.exit(0);
         }
+    }
+    @Subscribe
+    public void getEventmsg(MyEventBus myEventBus){
+        if (myEventBus.getMsg().equals("show")){
+            badge.setVisibility(View.VISIBLE);
+        }else {
+            badge.setVisibility(View.GONE);
+        }
+
+
+//        Toast.makeText(getActivity(),myEventBus.getMsg(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//反注册EventBus
     }
 }

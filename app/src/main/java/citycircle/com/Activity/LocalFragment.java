@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -50,6 +51,7 @@ public class LocalFragment extends Fragment {
     private List<String> networkImages;
     private ArrayList<HashMap<String, String>> newsid;
     String addview;
+    private List<String> networkurl;
     public static LocalFragment instance() {
         LocalFragment view = new LocalFragment();
         return view;
@@ -77,6 +79,17 @@ public class LocalFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.mylist);
         listView.addHeaderView(headview);
         loadmore.loadmore(listView);
+        fristbannerbanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (networkurl.get(position).length() != 0) {
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(), WebViews.class);
+                    intent.putExtra("url", networkurl.get(position));
+                    getActivity().startActivity(intent);
+                }
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,10 +197,12 @@ public class LocalFragment extends Fragment {
                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                 if (jsonObject1.getIntValue("code") == 0) {
                     networkImages = new ArrayList<String>();
+                    networkurl= new ArrayList<String>();
                     JSONArray jsonArray = jsonObject1.getJSONArray("info");
                     for (int i = 0; i < jsonArray.size(); i++) {
                         JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                         networkImages.add(jsonObject2.getString("picurl"));
+                        networkurl.add(jsonObject2.getString("url"));
                     }
                     fristbannerbanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                         @Override

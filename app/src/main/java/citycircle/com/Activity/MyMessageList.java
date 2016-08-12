@@ -21,6 +21,7 @@ import java.util.List;
 
 import citycircle.com.Adapter.MyMessageItem;
 import citycircle.com.JsonMordel.MessageList;
+import citycircle.com.MyViews.MyPopwindows;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.PreferencesUtils;
@@ -30,7 +31,7 @@ import okhttp3.Call;
  * Created by admins on 2016/6/27.
  */
 public class MyMessageList extends Activity {
-    TextView title;
+    TextView title,delect;
     ListView viplist;
     ImageView back;
     MessageList messageList;
@@ -40,6 +41,7 @@ public class MyMessageList extends Activity {
     MessageList.DataBean.InfoBean infoBean=new MessageList.DataBean.InfoBean();
     int type;
     String uid;
+    MyPopwindows myPopwindows;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class MyMessageList extends Activity {
     }
 
     private void intview() {
+        delect=(TextView)findViewById(R.id.delect);
         title=(TextView)findViewById(R.id.title) ;
         viplist = (ListView) findViewById(R.id.viplist);
         back = (ImageView) findViewById(R.id.back);
@@ -70,6 +73,14 @@ public class MyMessageList extends Activity {
                 finish();
             }
         });
+        delect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                list.clear();
+                PreferencesUtils.putString(MyMessageList.this,"messagelist"+type+uid,null);
+                myMessageItem.notifyDataSetChanged();
+            }
+        });
         viplist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,6 +90,23 @@ public class MyMessageList extends Activity {
                 intent.putExtra("contents",list.get(position).getContent());
                 intent.setClass(MyMessageList.this,MessageContent.class);
                 MyMessageList.this.startActivity(intent);
+            }
+        });
+        viplist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                myPopwindows=new MyPopwindows();
+                myPopwindows.showpop(MyMessageList.this,"删除信息？");
+                myPopwindows.setMyPopwindowswListener(new MyPopwindows.MyPopwindowsListener() {
+                    @Override
+                    public void onRefresh() {
+                        list.remove(position);
+                        String json=JSON.toJSONString(list);
+                        PreferencesUtils.putString(MyMessageList.this,"messagelist"+type+uid,json);
+                        myMessageItem.notifyDataSetChanged();
+                    }
+                });
+                return true;
             }
         });
     }
@@ -117,7 +145,7 @@ public class MyMessageList extends Activity {
                 infoBean.setId(jsonObject.getString("id"));
                 infoBean.setShopname(jsonObject.getString("shopname"));
                 infoBean.setTitle(jsonObject.getString("title"));
-                infoBean.setXqname(jsonObject.getString("shopname"));
+                infoBean.setXqname(jsonObject.getString("xqname"));
                 list.add(infoBean);
             }
         }

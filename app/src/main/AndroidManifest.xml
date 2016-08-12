@@ -140,6 +140,9 @@
             android:name=".Activity.NewsInfoActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".Activity.WebViews"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".Activity.TelYelloePage"
             android:screenOrientation="portrait"></activity>
         <activity
@@ -512,8 +515,8 @@
             android:value="2bd35c2c0bbbdc16e6a2fdcb2d8b9d0e"></meta-data>
         <service android:name=".OA.service.DownloadService">
         </service>
-        <meta-data android:name="com.alibaba.app.appkey" android:value="23429546"/> <!-- 请填写你自己的- appKey -->
-        <meta-data android:name="com.alibaba.app.appsecret" android:value="134ff9013fbfdc1df0faf029b46883f0"/> <!-- 请填写你自己的appSecret -->
+        <meta-data android:name="com.alibaba.app.appkey" android:value="23429639"/> <!-- 请填写你自己的- appKey -->
+        <meta-data android:name="com.alibaba.app.appsecret" android:value="3abd9b6d049735de2d72321efb149419"/> <!-- 请填写你自己的appSecret -->
         <!-- 通道保持服务 -->
         <service android:name="com.alibaba.sdk.android.push.ChannelService"
             android:exported="true" android:process=":channel">
@@ -541,7 +544,7 @@
             </intent-filter>
         </receiver>
         <!--消息接收监听器-->
-        <receiver android:name="com.alibaba.sdk.android.push.MessageReceiver">
+        <receiver android:name=".MyAppService.Message">
             <intent-filter>
                 <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED"/>
             </intent-filter>

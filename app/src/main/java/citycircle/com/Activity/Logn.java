@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnDismissListener;
 import com.bigkoo.alertview.OnItemClickListener;
@@ -66,19 +69,21 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
     Object openRegisterstr;
     private EditText etName;//拓展View内容
     private InputMethodManager imm;
+    CloudPushService pushService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ShareSDK.initSDK(this);
         setContentView(R.layout.logn);
-        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        pushService = PushServiceFactory.getCloudPushService();
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         dialog = MyDialog.createLoadingDialog(Logn.this, "正在登陆...");
         url = GlobalVariables.urlstr + "User.login";
         thredurls = GlobalVariables.urlstr + "User.openLogin&openid=" + userid;
         openRegister = GlobalVariables.urlstr + "User.openRegister";
 //                + "&openid=" + userid + "&nickname=" + nickname + "&sex=" + sex + "&headimage=" + headimage;
         intview();
-        mAlertViewExt.show();
     }
 
     private void intview() {
@@ -105,8 +110,8 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
             @Override
             public void onFocusChange(View view, boolean focus) {
                 //输入框出来则往上移动
-                boolean isOpen=imm.isActive();
-                mAlertViewExt.setMarginBottom(isOpen&&focus ? 120 :0);
+                boolean isOpen = imm.isActive();
+                mAlertViewExt.setMarginBottom(isOpen && focus ? 120 : 0);
                 System.out.println(isOpen);
             }
         });
@@ -168,6 +173,7 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
                             PreferencesUtils.putString(Logn.this, "openid", jsonObject2.getString("openid"));
                             PreferencesUtils.putString(Logn.this, "userid", jsonObject2.getString("uid"));
                             PreferencesUtils.putString(Logn.this, "username", jsonObject2.getString("username"));
+                            setAccount(jsonObject2.getString("uid"));
                             PreferencesUtils.putString(Logn.this, "nickname", jsonObject2.getString("nickname"));
                             PreferencesUtils.putString(Logn.this, "headimage", jsonObject2.getString("headimage"));
                             PreferencesUtils.putString(Logn.this, "mobile", jsonObject2.getString("mobile"));
@@ -185,6 +191,7 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
                         intent.putExtra("getmeeage", "0");
                         Logn.this.sendBroadcast(intent);
                         Toast.makeText(Logn.this, "登陆成功", Toast.LENGTH_SHORT).show();
+
                         finish();
                     } else {
                         handler.sendEmptyMessage(3);
@@ -223,6 +230,7 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
                             PreferencesUtils.putString(Logn.this, "userid", jsonObject6.getString("uid"));
                             PreferencesUtils.putString(Logn.this, "openid", jsonObject6.getString("openid"));
                             PreferencesUtils.putString(Logn.this, "username", jsonObject6.getString("username"));
+                            setAccount(jsonObject6.getString("uid"));
                             PreferencesUtils.putString(Logn.this, "nickname", jsonObject6.getString("nickname"));
                             PreferencesUtils.putString(Logn.this, "headimage", jsonObject6.getString("headimage"));
                             PreferencesUtils.putString(Logn.this, "mobile", jsonObject6.getString("mobile"));
@@ -397,13 +405,12 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
 
     @Override
     public void onItemClick(Object o, int position) {
-        if(o == mAlertViewExt && position != AlertView.CANCELPOSITION){
+        if (o == mAlertViewExt && position != AlertView.CANCELPOSITION) {
             String name = etName.getText().toString();
-            if(name.isEmpty()){
+            if (name.isEmpty()) {
                 Toast.makeText(this, "昵称不能为空", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                nickname=name;
+            } else {
+                nickname = name;
                 try {
                     dastr = "&openid=" + userid + "&nickname=" + URLEncoder.encode(nickname, "UTF-8") + "&sex=" + sex + "&headimage=" + headimage;
                 } catch (UnsupportedEncodingException e) {
@@ -420,5 +427,19 @@ public class Logn extends Activity implements View.OnClickListener, Handler.Call
     public void onDismiss(Object o) {
         finish();
 //        Toast.makeText()
+    }
+
+    private void setAccount(String username) {
+        pushService.bindAccount(username, new CommonCallback() {
+            @Override
+            public void onSuccess(String s) {
+                System.out.println("setAccount:onSuccess");
+            }
+
+            @Override
+            public void onFailed(String s, String s1) {
+                System.out.println("setAccount:onFailed");
+            }
+        });
     }
 }

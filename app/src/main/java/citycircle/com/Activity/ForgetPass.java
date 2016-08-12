@@ -183,7 +183,7 @@ public class ForgetPass extends Activity implements View.OnClickListener {
                     Toast.makeText(ForgetPass.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
                 } else {
                     numbers = number.getText().toString().trim();
-                    smurl = GlobalVariables.urlstr + "User.smsSend&mobile=" + number.getText().toString().trim() + "&type=2";
+                    smurl = GlobalVariables.urlstr + "User.smsSend&mobile=" + number.getText().toString().trim() + "&type=1";
                     getStr(0);
                     gettime();
                 }
