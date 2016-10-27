@@ -1,6 +1,7 @@
 package citycircle.com.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,15 +48,31 @@ public class MyMessageItem extends BaseAdapter {
         getItem.content=(TextView)convertView.findViewById(R.id.content);
         getItem.time=(TextView)convertView.findViewById(R.id.time);
         getItem.title=(TextView)convertView.findViewById(R.id.title);
+        getItem.name=(TextView)convertView.findViewById(R.id.name);
+        System.out.println("list.get(position).getKan():"+list.get(position).getKan());
+        if (list.get(position).getTitle()==null||list.get(position).getTitle().length()==0){
+            getItem.title.setVisibility(View.GONE);
+        }
+        if (list.get(position).getKan()==null){
+            getItem.content.setTextColor(Color.BLACK);
+            getItem.title.setTextColor(Color.BLACK);
+        }else {
+            getItem.content.setTextColor(Color.parseColor("#8e8e8e"));
+            getItem.title.setTextColor(Color.parseColor("#8e8e8e"));
+
+        }
         switch (type){
             case 1:
-                getItem.content.setText("系统消息:"+list.get(position).getContent());
+                getItem.name.setText("系统消息");
+                getItem.content.setText(list.get(position).getContent());
                 break;
             case 2:
-                getItem.content.setText(list.get(position).getXqname()+":"+list.get(position).getContent());
+                getItem.name.setText(list.get(position).getXqname());
+                getItem.content.setText(list.get(position).getContent());
                 break;
             case 3:
-                getItem.content.setText(list.get(position).getShopname()+":"+list.get(position).getContent());
+                getItem.name.setText(list.get(position).getShopname());
+                getItem.content.setText(list.get(position).getContent());
                 break;
         }
 
@@ -64,6 +81,6 @@ public class MyMessageItem extends BaseAdapter {
         return convertView;
     }
     public class getItem{
-        TextView title,content,time;
+        TextView title,content,time,name;
     }
 }

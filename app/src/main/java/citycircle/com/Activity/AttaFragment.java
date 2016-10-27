@@ -203,7 +203,9 @@ public class AttaFragment extends Fragment {
             if (page != 1) {
                 page--;
             }
-            Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
+            if (arrayList.size()!=0){
+                Toast.makeText(getActivity(), R.string.nomore, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

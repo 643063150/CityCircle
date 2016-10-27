@@ -138,7 +138,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".Activity.NewsInfoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".Activity.WebViews"
             android:screenOrientation="portrait"></activity>

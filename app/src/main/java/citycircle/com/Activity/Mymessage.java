@@ -14,12 +14,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import citycircle.com.Adapter.MyMessageAdapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
+import citycircle.com.Utils.MyEventBus;
 import citycircle.com.Utils.PreferencesUtils;
 import okhttp3.Call;
 
@@ -53,6 +56,8 @@ public class Mymessage extends Activity implements View.OnClickListener {
         mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                EventBus.getDefault().post(
+                        new MyEventBus("dis"));
                 Intent intent=new Intent();
                 intent.putExtra("type",(position+1));
                 intent.setClass(Mymessage.this, MyMessageList.class);

@@ -10,17 +10,16 @@ import android.widget.TextView;
 
 import citycircle.com.R;
 import citycircle.com.Utils.DateUtils;
-import citycircle.com.Utils.GlobalVariables;
 
 /**
  * Created by admins on 2016/2/24.
  */
 public class PayMoney extends Activity implements View.OnClickListener {
     ImageView loginback, typeimg;
-    TextView sbiao, bbiao, dian, time, pmoney, smoney, ymoney;
+    TextView sbiao, bbiao, dian, time, pmoney, smoney, ymoney,ymoneyss;
     Button submit;
-    String type, yumoney, snumber, bnumber, create_time, status, unumber, ymoneys, smoneys;
-    LinearLayout lay2,lay3,lay4;
+    String type, yumoney, snumber, bnumber, create_time, status, unumber, ymoneys, smoneys,ymoneysss;
+    LinearLayout lay2,lay3,lay4,lay9;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +31,7 @@ public class PayMoney extends Activity implements View.OnClickListener {
         unumber = getIntent().getStringExtra("unumber");
         ymoneys = getIntent().getStringExtra("ymoney");
         smoneys = getIntent().getStringExtra("smoney");
+        ymoneysss=getIntent().getStringExtra("price");
         create_time = getIntent().getStringExtra("create_time");
         status = getIntent().getStringExtra("status");
         intview();
@@ -41,6 +41,7 @@ public class PayMoney extends Activity implements View.OnClickListener {
         lay2=(LinearLayout)findViewById(R.id.lay2);
         lay3=(LinearLayout)findViewById(R.id.lay3);
         lay4=(LinearLayout)findViewById(R.id.lay4);
+        lay9=(LinearLayout)findViewById(R.id.lay9);
         loginback = (ImageView) findViewById(R.id.loginback);
 //        typeimg=(ImageView)findViewById(R.id.typeimg);
         sbiao = (TextView) findViewById(R.id.sbiao);
@@ -50,6 +51,8 @@ public class PayMoney extends Activity implements View.OnClickListener {
         pmoney = (TextView) findViewById(R.id.pmoney);
         smoney = (TextView) findViewById(R.id.smoney);
         ymoney = (TextView) findViewById(R.id.ymoney);
+        ymoneyss = (TextView) findViewById(R.id.ymoneys);
+        ymoneyss.setText(ymoneysss);
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(this);
         loginback.setOnClickListener(this);
@@ -63,6 +66,7 @@ public class PayMoney extends Activity implements View.OnClickListener {
             lay2.setVisibility(View.GONE);
             lay3.setVisibility(View.GONE);
             lay4.setVisibility(View.GONE);
+            lay9.setVisibility(View.GONE);
         }
 
         time.setText(DateUtils.getDateToStrings(Long.parseLong(create_time)));

@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -39,7 +39,7 @@ public class Havetopay extends Fragment {
     HashMap<String, String> hashMap;
     String url, urlstr, uid, username, houseid, type, fangid;
     PaysAdapter paysAdapter;
-    TableLayout dian,wuye;
+    LinearLayout dian,wuye;
     PayWuAdapter payWuAdapter;
     @Nullable
     @Override
@@ -59,8 +59,8 @@ public class Havetopay extends Fragment {
     }
 
     private void intview() {
-        dian=(TableLayout)view.findViewById(R.id.dian);
-        wuye=(TableLayout)view.findViewById(R.id.wuye);
+        dian=(LinearLayout)view.findViewById(R.id.dian);
+        wuye=(LinearLayout)view.findViewById(R.id.wuye);
         if (type.equals("1")||type.equals("4")){
             wuye.setVisibility(View.VISIBLE);
             dian.setVisibility(View.GONE);

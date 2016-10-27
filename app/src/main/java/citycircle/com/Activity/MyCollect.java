@@ -161,6 +161,8 @@ public class MyCollect extends Activity implements View.OnClickListener {
             switch (msg.what) {
                 case 1:
                     lehuirefresh.setRefreshing(false);
+                    a=1;
+                    bianji.setText("编辑");
                     setHashMap(urlstr);
                     collect_adapter.notifyDataSetChanged();
                     break;
@@ -186,6 +188,10 @@ public class MyCollect extends Activity implements View.OnClickListener {
                                 iterator.remove();
                             }
                         }
+                        a = 1;
+                        for (int i = 0; i < array.size(); i++) {
+                            array.get(i).put("show", "false");
+                        }
                         collect_adapter.notifyDataSetChanged();
                         try {
                             setcollect();
@@ -195,6 +201,17 @@ public class MyCollect extends Activity implements View.OnClickListener {
 
                     } else {
                         Toast.makeText(MyCollect.this, "删除失败", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case 5:
+                    if (array.get(GlobalVariables.position).get("flag").equals("false")) {
+                        array.get(GlobalVariables.position).put("flag", "true");
+                        collect_adapter.notifyDataSetChanged();
+                        list.add(array.get(GlobalVariables.position).get("id"));
+                    } else {
+                        array.get(GlobalVariables.position).put("flag", "false");
+                        list.remove(array.get(GlobalVariables.position).get("id"));
+                        collect_adapter.notifyDataSetChanged();
                     }
                     break;
             }
@@ -228,7 +245,7 @@ public class MyCollect extends Activity implements View.OnClickListener {
     }
 
     public void setlist() {
-        collect_adapter = new Collect_Adapter(array, MyCollect.this);
+        collect_adapter = new Collect_Adapter(array, MyCollect.this,handler);
         collectlist.setAdapter(collect_adapter);
     }
 

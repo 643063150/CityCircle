@@ -103,7 +103,7 @@ public class MyInfo extends Activity implements View.OnClickListener {
         File file = new File(path);
         if (!file.exists())
             file.mkdir();
-
+        boolean a=file.exists();
         tempFile = new File(file, getPhotos.getPhotoFileName());
         url = GlobalVariables.urlstr + "User.headEdit";
         intview();

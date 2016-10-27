@@ -56,7 +56,7 @@ public class PaysAdapter extends BaseAdapter {
         getItemView.moremoney=(TextView)convertView.findViewById(R.id.moremoney);
         String time=dateUtils.getDateToStringssss(Long.parseLong(arrayList.get(position).get("create_time")));
         getItemView.title.setText(arrayList.get(position).get("ymoney"));
-        getItemView.money.setText(arrayList.get(position).get("bnumber"));
+        getItemView.money.setText(arrayList.get(position).get("unumber"));
         getItemView.moremoney.setText(arrayList.get(position).get("yumoney"));
         getItemView.time.setText(time);
         return convertView;

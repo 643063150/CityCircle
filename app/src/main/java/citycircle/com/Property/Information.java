@@ -19,7 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import citycircle.com.Property.PropertyAdapter.InfoAdapter;
+import citycircle.com.Property.PropertyAdapter.InfoMadapter;
 import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.HttpRequest;
@@ -35,7 +35,7 @@ public class Information extends Activity implements View.OnClickListener{
     String url, urlstr, uid, username, houseid;
     HashMap<String, String> hashMap;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
-    InfoAdapter adapter;
+    InfoMadapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +52,7 @@ public class Information extends Activity implements View.OnClickListener{
     }
 
     private void intview() {
-        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
+//        Refresh = (SwipeRefreshLayout) findViewById(R.id.Refresh);
         info_list = (ListView) findViewById(R.id.info_list);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
@@ -112,6 +112,7 @@ public class Information extends Activity implements View.OnClickListener{
                 hashMap=new HashMap<>();
                 hashMap.put("id",jsonObject2.getString("id") == null ? "" : jsonObject2.getString("id"));
                 hashMap.put("title",jsonObject2.getString("title") == null ? "" : jsonObject2.getString("title"));
+                hashMap.put("create_time",jsonObject2.getString("create_time") == null ? "" : jsonObject2.getString("create_time"));
                 array.add(hashMap);
             }
         }else {
@@ -120,7 +121,7 @@ public class Information extends Activity implements View.OnClickListener{
 
     }
     private void setInfo_list(){
-        adapter=new InfoAdapter(array,Information.this);
+        adapter=new InfoMadapter(array,Information.this);
         info_list.setAdapter(adapter);
     }
 

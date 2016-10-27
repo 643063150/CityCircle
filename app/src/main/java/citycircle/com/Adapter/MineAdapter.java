@@ -8,12 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.readystatesoftware.viewbadger.BadgeView;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import citycircle.com.R;
+import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.MyEventBus;
 
 /**
@@ -51,23 +50,40 @@ public class MineAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(R.layout.myset_item_layout, null);
         TextView textView = (TextView) convertView.findViewById(R.id.item);
+        TextView bdage = (TextView) convertView.findViewById(R.id.bdage);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.drable);
         textView.setText(strings[position]);
         imageView.setImageResource(drable[position]);
-        BadgeView badge = new BadgeView(context, textView);
-        badge.setTextSize(10);
-        badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
-        badge.setBadgeMargin(textView.getWidth() / 5, 0);
-        badge.setText("new");
-        if (type == 1) {
-            if (position==1){
-                badge.show();
+//        BadgeView badge = new BadgeView(context, textView);
+//        badge.setTextSize(10);
+//        badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+//        badge.setBadgeMargin(textView.getWidth() / 5, 0);
+//        badge.setText("new");
+        if (GlobalVariables.type==0){
+            if (GlobalVariables.types) {
+                if (position==1){
+                    bdage.setVisibility(View.VISIBLE);
+                    GlobalVariables.type=1;
+                    type=1;
+                }
+            } else {
+                bdage.setVisibility(View.GONE);
+                GlobalVariables.type=1;
+                type=0;
             }
-        } else {
 
-                badge.hide();
+        }else {
+            if (type == 1) {
+                if (position==1){
+                    bdage.setVisibility(View.VISIBLE);
+                }
+            } else {
 
+                bdage.setVisibility(View.GONE);
+
+            }
         }
+
         return convertView;
     }
 

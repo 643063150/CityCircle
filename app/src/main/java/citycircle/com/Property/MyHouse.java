@@ -32,7 +32,7 @@ public class MyHouse extends Activity {
     SwipeRefreshLayout Refresh;
     ListView houselist;
     ImageView back;
-    String url, urlstr, updatrurl, updatestr,uid,username;
+    String url, urlstr, updatrurl, updatestr, uid, username;
     ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
     HashMap<String, String> hashMap;
     HouseAdapter adapter;
@@ -42,9 +42,9 @@ public class MyHouse extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myhouse);
-        uid= PreferencesUtils.getString(MyHouse.this,"userid");
-        username=PreferencesUtils.getString(MyHouse.this,"username");
-        url = GlobalVariables.urlstr + "user.getHouseList&uid="+uid+"&username="+username;
+        uid = PreferencesUtils.getString(MyHouse.this, "userid");
+        username = PreferencesUtils.getString(MyHouse.this, "username");
+        url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
         intview();
         setHouselist();
         gethouselist(0);
@@ -85,7 +85,7 @@ public class MyHouse extends Activity {
         Refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                url = GlobalVariables.urlstr + "user.getHouseList&uid="+uid+"&username="+username;
+                url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
                 gethouselist(1);
             }
         });
@@ -108,24 +108,29 @@ public class MyHouse extends Activity {
                             handler.sendEmptyMessage(1);
                         }
                     }
-                } else if (type == 2||type==3) {
+                } else if (type == 2 || type == 3||type==4) {
                     updatestr = httpRequest.doGet(updatrurl);
                     if (updatestr.equals("网络超时")) {
                         handler.sendEmptyMessage(2);
                     } else {
-                        if (type==3){
+                        if (type == 3) {
                             array.remove(GlobalVariables.position);
-                            String housid=PreferencesUtils.getString(MyHouse.this,"houseid");
+                            String housid = PreferencesUtils.getString(MyHouse.this, "houseid");
                             PreferencesUtils.putString(MyHouse.this, "houseids", housid);
-                        }else {
-                            PreferencesUtils.putString(MyHouse.this,"houseid",array.get(GlobalVariables.position).get("houseid"));
-                            PreferencesUtils.putString(MyHouse.this,"fanghaoid",array.get(GlobalVariables.position).get("fanghaoid"));
-                            PreferencesUtils.putString(MyHouse.this, "houseids", array.get(GlobalVariables.position).get("houseid"));
-                            PreferencesUtils.putString(MyHouse.this,"xiaoqu",array.get(GlobalVariables.position).get("xiaoqu"));
-                            String hosename = array.get(GlobalVariables.position).get("xiaoqu") + array.get(GlobalVariables.position).get("louhao") + array.get(GlobalVariables.position).get("fanghao") + array.get(GlobalVariables.position).get("danyuan");
-                            PreferencesUtils.putString(MyHouse.this, "housename", hosename);
+                            handler.sendEmptyMessage(6);
+                        } else if(type==4){
+                            handler.sendEmptyMessage(8);
                         }
-                        handler.sendEmptyMessage(6);
+                        else {
+                            PreferencesUtils.putString(MyHouse.this, "houseid", array.get(GlobalVariables.position).get("houseid"));
+                            PreferencesUtils.putString(MyHouse.this, "fanghaoid", array.get(GlobalVariables.position).get("fanghaoid"));
+                            PreferencesUtils.putString(MyHouse.this, "houseids", array.get(GlobalVariables.position).get("houseid"));
+                            PreferencesUtils.putString(MyHouse.this, "xiaoqu", array.get(GlobalVariables.position).get("xiaoqu"));
+                            String hosename = array.get(GlobalVariables.position).get("xiaoqu") + array.get(GlobalVariables.position).get("louhao") + array.get(GlobalVariables.position).get("danyuan") + array.get(GlobalVariables.position).get("fanghao");
+                            PreferencesUtils.putString(MyHouse.this, "housename", hosename);
+                            handler.sendEmptyMessage(6);
+                        }
+
                     }
                 }
             }
@@ -165,27 +170,55 @@ public class MyHouse extends Activity {
                     adapter.notifyDataSetChanged();
                     break;
                 case 5:
-                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid="+uid+"&username="+username+"&houseid="+array.get(GlobalVariables.position).get("houseid")+"&fanghaoid="+array.get(GlobalVariables.position).get("fanghaoid");
+                    updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid=" + uid + "&username=" + username + "&houseid=" + array.get(GlobalVariables.position).get("houseid") + "&fanghaoid=" + array.get(GlobalVariables.position).get("fanghaoid");
                     gethouselist(2);
                     break;
                 case 6:
-                    JSONObject jsonObject=JSON.parseObject(updatestr);
-                    JSONObject jsonObject1=jsonObject.getJSONObject("data");
-                    int a=jsonObject1.getIntValue("code");
-                    if (a!=0){
+                    JSONObject jsonObject = JSON.parseObject(updatestr);
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                    int a = jsonObject1.getIntValue("code");
+                    if (a != 0) {
                         Toast.makeText(MyHouse.this, jsonObject1.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
                     adapter.notifyDataSetChanged();
                     break;
                 case 7:
-                    updatrurl = GlobalVariables.urlstr + "User.delHouse&uid="+uid+"&username="+username+"&id="+array.get(GlobalVariables.position).get("id");
+                    updatrurl = GlobalVariables.urlstr + "User.delHouse&uid=" + uid + "&username=" + username + "&id=" + array.get(GlobalVariables.position).get("id");
                     gethouselist(3);
+                    break;
+                case 8:
+                    jsonObject = JSON.parseObject(updatestr);
+                    JSONObject jsonObject2 = jsonObject.getJSONObject("data");
+                    a = jsonObject2.getIntValue("code");
+                    if (a != 0) {
+                        Toast.makeText(MyHouse.this, jsonObject2.getString("msg"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        array.remove(GlobalVariables.position);
+                        adapter.notifyDataSetChanged();
+                        if (array.size() > 0) {
+                            if (GlobalVariables.position == 0) {
+                                updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid=" + uid + "&username=" + username + "&houseid=" + array.get(GlobalVariables.position).get("houseid") + "&fanghaoid=" + array.get(GlobalVariables.position).get("fanghaoid");
+                                gethouselist(2);
+                            } else {
+                                updatrurl = GlobalVariables.urlstr + "User.updateHouse&uid=" + uid + "&username=" + username + "&houseid=" + array.get(GlobalVariables.position - 1).get("houseid") + "&fanghaoid=" + array.get(GlobalVariables.position - 1).get("fanghaoid");
+                                GlobalVariables.position = GlobalVariables.position - 1;
+                                gethouselist(2);
+                            }
+                        } else {
+                            PreferencesUtils.putString(MyHouse.this, "houseids", "0");
+                            PreferencesUtils.putString(MyHouse.this, "houseid", "0");
+                        }
+                    }
+                    break;
+                case 9:
+                    updatrurl = GlobalVariables.urlstr + "User.delHouse&uid=" + uid + "&username=" + username + "&id=" + array.get(GlobalVariables.position).get("id");
+                    gethouselist(4);
                     break;
             }
         }
     };
 
-    private void setArray(String str)throws Exception{
+    private void setArray(String str) throws Exception {
         JSONObject jsonObject = JSON.parseObject(str);
         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
         int a = jsonObject1.getIntValue("code");
@@ -225,6 +258,7 @@ public class MyHouse extends Activity {
         });
         onRefresh();
     }
+
     public void onRefresh() {
         Refresh.postDelayed(new Runnable() {
 
@@ -232,7 +266,7 @@ public class MyHouse extends Activity {
             public void run() {
                 // 更新数据
                 array.clear();
-                url = GlobalVariables.urlstr + "user.getHouseList&uid="+uid+"&username="+username;
+                url = GlobalVariables.urlstr + "user.getHouseList&uid=" + uid + "&username=" + username;
                 gethouselist(1);
             }
         }, 2000);

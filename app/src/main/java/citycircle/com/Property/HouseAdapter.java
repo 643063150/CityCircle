@@ -85,10 +85,11 @@ public class HouseAdapter extends BaseAdapter {
         getItemView.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GlobalVariables.position=position;
                 if (array.get(position).get("houseid").equals(houseid)&&array.get(position).get("fanghaoid").equals(fanghaoid)){
-
+                    handler.sendEmptyMessage(9);
                 }else {
-                    GlobalVariables.position=position;
+
                     handler.sendEmptyMessage(7);
                 }
             }

@@ -91,6 +91,7 @@ public class MessageList {
             private String create_time;
             private String shopname;
             private String xqname;
+            private String kan;
             public String getId() {
                 return id;
             }
@@ -137,6 +138,14 @@ public class MessageList {
 
             public void setXqname(String xqname) {
                 this.xqname = xqname;
+            }
+
+            public String getKan() {
+                return kan;
+            }
+
+            public void setKan(String kan) {
+                this.kan = kan;
             }
         }
     }

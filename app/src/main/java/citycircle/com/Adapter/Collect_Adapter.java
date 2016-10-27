@@ -1,10 +1,12 @@
 package citycircle.com.Adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import citycircle.com.R;
+import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.ImageUtils;
 import citycircle.com.Utils.PreferencesUtils;
 
@@ -31,9 +34,11 @@ public class Collect_Adapter extends BaseAdapter {
     DisplayImageOptions options;
     citycircle.com.Utils.ImageUtils ImageUtils;
     ImageLoadingListener animateFirstListener;
-    public Collect_Adapter(ArrayList<HashMap<String, String>> list, Context context){
+    Handler handler;
+    public Collect_Adapter(ArrayList<HashMap<String, String>> list, Context context, Handler handler){
         this.context = context;
         this.list = list;
+        this.handler=handler;
         inflater = LayoutInflater.from(context);
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
@@ -56,7 +61,7 @@ public class Collect_Adapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -64,14 +69,17 @@ public class Collect_Adapter extends BaseAdapter {
             holder.tv = (TextView) convertView.findViewById(R.id.content);
             holder.cb = (CheckBox) convertView.findViewById(R.id.xieyi);
             holder.img = (ImageView) convertView.findViewById(R.id.img);
+            holder.btn = (Button) convertView.findViewById(R.id.btn);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
         if (list.get(position).get("show").equals("true")){
             holder.cb.setVisibility(View.VISIBLE);
+            holder.btn.setVisibility(View.VISIBLE);
         }else {
             holder.cb.setVisibility(View.GONE);
+            holder.btn.setVisibility(View.VISIBLE);
         }
         holder.tv.setText(list.get(position).get("title"));
         String url=list.get(position).get("url");
@@ -97,12 +105,21 @@ public class Collect_Adapter extends BaseAdapter {
 //            });
 //           }
 //        }
+        holder.cb.setEnabled(false);
         holder.cb.setChecked(list.get(position).get("flag").equals("true"));
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalVariables.position=position;
+                handler.sendEmptyMessage(5);
+            }
+        });
         return convertView;
     }
     public final class ViewHolder{
         TextView tv;
         public CheckBox cb;
         ImageView img;
+        Button btn;
     }
 }

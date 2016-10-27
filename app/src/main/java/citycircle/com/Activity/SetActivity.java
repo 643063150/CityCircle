@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -39,11 +42,13 @@ public class SetActivity extends Activity {
     File cacheDir;
     String dd;
     TextView shuliang;
+    CloudPushService pushService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setlayout);
         ShareSDK.initSDK(this);
+        pushService = PushServiceFactory.getCloudPushService();
         File sd = Environment.getExternalStorageDirectory();
         String path = sd.getPath() + "/citycircle/Cache";
         cacheDir = new File(path);
@@ -212,6 +217,17 @@ public class SetActivity extends Activity {
                 SetActivity.this.sendBroadcast(intent);
                 Toast.makeText(SetActivity.this, "退出登录", Toast.LENGTH_SHORT).show();
                 finish();
+                pushService.unbindAccount(new CommonCallback() {
+                    @Override
+                    public void onSuccess(String s) {
+                        System.out.println("setAccount:onSuccess");
+                    }
+
+                    @Override
+                    public void onFailed(String s, String s1) {
+                        System.out.println("setAccount:onFailed");
+                    }
+                });
             }
         });
         back.setOnClickListener(new View.OnClickListener() {

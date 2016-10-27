@@ -211,7 +211,7 @@ private void gettelstr(final int type){
             classhashMap.put("id", "0");
             classhashMap.put("title", "热门电话");
             classhashMap.put("path", "");
-            mytab.addTab(mytab.newTab().setText("热门电话"));
+            mytab.addTab(mytab.newTab().setText("热门"));
             classarray.add(classhashMap);
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);

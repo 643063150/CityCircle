@@ -17,10 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,9 +47,11 @@ import citycircle.com.Adapter.MineAdapter;
 import citycircle.com.MyAppService.CityServices;
 import citycircle.com.MyViews.MyListView;
 import citycircle.com.R;
+import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.ImageUtils;
 import citycircle.com.Utils.MyEventBus;
 import citycircle.com.Utils.PreferencesUtils;
+import okhttp3.Call;
 
 /**
  * Created by admins on 2015/11/14.
@@ -113,8 +120,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     getActivity().startActivity(intent);
                 } else {
                     if (position == 1) {
-                        EventBus.getDefault().post(
-                                new MyEventBus("dis"));
                         intent.setClass(getActivity(), Mymessage.class);
                         getActivity().startActivity(intent);
                     } else if (position == 0) {
@@ -151,6 +156,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    getJsom();
                     String names = PreferencesUtils.getString(getActivity(), "username");
                     vip.setText(PreferencesUtils.getString(getActivity(), "nickname"));
                     String url = PreferencesUtils.getString(getActivity(), "headimage");
@@ -162,14 +168,16 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         opid="";
                     }
                     tel =PreferencesUtils.getString(getActivity(),"mobile");
-                    name.setText("账号:" + names);
+
                     int a = PreferencesUtils.getInt(getActivity(), "land");
 
                         if (tel.length()!=0) {
+                            name.setText("账号:" + tel);
 //                        list.clear();
 //                        item = new String[]{"收藏", "怀府圈", "修改密码"};
                             password.setText("修改密码");
                         } else {
+                            name.setText("账号:" + names);
 //                        list.clear();
 //                        item = new String[]{"收藏", "怀府圈", "绑定手机号"};
 //                        setMyListView();
@@ -180,6 +188,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     set.setVisibility(View.VISIBLE);
                     break;
                 case 2:
+                    EventBus.getDefault().post(
+                            new MyEventBus("dis"));
                     name.setText("请登录");
                     vip.setText("请登录");
                     set.setVisibility(View.GONE);
@@ -255,5 +265,34 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         super.onDestroy();
         getActivity().unregisterReceiver(broadcastReceiver);
         EventBus.getDefault().unregister(this);//反注册EventBus
+    }
+    public void getJsom() {
+        String username = PreferencesUtils.getString(getActivity(), "username");
+        String uid = PreferencesUtils.getString(getActivity(), "userid");
+        String url = GlobalVariables.urlstr + "user.getMessagesCount&uid=" + uid + "&username=" + username;
+        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+                Toast.makeText(getActivity(), R.string.intent_error, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(String response) {
+                JSONObject jsonObject = JSON.parseObject(response);
+                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                if (jsonObject1.getIntValue("code") == 0) {
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("info");
+                    if (jsonObject2.getIntValue("count1")==0&&jsonObject2.getIntValue("count2")==0&&jsonObject2.getIntValue("count3")==0){
+
+                    }else {
+                        EventBus.getDefault().post(
+                                new MyEventBus("show"));
+                    }
+
+                } else {
+
+                }
+            }
+        });
     }
 }

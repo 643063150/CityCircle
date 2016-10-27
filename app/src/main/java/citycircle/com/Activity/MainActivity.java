@@ -10,7 +10,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,9 +31,10 @@ import citycircle.com.R;
 import citycircle.com.Utils.GlobalVariables;
 import citycircle.com.Utils.MyEventBus;
 import citycircle.com.Utils.PreferencesUtils;
+import okhttp3.Call;
 
 public class MainActivity extends FragmentActivity implements CompoundButton.OnCheckedChangeListener {
-    private RadioButton home, rb_lehui, rb_subscribe, rb_mall,rb_vipcard;
+    private RadioButton home, rb_lehui, rb_subscribe, rb_mall, rb_vipcard;
     public static FragmentTransaction transaction;
     String activityStyle = null;
     public HomeFragment HomeFragment;
@@ -38,6 +43,7 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
     public MineFragment MemberFragment;
     public VipCardFragment vipCardFragment;
     TextView badge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +59,13 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
             }
 
         }
+        int a = PreferencesUtils.getInt(MainActivity.this, "land");
+        if (a != 0) {
+            getJsom();
+        } else {
+            GlobalVariables.types = false;
+        }
+
     }
 
     @Override
@@ -61,7 +74,7 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
     }
 
     public void initComponents() {
-        badge=(TextView)findViewById(R.id.bdage);
+        badge = (TextView) findViewById(R.id.bdage);
         badge.setVisibility(View.GONE);
         home = (RadioButton) findViewById(R.id.rb_home);
         rb_lehui = (RadioButton) findViewById(R.id.rb_lehui);
@@ -186,6 +199,7 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
             transaction.commitAllowingStateLoss();
         }
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
@@ -194,15 +208,19 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
         }
         return false;
     }
+
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
+
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
     private static Boolean isExit = false;
+
     private void exitBy2Click() {
         Timer tExit = null;
         if (isExit == false) {
@@ -224,24 +242,56 @@ public class MainActivity extends FragmentActivity implements CompoundButton.OnC
             }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
         } else {
-            for (int i=0;i< GlobalVariables.TITLE.length;i++){
-                PreferencesUtils.putString(MainActivity.this,GlobalVariables.TITLE[i],null);
-                PreferencesUtils.putString(MainActivity.this,GlobalVariables.TITLE[i]+ "img",null);
+            for (int i = 0; i < GlobalVariables.TITLE.length; i++) {
+                PreferencesUtils.putString(MainActivity.this, GlobalVariables.TITLE[i], null);
+                PreferencesUtils.putString(MainActivity.this, GlobalVariables.TITLE[i] + "img", null);
             }
             finish();
             System.exit(0);
         }
     }
+
     @Subscribe
-    public void getEventmsg(MyEventBus myEventBus){
-        if (myEventBus.getMsg().equals("show")){
+    public void getEventmsg(MyEventBus myEventBus) {
+        if (myEventBus.getMsg().equals("show")) {
             badge.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             badge.setVisibility(View.GONE);
         }
 
 
 //        Toast.makeText(getActivity(),myEventBus.getMsg(),Toast.LENGTH_SHORT).show();
+    }
+
+    public void getJsom() {
+        String username = PreferencesUtils.getString(MainActivity.this, "username");
+        String uid = PreferencesUtils.getString(MainActivity.this, "userid");
+        String url = GlobalVariables.urlstr + "user.getMessagesCount&uid=" + uid + "&username=" + username;
+        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+                Toast.makeText(MainActivity.this, R.string.intent_error, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(String response) {
+                JSONObject jsonObject = JSON.parseObject(response);
+                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                if (jsonObject1.getIntValue("code") == 0) {
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("info");
+                    if (jsonObject2.getIntValue("count1")==0&&jsonObject2.getIntValue("count2")==0&&jsonObject2.getIntValue("count3")==0){
+                        GlobalVariables.types = false;
+                    }else {
+                        GlobalVariables.types = true;
+                    }
+
+                } else {
+                    EventBus.getDefault().post(
+                            new MyEventBus("show"));
+                    GlobalVariables.types = true;
+                }
+            }
+        });
     }
 
     @Override

@@ -1,12 +1,15 @@
 package citycircle.com.Activity;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,11 +22,13 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -82,6 +87,9 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
     String username;
     Dialog dialog;
     BadgeView badge ;
+    private View xCustomView;
+    private FrameLayout video_fullView;// 全屏时视频加载view
+    private WebChromeClient.CustomViewCallback xCustomViewCallback;
     @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +101,7 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         ImageUtils = new ImageUtils();
         ImageLoader = ImageLoader.getInstance();
         add = (LinearLayout) findViewById(R.id.add);
+        video_fullView = (FrameLayout) findViewById(R.id.video_fullView);
         aboutnews = (MyListView) findViewById(R.id.aboutnews);
         ImageLoader.init(ImageLoaderConfiguration.createDefault(this));
         animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
@@ -114,16 +123,37 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         collects = (ImageView) findViewById(R.id.collects);
         collects.setOnClickListener(this);
         myview.setVerticalScrollBarEnabled(false); //垂直不显示
-        myview.getSettings().setJavaScriptEnabled(true);
-        myview.getSettings().getJavaScriptEnabled();
-        myview.setWebChromeClient(new WebChromeClient());
+        WebSettings ws = myview.getSettings();
+        ws.setBuiltInZoomControls(true);// 隐藏缩放按钮
+        // ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);// 排版适应屏幕
+
+        ws.setUseWideViewPort(true);// 可任意比例缩放
+        ws.setLoadWithOverviewMode(true);// setUseWideViewPort方法设置webview推荐使用的窗口。setLoadWithOverviewMode方法是设置webview加载的页面的模式。
+
+        ws.setSavePassword(true);
+        ws.setSaveFormData(true);// 保存表单数据
+        ws.setJavaScriptEnabled(true);
+        ws.setGeolocationEnabled(true);// 启用地理定位
+        ws.setGeolocationDatabasePath("/data/data/org.itri.html5webview/databases/");// 设置定位的数据库路径
+        ws.setDomStorageEnabled(true);
+        ws.setSupportMultipleWindows(true);// 新加
         myview.setWebViewClient(new HelloWebViewClient());
         id = getIntent().getStringExtra("id");
         webtxt = getIntent().getStringExtra("title");
         description = getIntent().getStringExtra("description");
         path = getIntent().getStringExtra("url");
+       try {
+           JSONArray jsonArray = JSON.parseArray(path);
+           for (int i = 0; i < jsonArray.size(); i++) {
+               JSONObject jsonObject = jsonArray.getJSONObject(i);
+               path = jsonObject.getString("url");
+           }
+       }catch (Exception e){
+
+       }
 //        url = GlobalVariables.urlstr + "News.getArticle&id=71";
         url = "http://101.201.169.38/city/news_info.php?id=" + id + "&type=1";
+//        url="http://www.bilibili.com/video/av6150055/";
 //        url="http://123.57.28.170/zxd/city/android.html";
         addurl = GlobalVariables.urlstr + "News.getArticle&id=" + id;
         myview.loadUrl(url);
@@ -131,7 +161,8 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
 //        submit.setText("看评论");
         getWEbciew(1);
         myview.setWebChromeClient(new WebChromeClient() {
-            //
+            private View xprogressvideo;
+
             public void onProgressChanged(WebView view, int progress) {
 
                 if (progress == 100) {
@@ -139,6 +170,49 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                     dialog.dismiss();
                 }
             }
+            // 播放网络视频时全屏会被调用的方法
+            @Override
+            public void onShowCustomView(View view, CustomViewCallback callback) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                myview.setVisibility(View.INVISIBLE);
+                // 如果一个视图已经存在，那么立刻终止并新建一个
+                if (xCustomView != null) {
+                    callback.onCustomViewHidden();
+                    return;
+                }
+                video_fullView.addView(view);
+                xCustomView = view;
+                xCustomViewCallback = callback;
+                video_fullView.setVisibility(View.VISIBLE);
+            }
+
+            // 视频播放退出全屏会被调用的
+            @Override
+            public void onHideCustomView() {
+                if (xCustomView == null)// 不是全屏播放状态
+                    return;
+
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                xCustomView.setVisibility(View.GONE);
+                video_fullView.removeView(xCustomView);
+                xCustomView = null;
+                video_fullView.setVisibility(View.GONE);
+                xCustomViewCallback.onCustomViewHidden();
+                myview.setVisibility(View.VISIBLE);
+            }
+
+            // 视频加载时进程loading
+//            @Override
+//            public View getVideoLoadingProgressView() {
+//                if (xprogressvideo == null) {
+//                    LayoutInflater inflater = LayoutInflater
+//                            .from(NewsInfoActivity.this);
+//                    xprogressvideo = inflater.inflate(
+//                            R.layout.video_loading_progress, null);
+//                }
+//                return xprogressvideo;
+//            }
+
         });
         myview.addJavascriptInterface(new Object() {
             @JavascriptInterface
@@ -374,6 +448,12 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myview.loadUrl("https://www.baidu.com/");
+    }
+
     public void setAdoutnews() {
         adapter = new AboutAdapter(array, NewsInfoActivity.this);
         aboutnews.setAdapter(adapter);
@@ -486,20 +566,21 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
                 }
                 oks.setTitle(webtxt);
                 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-                oks.setTitleUrl("http://101.201.169.38/city/news_info.php?id=" + id + "&type=0");
+                oks.setTitleUrl("http://wap.huaifuwang.com/city/news_info.php?id=" + id + "&type=0");
                 // text是分享文本，所有平台都需要这个字段
-                oks.setText(description);
+//                oks.setText(description);
                 oks.setImageUrl(path);
-                // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+//                oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+                        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
                 // url仅在微信（包括好友和朋友圈）中使用
-                oks.setUrl("http://101.201.169.38/city/news_info.php?id=" + id + "&type=0");
+                oks.setUrl("http://wap.huaifuwang.com/city/news_info.php?id=" + id + "&type=0");
                 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 //        oks.setComment("我是测试评论文本");
                 // site是分享此内容的网站名称，仅在QQ空间使用
                 oks.setSite(getString(R.string.app_name));
                 // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-                oks.setSiteUrl("http://101.201.169.38/city/news_info.php?id=" + id + "&type=0");
+                oks.setSiteUrl("http://wap.huaifuwang.com/city/news_info.php?id=" + id + "&type=0");
 
 // 启动分享GUI
                 oks.show(this);
@@ -533,7 +614,28 @@ public class NewsInfoActivity extends Activity implements View.OnClickListener {
         super.onRestart();
         getWEbciew(1);
     }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myview.onPause();
+        myview.pauseTimers();
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        super.onResume();
+        myview.onResume();
+        myview.resumeTimers();
 
+        /**
+         * 设置为横屏
+         */
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
     private void getcollext() {
         String str = PreferencesUtils.getString(NewsInfoActivity.this, "collelist");
         if (str == null) {

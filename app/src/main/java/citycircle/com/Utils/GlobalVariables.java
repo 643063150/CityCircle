@@ -31,4 +31,7 @@ public class GlobalVariables {
     public static String calm = "", Propertyid = "", doorid = "", unit = "", storey = "", homenuid = "";
     public static String housename;
     public static String proname;
+    public static int type = 0;
+    public static boolean types=true;
+
 }

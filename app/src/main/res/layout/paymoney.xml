@@ -225,12 +225,32 @@
                 android:layout_marginLeft="@dimen/ui_10_dip"
                 android:textSize="17sp" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lay9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lay4"
+            android:padding="@dimen/ui_10_dip">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单价:"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/ymoneys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日期:"
+                android:layout_marginLeft="@dimen/ui_10_dip"
+                android:textSize="17sp" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/lay5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lay4"
+            android:layout_below="@id/lay9"
             android:padding="@dimen/ui_10_dip">
 
             <TextView

@@ -239,7 +239,7 @@ public class Yerec extends Fragment implements View.OnClickListener, AdapterView
         HashMap<String, Object> hashMap;
         if (poparrayList.size() == 0) {
             poparrayList = new ArrayList<>();
-            String[] text = new String[]{"全部分类", "打折卡", "计次卡", "充值卡", "积分卡"};
+            String[] text = new String[]{"会员卡分类", "打折卡", "计次卡", "充值卡", "积分卡"};
             int[] typeid = new int[]{0, 3, 1, 2, 4};
             int[] imageId = new int[]{R.mipmap.left_type_0, R.mipmap.right_type_03x, R.mipmap.right_type_13x, R.mipmap.right_type_23x, R.mipmap.right_type_33x};
             for (int i = 0; i < text.length; i++) {

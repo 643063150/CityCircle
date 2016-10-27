@@ -67,6 +67,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     int hosestat = 0;
     Intent intent = new Intent();
     TextView wuyu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
     }
 
     private void intview() {
-        wuyu=(TextView)findViewById(R.id.wuyu);
+        wuyu = (TextView) findViewById(R.id.wuyu);
         prophonenumber = (TextView) findViewById(R.id.prophonenumber);
         prophonenumber.setOnClickListener(this);
 //        usermessages = (TextView) findViewById(R.id.usermessages);
@@ -100,7 +101,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 //        });
 
 //        badge.setBadgePosition(BadgeView.POSITION_CENTER);
-        wuyu.setText(PreferencesUtils.getString(PropertyHome.this,"xiaoqu"));
+        wuyu.setText(PreferencesUtils.getString(PropertyHome.this, "xiaoqu"));
 //        usermessages.setOnClickListener(this);
         inflater = LayoutInflater.from(this);
         hviewpage = (AutoScrollViewPager) findViewById(R.id.view_pager);
@@ -183,30 +184,52 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        String houseid;
+        try {
+            houseid = PreferencesUtils.getString(PropertyHome.this, "houseid");
+        } catch (Exception e) {
+            houseid = "0";
+        }
         switch (v.getId()) {
             case R.id.loginback:
                 finish();
                 break;
             case R.id.messages:
-
-                intent.setClass(PropertyHome.this, Information.class);
-                gethousestate();
+                if (houseid.equals("0")) {
+                    intent.setClass(PropertyHome.this, AddHome.class);
+                    PropertyHome.this.startActivity(intent);
+                } else {
+                    intent.setClass(PropertyHome.this, Information.class);
+                    gethousestate();
+                }
                 break;
             case R.id.phonenumber:
-
-                intent.setClass(PropertyHome.this, Payment.class);
-                gethousestate();
+                if (houseid.equals("0")) {
+                    intent.setClass(PropertyHome.this, AddHome.class);
+                    PropertyHome.this.startActivity(intent);
+                } else {
+                    intent.setClass(PropertyHome.this, Payment.class);
+                    gethousestate();
+                }
 //                PropertyHome.this.startActivity(intent);
                 break;
             case R.id.meeting:
-                intent.setClass(PropertyHome.this, MyHouse.class);
-                PropertyHome.this.startActivity(intent);
+                if (houseid.equals("0")) {
+                    intent.setClass(PropertyHome.this, AddHome.class);
+                    PropertyHome.this.startActivity(intent);
+                } else {
+                    intent.setClass(PropertyHome.this, MyHouse.class);
+                    PropertyHome.this.startActivity(intent);
+                }
                 break;
             case R.id.DOC:
-
-                intent.setClass(PropertyHome.this, FeeBack.class);
-                gethousestate();
+                if (houseid.equals("0")) {
+                    intent.setClass(PropertyHome.this, AddHome.class);
+                    PropertyHome.this.startActivity(intent);
+                } else {
+                    intent.setClass(PropertyHome.this, FeeBack.class);
+                    gethousestate();
+                }
 //                PropertyHome.this.startActivity(intent);
                 break;
 //            case R.id.usermessages:
@@ -216,15 +239,23 @@ public class PropertyHome extends Activity implements View.OnClickListener {
 ////                PropertyHome.this.startActivity(intent);
 //                break;
             case R.id.prophonenumber:
-
-                intent.setClass(PropertyHome.this, Pronumber.class);
-                gethousestate();
+                if (houseid.equals("0")) {
+                    intent.setClass(PropertyHome.this, AddHome.class);
+                    PropertyHome.this.startActivity(intent);
+                } else {
+                    intent.setClass(PropertyHome.this, Pronumber.class);
+                    gethousestate();
+                }
 //                PropertyHome.this.startActivity(intent);
                 break;
             case R.id.prcitcle:
-
-                intent.setClass(PropertyHome.this, ProCircle.class);
-                gethousestate();
+                if (houseid.equals("0")) {
+                    intent.setClass(PropertyHome.this, AddHome.class);
+                    PropertyHome.this.startActivity(intent);
+                } else {
+                    intent.setClass(PropertyHome.this, ProCircle.class);
+                    gethousestate();
+                }
 //                PropertyHome.this.startActivity(intent);
                 break;
         }
@@ -304,7 +335,7 @@ public class PropertyHome extends Activity implements View.OnClickListener {
                     for (int i = 0; i < array.size(); i++) {
                         if (array.get(i).get("houseid").equals(houseid) && array.get(i).get("fanghaoid").equals(fanghaoid)) {
                             PreferencesUtils.putString(PropertyHome.this, "xiaoqu", array.get(i).get("xiaoqu"));
-                            String hosename = array.get(i).get("xiaoqu") + array.get(i).get("louhao") + array.get(i).get("fanghao") + array.get(i).get("danyuan");
+                            String hosename = array.get(i).get("xiaoqu") + array.get(i).get("louhao") + array.get(i).get("danyuan") + array.get(i).get("fanghao");
                             PreferencesUtils.putString(PropertyHome.this, "housename", hosename);
                         }
                     }

@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -39,7 +39,7 @@ public class NonpaymentFr extends Fragment {
     HashMap<String, String> hashMap;
     String url, urlstr, uid, username, houseid, type,fangid;
     PaysAdapter paysAdapter;
-    TableLayout dian,wuye;
+    LinearLayout dian,wuye;
     PayWuAdapter payWuAdapter;
     @Nullable
     @Override
@@ -61,8 +61,8 @@ public class NonpaymentFr extends Fragment {
 
     private void intview() {
 //        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.Refresh);
-        dian=(TableLayout)view.findViewById(R.id.dian);
-        wuye=(TableLayout)view.findViewById(R.id.wuye);
+        dian=(LinearLayout)view.findViewById(R.id.dian);
+        wuye=(LinearLayout)view.findViewById(R.id.wuye);
         if (type.equals("1")||type.equals("4")){
             wuye.setVisibility(View.VISIBLE);
             dian.setVisibility(View.GONE);
@@ -84,6 +84,7 @@ public class NonpaymentFr extends Fragment {
                 intent.putExtra("ymoney", arrayList.get(position).get("ymoney"));
                 intent.putExtra("smoney", arrayList.get(position).get("smoney"));
                 intent.putExtra("create_time", arrayList.get(position).get("create_time"));
+                intent.putExtra("price", arrayList.get(position).get("price"));
                 intent.putExtra("status", "0");
                 getActivity().startActivity(intent);
             }
@@ -147,6 +148,7 @@ public class NonpaymentFr extends Fragment {
                 hashMap.put("smoney", jsonObject2.getString("smoney") == null ? "" : jsonObject2.getString("smoney"));
                 hashMap.put("create_time", jsonObject2.getString("create_time") == null ? "" : jsonObject2.getString("create_time"));
                 hashMap.put("bak", jsonObject2.getString("bak") == null ? "" : jsonObject2.getString("bak"));
+                hashMap.put("price", jsonObject2.getString("price") == null ? "" : jsonObject2.getString("price"));
                 arrayList.add(hashMap);
             }
         } else {

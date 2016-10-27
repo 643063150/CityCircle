@@ -117,7 +117,7 @@ public class RecommFragment extends Fragment {
                     intent.putExtra("id", arrayList.get(position -listView.getHeaderViewsCount()).get("id"));
                     intent.putExtra("title", arrayList.get(position-listView.getHeaderViewsCount() ).get("title"));
                     intent.putExtra("description", arrayList.get(position-listView.getHeaderViewsCount() ).get("description"));
-                    intent.putExtra("url", arrayList.get(position-listView.getHeaderViewsCount()).get("url"));
+                    intent.putExtra("url", arrayList.get(position-listView.getHeaderViewsCount()).get("picList"));
                     intent.setClass(getActivity(), NewsInfoActivity.class);
                     getActivity().startActivity(intent);
                 }

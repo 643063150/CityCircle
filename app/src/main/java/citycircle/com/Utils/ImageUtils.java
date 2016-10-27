@@ -42,7 +42,7 @@ public class ImageUtils {
     public DisplayImageOptions setcenterOptions(){
         DisplayImageOptions DisplayImageOptions = null;
         DisplayImageOptions = new  DisplayImageOptions.Builder()//
-                .cacheInMemory(true)//
+                .showStubImage(R.mipmap.nopic) // 设置图片下载期间显示的图片.cacheInMemory(true)//
                 .cacheOnDisk(true)//
                 .bitmapConfig(Bitmap.Config.RGB_565)//
                 .build();

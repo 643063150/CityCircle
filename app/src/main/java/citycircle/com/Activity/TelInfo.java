@@ -88,7 +88,7 @@ public class TelInfo extends Activity implements View.OnClickListener {
                 case 1:
                     getinfo(urlstr);
                     title.setText(tit);
-                    number.setText("服务电话："+num);
+                    number.setText("电话："+num);
                     adress.setText("地址："+adr);
                     distance.setText("网址:"+durl);
                     options = ImageUtils.setnoOptions();

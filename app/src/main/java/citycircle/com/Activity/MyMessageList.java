@@ -85,6 +85,10 @@ public class MyMessageList extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent();
+                list.get(position).setKan("0");
+                String json=JSON.toJSONString(list);
+                PreferencesUtils.putString(MyMessageList.this,"messagelist"+type+uid,json);
+                myMessageItem.notifyDataSetChanged();
                 intent.putExtra("title",list.get(position).getTitle());
                 intent.putExtra("times",list.get(position).getCreate_time());
                 intent.putExtra("contents",list.get(position).getContent());
@@ -146,6 +150,7 @@ public class MyMessageList extends Activity {
                 infoBean.setShopname(jsonObject.getString("shopname"));
                 infoBean.setTitle(jsonObject.getString("title"));
                 infoBean.setXqname(jsonObject.getString("xqname"));
+                infoBean.setKan(jsonObject.getString("kan"));
                 list.add(infoBean);
             }
         }

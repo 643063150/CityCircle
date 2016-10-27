@@ -38,4 +38,7 @@
     <string name="sureword">确认密码</string>
     <string name="intent_error">网络似乎出问题了</string>
     <string name="nomore">没有更多内容了</string>
+    <string name="list_footer_loading">正在加载更多…</string>
+    <string name="list_footer_network_error">点击重新加载</string>
+    <string name="list_footer_end">已经到底了</string>
 </resources>

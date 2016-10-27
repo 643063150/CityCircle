@@ -52,12 +52,12 @@ public class Loading extends Activity {
         newimg = PreferencesUtils.getInt(Loading.this, "ornew");
         if (frist != -1){
             logo.setVisibility(View.VISIBLE);
-            welimg.setVisibility(View.GONE);
+            welimg.setVisibility(View.INVISIBLE);
             getImg();
             mytherd.start();
         }else {
-
-            welimg.setImageResource(R.mipmap.appqd);
+            logo.setVisibility(View.GONE);
+            welimg.setImageResource(R.mipmap.appad);
             welimg.setVisibility(View.VISIBLE);
         }
         countdownView=(CountdownView)findViewById(R.id.cv_countdownViewTest1);
@@ -180,19 +180,24 @@ public class Loading extends Activity {
                     animateFirstListener = new ImageUtils.AnimateFirstDisplayListener();
                     ImageUtils=new ImageUtils();
 //                    Toast.makeText(Loading.this, urlstr, Toast.LENGTH_SHORT).show();
-                    JSONObject jsonObject = JSON.parseObject(urlstr);
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                    String url = null;
-                    if (jsonObject1.getIntValue("code") == 0) {
-                        JSONArray jsonArray = jsonObject1.getJSONArray("info");
-                        for (int i = 0; i < jsonArray.size(); i++) {
-                            JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                            url = jsonObject2.getString("picurl");
+                    try{
+                        JSONObject jsonObject = JSON.parseObject(urlstr);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        String url = null;
+                        if (jsonObject1.getIntValue("code") == 0) {
+                            JSONArray jsonArray = jsonObject1.getJSONArray("info");
+                            for (int i = 0; i < jsonArray.size(); i++) {
+                                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                                url = jsonObject2.getString("picurl");
+                            }
                         }
+                        options = ImageUtils.setcenterOptions();
+                        imageLoader.displayImage(url,welimg,options,
+                                animateFirstListener);
+                    }catch (Exception e){
+                        imageLoader.displayImage(url,welimg,options,
+                                animateFirstListener);
                     }
-                    options = ImageUtils.setcenterOptions();
-                    imageLoader.displayImage(url,welimg,options,
-                            animateFirstListener);
                     welimg.setVisibility(View.VISIBLE);
                     break;
                 case 2:
